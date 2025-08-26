@@ -1,0 +1,107 @@
+---
+title: "combine_data_youtube_countries"
+format: html
+---
+
+<br>
+
+```{r}
+getwd()
+DEvideos <- read_csv("raw_data_from_kaggle/DEvideos.csv")
+FRvideos <- read_csv("raw_data_from_kaggle/FRvideos.csv")
+JPvideos <- read_csv("raw_data_from_kaggle/JPvideos.csv")
+MXvideos <- read_csv("raw_data_from_kaggle/MXvideos.csv")
+USvideos <- read_csv("raw_data_from_kaggle/USvideos.csv")
+str(DEvideos)
+str(FRvideos)
+str(JPvideos)
+str(MXvideos)
+str(USvideos)
+```
+
+<br>
+```{r}
+library(tidyverse)
+# Add a 'country' column and standardize data types for each data frame
+DEvideos <- DEvideos %>%
+  mutate(
+    country = "DE",
+    across(c(comments_disabled, ratings_disabled, video_error_or_removed), as.character)
+  )
+
+FRvideos <- FRvideos %>%
+  mutate(
+    country = "FR",
+    across(c(comments_disabled, ratings_disabled, video_error_or_removed), as.character)
+  )
+
+JPvideos <- JPvideos %>%
+  mutate(
+    country = "JP",
+    across(c(comments_disabled, ratings_disabled, video_error_or_removed), as.character)
+  )
+
+MXvideos <- MXvideos %>%
+  mutate(
+    country = "MX",
+    across(c(comments_disabled, ratings_disabled, video_error_or_removed), as.character)
+  )
+
+USvideos <- USvideos %>%
+  mutate(
+    country = "US",
+    across(c(comments_disabled, ratings_disabled, video_error_or_removed), as.character)
+  )
+
+# Combine all data frames into a single one
+all_videos <- bind_rows(DEvideos, FRvideos, JPvideos, MXvideos, USvideos)
+
+# Check the structure of the new, combined data frame
+str(all_videos)
+```
+<br>
+
+```{r}
+# Convert the trending_date column to a proper date format
+all_videos <- all_videos %>%
+  mutate(trending_date = as.Date(trending_date, format = "%y.%d.%m"))
+
+# Check the structure again to confirm the change
+str(all_videos$trending_date)
+
+# Find the earliest and latest trending dates
+earliest_date <- min(all_videos$trending_date)
+latest_date <- max(all_videos$trending_date)
+earliest_date
+latest_date
+# wordcloud nicht vergessen
+```
+<br>
+
+<br>
+
+```{r}
+library(tidyverse)
+
+# 1. Separate the tags into individual rows
+# The separate_rows() function is perfect for this
+tags_per_day <- all_videos %>%
+  separate_rows(tags, sep = "\\|")
+View(tags_per_day)
+str(tags_per_day)
+# 2. Group by date and tag, then count occurrences
+trending_tags <- tags_per_day %>%
+  group_by(trending_date, tags) %>%
+  count(sort = TRUE) %>%
+  ungroup()
+View(trending_tags)
+
+# 3. View the top trending tags
+# You can filter for a specific date or just look at the top overall
+head(trending_tags, 20)
+unique_tags_df <- trending_tags %>%
+  distinct(tags)
+View(unique_tags_df)
+```
+<br>
+
