@@ -34,3 +34,4 @@ output_results_US_DE %>%
   facet_wrap(~ keyword + geo) +
   theme_minimal()
 
+
