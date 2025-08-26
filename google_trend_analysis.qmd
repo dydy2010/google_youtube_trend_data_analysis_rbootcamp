@@ -1,7 +1,7 @@
 ---
-title: "Google-Trend Analysis"
-format: html
-editor: visual
+editor: 
+  markdown: 
+    wrap: 72
 ---
 
 ## Installation and Keywords
