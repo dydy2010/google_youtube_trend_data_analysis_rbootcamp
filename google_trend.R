@@ -21,6 +21,20 @@ gtrends(keyword = search_terms,
 output_results_DE$interest_over_time %>% 
   head(100)
 
+gtrends(keyword = search_terms,
+        geo = "FR",
+        time = "today 12-m") -> output_results_FR
+
+output_results_FR$interest_over_time %>% 
+  head(100)
+
+gtrends(keyword = search_terms,
+        geo = "DE",
+        time = "today 12-m") -> output_results_DE
+
+output_results_DE$interest_over_time %>% 
+  head(100)
+
 
 output_results_US_DE <- output_results_US$interest_over_time %>% 
   bind_rows(output_results_DE$interest_over_time)
