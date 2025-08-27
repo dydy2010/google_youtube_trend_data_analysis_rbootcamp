@@ -87,6 +87,8 @@ library(tidyverse)
 # The separate_rows() function is perfect for this
 tags_per_day <- all_videos %>%
   separate_rows(tags, sep = "\\|")
+  
+
 View(tags_per_day)
 str(tags_per_day)
 # 2. Group by date and tag, then count occurrences
@@ -94,14 +96,95 @@ trending_tags <- tags_per_day %>%
   group_by(trending_date, tags) %>%
   count(sort = TRUE) %>%
   ungroup()
-View(trending_tags)
+# View(trending_tags)
 
 # 3. View the top trending tags
 # You can filter for a specific date or just look at the top overall
 head(trending_tags, 20)
 unique_tags_df <- trending_tags %>%
   distinct(tags)
-View(unique_tags_df)
+# View(unique_tags_df)
+
+# the single most-searched tag across all countries and dates
+most_searched_tag <- tags_per_day %>%
+  group_by(tags) %>%
+  count(sort = TRUE) %>%
+  ungroup()
+  
+View(most_searched_tag)
+
+# Finding the Most Searched Tag for Each Country
+most_searched_tags_by_country <- tags_per_day %>%
+  group_by(country, tags) %>%
+  count(name = "total_appearances") %>%
+  slice_max(order_by = total_appearances, n = 1) %>%
+  ungroup() %>%
+  arrange(country)
+
+View(most_searched_tags_by_country)
 ```
 <br>
 
+<br>
+
+```{r}
+# Group by country and category_id and count the number of videos
+category_counts <- all_videos %>%
+  group_by(country, category_id) %>%
+  count() %>%
+  ungroup()
+
+# View the result
+head(category_counts)
+View(category_counts)
+
+
+
+# Create the grouped bar chart
+ggplot(category_counts, aes(x = factor(category_id), y = n, fill = country)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(
+    title = "Count of Trending Videos by Category and Country",
+    x = "Category ID",
+    y = "Number of Trending Videos",
+    fill = "Country"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  )
+```
+<br>
+
+library(jsonlite)
+library(dplyr)
+library(readr)
+
+# Function to read and process a single JSON file
+process_json <- function(file_path) {
+  category_data <- fromJSON(file_path)
+  category_df <- category_data$items
+
+  category_names <- data.frame(
+    category_id = as.integer(category_df$id),
+    category_name = category_df$snippet$title
+  )
+  return(category_names)
+}
+
+# Read and combine all category JSON files
+category_names <- bind_rows(
+  process_json("DE_category_id.json"),
+  process_json("FR_category_id.json"),
+  process_json("JP_category_id.json"),
+  process_json("US_category_id.json")
+) %>%
+  distinct() # Get unique IDs from all files
+# Find the top category for each country
+top_categories <- category_counts %>%
+  group_by(country) %>%
+  slice_max(n, n = 1) %>%
+  ungroup()
+
+# View the result
+head(top_categories)
