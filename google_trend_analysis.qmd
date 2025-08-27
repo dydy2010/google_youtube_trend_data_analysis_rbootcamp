@@ -4,141 +4,139 @@ editor:
     wrap: 72
 ---
 
-## Installation and Keywords
+## Install/Load libraries
 
 ```{r echo=FALSE}
 
-# install.packages("gtrendsR")
-library(gtrendsR)
+# library(gtrendsR)  # Downloading was blocked after 3 downloads
 library(tidyverse)
 
-
-# defining the search terms, i.e. keywords
-
-search_terms <- c("Donald Trump", "Kendrick Lamar")
-search_terms_JP <- c("ドナルド・トランプ", "ケンドリック・ラマー")
-
 ```
 
-## extract US data
+## prepare and merge data manually downloaded
 
 ```{r}
 
-# extract US data
+# Google Trends CSV-Dateien importieren und zusammenführen
+library(dplyr)
+library(tidyr)
 
-gtrends(keyword = search_terms,
-        geo = "US",
-        time = "today 12-m") -> output_results_US
+# Funktion zum Einlesen und Aufbereiten der CSV-Dateien
 
-output_results_US$interest_over_time %>% 
-  head(100)
+process_trends_csv <- function(filepath, country_code) {
+  # CSV einlesen und erste 2 Zeilen überspringen
+  data <- read.csv(filepath, skip = 2, stringsAsFactors = FALSE)
+  
+  # Spaltennamen einheitlich setzen
+  colnames(data) <- c("date", "Donald_Trump", "Kendrick_Lamar", "Tesla", "NBA", "Amazon")
+
+  # <1 Werte in allen Trend-Spalten zu 0 ändern
+  trend_columns <- c("Donald_Trump", "Kendrick_Lamar", "Tesla", "NBA", "Amazon")
+
+  data <- data %>%
+    mutate(across(all_of(trend_columns),
+                  ~ as.numeric(str_replace(., "<1", "0"))))
+    
+  # Datum konvertieren
+  data$date <- as.Date(data$date)
+  
+  # Country-Spalte hinzufügen
+  data$country <- country_code
+  
+  return(data)
+  }
 
 ```
 
-## extract DE data
+## Alle drei CSV-Dateien einlesen
 
 ```{r}
 
-gtrends(keyword = search_terms,
-        geo = "DE",
-        time = "2017-11-14 2018-06-14") -> output_results_DE
+trends_US <- process_trends_csv("./raw_data_from_google/multiTimeline_US.csv", "US")
+trends_UK <- process_trends_csv("./raw_data_from_google/multiTimeline_US.csv", "UK")
+trends_AU <- process_trends_csv("./raw_data_from_google/multiTimeline_US.csv", "AU")
 
-output_results_DE$interest_over_time %>% 
-  head(100)
+# Alle Daten zusammenführen und nach Datum und Land sortieren
+trends_combined <- rbind(trends_US, trends_UK, trends_AU) %>%
+  arrange(date, country)
+
+str(trends_combined)
+head(trends_combined)
+View(trends_combined)
+summary(trends_combined)
+
+table(trends_combined$country)
+dim(trends_combined)
+
+# Daten in long format für Visualisierung
+trends_long <- trends_combined %>%
+  pivot_longer(
+    cols = c(`Donald_Trump`, `Kendrick_Lamar`, `Tesla`, `NBA`, `Amazon`),
+    names_to = "keyword",
+    values_to = "hits"
+  )
+
+head(trends_long, 10)
 
 ```
 
-## extract FR data
+# Speichern der kombinierten Daten
 
 ```{r}
 
-gtrends(keyword = search_terms,
-        geo = "FR",
-        time = "2017-11-14 2018-06-14") -> output_results_FR
-
-output_results_FR$interest_over_time %>% 
-  head(100)
+write.csv(trends_combined, "trends_combined_wide.csv", row.names = FALSE)
+write.csv(trends_long, "trends_combined_long.csv", row.names = FALSE)
 
 ```
 
-## extract MX data
+## Google Trends data
 
-```{r}
+The numbers from 0 to 100 on Google Trends represent normalized,
+relative search interest, not an absolute number of search queries. The
+value 100 indicates the peak popularity of a search term in a selected
+time period and region. All other values are relative to this peak
+value. A value of 0 means that there is insufficient data or that the
+search term has a very low search volume.
 
-gtrends(keyword = search_terms,
-        geo = "MX",
-        time = "2017-11-14 2018-06-14") -> output_results_MX
+How the numbers work:
 
-output_results_MX$interest_over_time %>% 
-  head(100)
+1.  Normalization: Google Trends normalizes the data on a scale from 0
+    to 100 to represent search interest in relation to all search
+    queries.
+2.  Relative values: The numbers are not absolute quantities, but show
+    how often a term was searched for in comparison to its own peak.
+3.  The number 100: This represents the time or region when a search
+    term reached its peak popularity.
+4.  The number 0: This means that there was insufficient data for the
+    search term at that time or in that region.
+5.  Example: If a search term receives a 50, this means that search
+    interest was only half as high as the peak value, which is 100.
 
-```
-
-## extract JP data: With Japanese Search term and translating it back
-
-```{r}
-
-gtrends(keyword = search_terms_JP,
-        geo = "JP",
-        time = "2017-11-14 2018-06-14") -> output_results_JP
-
-output_results_JP$interest_over_time %>% 
-  head(100)
-
-output_results_JP$interest_over_time <- output_results_JP$interest_over_time %>%
-  mutate(keyword = str_replace_all(keyword, "ドナルド・トランプ", "Donald Trump"),
-         keyword = str_replace_all(keyword, "ケンドリック・ラマー", "Kendrick Lamar"))
-
-output_results_JP$interest_over_time %>% 
-  head(100)
-
-```
-
-## Joining the 5 tables row-wise.
-
-```{r}
-
-output_results_ALL <- bind_rows(output_results_US$interest_over_time,
-                                  output_results_DE$interest_over_time,
-                                  output_results_FR$interest_over_time,
-                                  output_results_MX$interest_over_time,
-                                  output_results_JP$interest_over_time)
-
-output_results_ALL %>%
-  glimpse()
-
-```
+Source:
 
 ## Facet line chart for all combinations of country & keyword.
 
 ```{r}
 
-output_results_ALL %>%
+trends_long %>%
   ggplot(aes(x = date, y = hits)) +
   geom_line(colour = "darkblue", linewidth = 1) +
-  facet_wrap(~ keyword + geo, nrow = 2, ncol = 5) +
+  facet_wrap(~ keyword + country, nrow = 5, ncol = 3) +
   theme_minimal()
 
 ```
 
-## Scatterplot Keyword 1 vs. Keyword 2 for Germany
+## Scatterplot Keyword 1 vs. Keyword 2 for all countries
 
 ```{r}
 
-scatter_data <- output_results_DE$interest_over_time %>%
-  select(date, keyword, hits) %>%
-  pivot_wider(
-    names_from = keyword, 
-    values_from = hits,
-    values_fill = list(hits = 0)
-  )
-
-ggplot(scatter_data, aes(x = `Donald Trump`, y = `Kendrick Lamar`)) +
+ggplot(trends_combined, aes(x = Donald_Trump, y = NBA)) +
   geom_point(alpha = 0.6, size = 2, color = "darkblue") +
+  geom_smooth(method = 'lm', se = TRUE) +
   labs(
     title = "Korrelation zwischen Suchanfragen",
     x = "Donald Trump",
-    y = "Kendrick Lamar",
+    y = "NBA",
     caption = "Source: Google Trends"
   ) +
   theme_minimal() +
@@ -154,4 +152,3 @@ ggplot(scatter_data, aes(x = `Donald Trump`, y = `Kendrick Lamar`)) +
 ```{r}
 
 ```
-
