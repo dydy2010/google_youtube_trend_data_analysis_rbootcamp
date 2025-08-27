@@ -10,6 +10,8 @@ editor:
 
 # library(gtrendsR)  # Downloading was blocked after 3 downloads
 library(tidyverse)
+library(sf)
+library(rnaturalearth)
 
 ```
 
@@ -18,8 +20,6 @@ library(tidyverse)
 ```{r}
 
 # Google Trends CSV-Dateien importieren und zusammenführen
-library(dplyr)
-library(tidyr)
 
 # Funktion zum Einlesen und Aufbereiten der CSV-Dateien
 
@@ -53,20 +53,20 @@ process_trends_csv <- function(filepath, country_code) {
 ```{r}
 
 trends_US <- process_trends_csv("./raw_data_from_google/multiTimeline_US.csv", "US")
-trends_UK <- process_trends_csv("./raw_data_from_google/multiTimeline_US.csv", "UK")
-trends_AU <- process_trends_csv("./raw_data_from_google/multiTimeline_US.csv", "AU")
+trends_UK <- process_trends_csv("./raw_data_from_google/multiTimeline_UK.csv", "UK")
+trends_AU <- process_trends_csv("./raw_data_from_google/multiTimeline_AU.csv", "AU")
 
 # Alle Daten zusammenführen und nach Datum und Land sortieren
 trends_combined <- rbind(trends_US, trends_UK, trends_AU) %>%
   arrange(date, country)
 
-str(trends_combined)
-head(trends_combined)
-View(trends_combined)
-summary(trends_combined)
-
-table(trends_combined$country)
-dim(trends_combined)
+# Investigate the data
+# str(trends_combined)
+# head(trends_combined)
+# View(trends_combined)
+# summary(trends_combined)
+# table(trends_combined$country)
+# dim(trends_combined)
 
 # Daten in long format für Visualisierung
 trends_long <- trends_combined %>%
@@ -76,7 +76,7 @@ trends_long <- trends_combined %>%
     values_to = "hits"
   )
 
-head(trends_long, 10)
+# head(trends_long, 10)
 
 ```
 
@@ -120,7 +120,7 @@ Source:
 
 trends_long %>%
   ggplot(aes(x = date, y = hits)) +
-  geom_line(colour = "darkblue", linewidth = 1) +
+  geom_line(colour = "darkblue", linewidth = .6) +
   facet_wrap(~ keyword + country, nrow = 5, ncol = 3) +
   theme_minimal()
 
@@ -150,5 +150,53 @@ ggplot(trends_combined, aes(x = Donald_Trump, y = NBA)) +
 ## Scatterplot Keyword 1 US vs. Keyword 1 DE
 
 ```{r}
+
+```
+
+## World map with Google Trends data for US, UK and Australia 
+
+```{r}
+
+# Aggregate the data by country
+aggregated_data <- trends_combined %>%
+  group_by(country) %>%
+  summarise(Donald_Trump = mean(Donald_Trump, na.rm = TRUE))
+
+# Get world map data
+world_sf <- ne_countries(scale = "medium", returnclass = "sf")
+
+# Prepare country code mapping (to join with world_sf)
+country_mapping <- data.frame(
+  country_code = c("AU", "US", "UK"),
+  iso_a3 = c("AUS", "USA", "GBR")
+)
+
+# Join the aggregated data with world_sf
+world_sf <- world_sf %>%
+  left_join(aggregated_data %>% 
+              left_join(country_mapping, by = c("country" = "country_code")),
+            by = "iso_a3")
+
+# Minimalist version
+ggplot() +
+  geom_sf(data = world_sf, 
+          aes(fill = Donald_Trump), 
+          color = "white") +
+  scale_fill_gradient(
+    low = "lightblue", 
+    high = "darkblue",
+    na.value = "lightgrey",
+    name = "Interest"
+  ) +
+  labs(
+    title = "Google Trends: Interest in Donald Trump",
+    subtitle = "Average interest across time in US, UK and Australia (min = 0, max 100)",
+    caption = "Data: Google Trends 2017-11-14 - 2018-06-14"
+  ) +
+  theme_bw() +
+  theme(axis.text = element_blank(),
+        axis.ticks = element_blank())
+
+```
 
 ```
