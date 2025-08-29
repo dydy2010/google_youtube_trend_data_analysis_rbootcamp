@@ -130,7 +130,7 @@ wordcloud2(rolex_tags_cleaned_unique %>% filter(total_views > 100000),
            minRotation = -pi/2, maxRotation = -pi/2,
            fontFamily = 'Verlag Office',
            fontWeight = 800,
-           gridSize = 4,
+           gridSize = 4, 
            shuffle = TRUE,
            shape = 'circle', ellipticity = 0.5,
            # color = palKH2[factor(df2$Word)])
