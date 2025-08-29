@@ -58,9 +58,9 @@ ggplot(NULL, aes(0, 0)) +
 ```{r}
 
 # read data
-all_videos <- read_csv("all_videos.csv", col_names = TRUE)
-str(all_videos)
-head(all_videos)
+# all_videos <- read_csv("all_videos.csv", col_names = TRUE)
+# str(all_videos)
+# head(all_videos)
 
 rolex_df <- all_videos %>% 
   filter(
