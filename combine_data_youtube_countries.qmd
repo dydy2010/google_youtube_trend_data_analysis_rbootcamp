@@ -155,36 +155,3 @@ ggplot(category_counts, aes(x = factor(category_id), y = n, fill = country)) +
   )
 ```
 <br>
-
-library(jsonlite)
-library(dplyr)
-library(readr)
-
-# Function to read and process a single JSON file
-process_json <- function(file_path) {
-  category_data <- fromJSON(file_path)
-  category_df <- category_data$items
-
-  category_names <- data.frame(
-    category_id = as.integer(category_df$id),
-    category_name = category_df$snippet$title
-  )
-  return(category_names)
-}
-
-# Read and combine all category JSON files
-category_names <- bind_rows(
-  process_json("DE_category_id.json"),
-  process_json("FR_category_id.json"),
-  process_json("JP_category_id.json"),
-  process_json("US_category_id.json")
-) %>%
-  distinct() # Get unique IDs from all files
-# Find the top category for each country
-top_categories <- category_counts %>%
-  group_by(country) %>%
-  slice_max(n, n = 1) %>%
-  ungroup()
-
-# View the result
-head(top_categories)
