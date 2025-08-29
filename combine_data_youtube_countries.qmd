@@ -155,3 +155,94 @@ ggplot(category_counts, aes(x = factor(category_id), y = n, fill = country)) +
   )
 ```
 <br>
+
+
+<br>
+```{r}
+library(dplyr)
+
+# Filter for the three keywords and create a new 'keyword' column
+relevant_videos <- tags_per_day %>%
+  filter(grepl("iphone|tesla|rolex", tags, ignore.case = TRUE)) %>%
+  mutate(keyword = case_when(
+    grepl("iphone", tags, ignore.case = TRUE) ~ "iPhone",
+    grepl("tesla", tags, ignore.case = TRUE) ~ "Tesla",
+    grepl("rolex", tags, ignore.case = TRUE) ~ "Rolex",
+    TRUE ~ "Other" # This case should ideally not be triggered after filtering
+  ))
+
+# Let's check the structure and a few rows
+str(relevant_videos)
+head(relevant_videos)
+
+<br>
+```
+<br>
+
+```{r}
+# Aggregate the data by date, country, and keyword
+aggregated_youtube_data <- relevant_videos %>%
+  group_by(trending_date, country, keyword) %>%
+  summarise(
+    total_views = sum(views, na.rm = TRUE),
+    total_likes = sum(likes, na.rm = TRUE),
+    total_comments = sum(comment_count, na.rm = TRUE),
+    total_dislikes = sum(dislikes, na.rm = TRUE), # Remember the warning about missing US data
+    video_count = n()
+  ) %>%
+  ungroup()
+
+# Check the new, aggregated dataframe
+View(aggregated_youtube_data)
+```
+
+<br>
+
+```{r}
+# Calculate the engagement ratios
+aggregated_youtube_data_final <- aggregated_youtube_data %>%
+  mutate(
+    # ratios calculations
+    like_dislike_ratio = total_likes / (total_likes + total_dislikes), 
+    comments_views_ratio = total_comments / total_views,
+    likes_views_ratio = total_likes / total_views,
+    dislikes_views_ratio = total_dislikes / total_views
+  ) %>%
+  # Select and rename columns for a clean final table
+  # Select: choosing which columns to keep and in what order
+  select(
+    trending_date, 
+    country, 
+    keyword, 
+    total_views, 
+    total_likes, 
+    total_comments, 
+    video_count, 
+    like_dislike_ratio,
+    comments_views_ratio,
+    likes_views_ratio,
+    dislikes_views_ratio
+  )
+
+# View the final dataframe, ready for merging
+View(aggregated_youtube_data_final)
+```
+
+<br>
+
+```{r}
+#  Calculate the Mean of Proportions and Ratios for each Keyword in each Country
+mean_ratios_by_country_keyword <- aggregated_youtube_data_final %>%
+  group_by(country, keyword) %>%
+  summarise(
+    avg_like_dislike_ratio = mean(like_dislike_ratio, na.rm = TRUE),
+    avg_comments_views_ratio = mean(comments_views_ratio, na.rm = TRUE),
+    avg_likes_views_ratio = mean(likes_views_ratio, na.rm = TRUE),
+    avg_dislikes_views_ratio = mean(dislikes_views_ratio, na.rm = TRUE),
+    .groups = 'drop'
+  )
+
+View(mean_ratios_by_country_keyword)
+# colnames(aggregated_youtube_data_final)
+```
+<br>
