@@ -53,7 +53,7 @@ ggplot(NULL, aes(0, 0)) +
 
 ```
 
-### Prepare the data
+### Prepare the Rolex data
 
 ```{r}
 
@@ -110,30 +110,95 @@ rolex_tags_cleaned_unique <- rolex_tags_cleaned %>%
 head(rolex_tags_cleaned_unique, 100)
 ```
 
-
-### Create the wordcloud
+### Create the Rolex wordcloud
 
 ```{r}
-# ?ColorBrewer
-# palDark2 <- brewer.pal(8,"Dark2") 
-# palDark2 <- palDark2[-c(8)] # Nicht erwünschte Farben rauswerfen
+# Define luxurious colors that match to the Rolex brand.
 
-# https://html-color-codes.info/webfarben_hexcodes/
-# palKH1 <- c("#004e62", "#92d050", "#00b481", "#a6a6a6", "#ff9900", "#ffcf87", "#E6AB02")
+pal_rolex <- c("#228B22", "#0A1931", "#B09770", "#722F37", "#B36A5E", "#454545", "#006D77", "#4C3F91")
 
-palJB80 <- c("#3343A1", "#C0BB98", "#434B77", "#8D9697", "#3399B5", "#8B5581", "#339E91", "#AC4959",  "#D6A133")
-
-# ?wordcloud2
+# Create the Rolex wordcloud
 
 wordcloud2(rolex_tags_cleaned_unique %>% filter(total_views > 100000),
            size = 0.3, rotateRatio = 0,
            minRotation = -pi/2, maxRotation = -pi/2,
-           fontFamily = 'Verlag Office',
+           fontFamily = 'Garamond',
            fontWeight = 800,
            gridSize = 4, 
            shuffle = TRUE,
            shape = 'circle', ellipticity = 0.5,
            # color = palKH2[factor(df2$Word)])
-           color = palJB80)
+           color = rep_len(pal_rolex, nrow(rolex_tags_cleaned_unique)))
+
+```
+### Prepare the iPhone data
+
+```{r}
+
+iphone_df <- all_videos %>% 
+  filter(
+    str_detect(title, regex("iphone", ignore_case = TRUE)) |
+    str_detect(tags, regex("iphone", ignore_case = TRUE))
+  )
+
+# Aggregate by video_id (sum views, keep tags)
+iphone_df_aggregated <- iphone_df %>%
+  group_by(video_id, tags) %>%
+  summarise(total_views = sum(views, na.rm = TRUE), .groups = "drop")
+
+# Split tags by "|" separator (creates multiple rows per video)
+iphone_tags_split <- iphone_df_aggregated %>%
+  separate_rows(tags, sep = "\\|")
+
+# Step 3: Clean individual tags
+iphone_tags_cleaned <- iphone_tags_split %>%
+  mutate(
+    # Remove leading/trailing whitespace
+    tags_clean = str_trim(tags),
+    # Convert to lowercase for consistency
+    tags_clean = str_to_lower(tags_clean),
+    # Remove extra whitespace within tags
+    tags_clean = str_squish(tags_clean)
+  ) %>%
+  # Remove empty tags and stopwords
+  filter(
+    tags_clean != "",                                   # Remove empty tags
+    !tags_clean %in% stopwords("en"),                   # Remove English stopwords
+    !tags_clean %in% c("video", "youtube", "content", "2017", "2018", "iphone", "iphone x")   # Add custom stopwords
+  ) %>%
+  # Keep only the cleaned tags column
+  select(tag = tags_clean, total_views)
+
+# View results
+head(iphone_tags_cleaned)
+cat("Total unique clean tags:", n_distinct(iphone_tags_cleaned$tag), "\n")
+
+# aggregate to have unique tags
+iphone_tags_cleaned_unique <- iphone_tags_cleaned %>%
+  group_by(tag) %>%
+  summarise(total_views = sum(total_views, na.rm = TRUE)) %>%
+  mutate(total_views = total_views / 50) %>% 
+  arrange(desc(total_views))
+
+# View results
+head(iphone_tags_cleaned_unique, 100)
+```
+```{r}
+# Define colors that match to Apple and specifically to the iPhone X launched 2017/2018.
+
+pal_iphone <- c("#FF375F", "#32D74B", "#0A84FF", "#FF9F0A", "#BF5AF2", "#1D1D1F", "#E4E4E2")
+
+# iPhone wordcloud
+
+wordcloud2(iphone_tags_cleaned_unique %>% filter(total_views > 500000),
+           size = 0.2, rotateRatio = 0,
+           minRotation = -pi/2, maxRotation = -pi/2,
+           fontFamily = 'Helvetica Neue LT Std',
+           fontWeight = 800,
+           gridSize = 4, 
+           shuffle = TRUE,
+           shape = 'circle', ellipticity = 0.5,
+           # color = palKH2[factor(df2$Word)])
+           color = rep_len(pal_iphone, nrow(iphone_tags_cleaned_unique)))
 
 ```
