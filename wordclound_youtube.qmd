@@ -1,0 +1,139 @@
+---
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+## Chapter of choice: Wordcloud
+
+### Install packages
+
+```{r echo=FALSE}
+#  Wordcloud2.
+
+# library(devtools)
+# install_github("lchiffon/wordcloud2")  # Only 1st time on computer
+
+# Make available Windows Fonts.
+
+# install.packages('ragg')
+library(ragg)
+# install.packages('systemfonts')
+library(systemfonts)
+# install.packages('textshaping')
+library(textshaping)
+
+# For RStudio >= 1.4, go to Tools > Global Options > General > Graphics and set
+# the Backend to AGG.
+
+View(systemfonts::system_fonts())
+
+# Test Fonts. Use family name!
+
+library(RColorBrewer)
+library(wordcloud2)
+# library(extrafont)
+library(tidyverse)
+# install.packages("stopwords")
+library(stopwords)
+# library(openxlsx)
+library(ggplot2)
+ggplot(NULL, aes(0, 0)) +
+  geom_text(
+    aes(label = "Leelawadee UI"),
+    size = 18, family = "Leelawadee UI"
+)
+
+# PDF-Tools installieren.
+
+# install.packages("webshot")
+# install.packages("htmlwidgets")
+
+# install Ghostscript on Windows 10  # Only 1st time on computer
+
+```
+
+### Prepare the data
+
+```{r}
+
+# read data
+all_videos <- read_csv("all_videos.csv", col_names = TRUE)
+str(all_videos)
+head(all_videos)
+
+rolex_df <- all_videos %>% 
+  filter(
+    str_detect(title, regex("rolex", ignore_case = TRUE)) |
+    str_detect(tags, regex("rolex", ignore_case = TRUE))
+  )
+
+# Aggregate by video_id (sum views, keep tags)
+rolex_df_aggregated <- rolex_df %>%
+  group_by(video_id, tags) %>%
+  summarise(total_views = sum(views, na.rm = TRUE), .groups = "drop")
+
+# Split tags by "|" separator (creates multiple rows per video)
+rolex_tags_split <- rolex_df_aggregated %>%
+  separate_rows(tags, sep = "\\|")
+
+# Step 3: Clean individual tags
+rolex_tags_cleaned <- rolex_tags_split %>%
+  mutate(
+    # Remove leading/trailing whitespace
+    tags_clean = str_trim(tags),
+    # Convert to lowercase for consistency
+    tags_clean = str_to_lower(tags_clean),
+    # Remove extra whitespace within tags
+    tags_clean = str_squish(tags_clean)
+  ) %>%
+  # Remove empty tags and stopwords
+  filter(
+    tags_clean != "",                                   # Remove empty tags
+    !tags_clean %in% stopwords("en"),                   # Remove English stopwords
+    !tags_clean %in% c("video", "youtube", "content", "2017", "2018")   # Add custom stopwords
+  ) %>%
+  # Keep only the cleaned tags column
+  select(tag = tags_clean, total_views)
+
+# View results
+head(rolex_tags_cleaned)
+cat("Total unique clean tags:", n_distinct(rolex_tags_cleaned$tag), "\n")
+
+# aggregate to have unique tags
+rolex_tags_cleaned_unique <- rolex_tags_cleaned %>%
+  group_by(tag) %>%
+  summarise(total_views = sum(total_views, na.rm = TRUE)) %>%
+  arrange(desc(total_views))
+
+# View results
+head(rolex_tags_cleaned_unique, 100)
+```
+
+
+### Create the wordcloud
+
+```{r}
+# ?ColorBrewer
+# palDark2 <- brewer.pal(8,"Dark2") 
+# palDark2 <- palDark2[-c(8)] # Nicht erwünschte Farben rauswerfen
+
+# https://html-color-codes.info/webfarben_hexcodes/
+# palKH1 <- c("#004e62", "#92d050", "#00b481", "#a6a6a6", "#ff9900", "#ffcf87", "#E6AB02")
+
+palJB80 <- c("#3343A1", "#C0BB98", "#434B77", "#8D9697", "#3399B5", "#8B5581", "#339E91", "#AC4959",  "#D6A133")
+
+# ?wordcloud2
+
+wordcloud2(rolex_tags_cleaned_unique %>% filter(total_views > 100000),
+           size = 0.3, rotateRatio = 0,
+           minRotation = -pi/2, maxRotation = -pi/2,
+           fontFamily = 'Verlag Office',
+           fontWeight = 800,
+           gridSize = 4,
+           shuffle = TRUE,
+           shape = 'circle', ellipticity = 0.5,
+           # color = palKH2[factor(df2$Word)])
+           color = palJB80)
+
+```
