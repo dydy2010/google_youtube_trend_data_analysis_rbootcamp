@@ -91,7 +91,7 @@ rolex_tags_cleaned <- rolex_tags_split %>%
   filter(
     tags_clean != "",                                   # Remove empty tags
     !tags_clean %in% stopwords("en"),                   # Remove English stopwords
-    !tags_clean %in% c("video", "youtube", "content", "2017", "2018")   # Add custom stopwords
+    !tags_clean %in% c("video", "youtube", "content", "2017", "2018", "olexesh", "rolex")   # Add custom stopwords
   ) %>%
   # Keep only the cleaned tags column
   select(tag = tags_clean, total_views)
