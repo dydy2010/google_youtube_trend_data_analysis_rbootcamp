@@ -11,45 +11,21 @@ editor:
 ```{r echo=FALSE}
 #  Wordcloud2.
 
-# library(devtools)
-# install_github("lchiffon/wordcloud2")  # Only 1st time on computer
-
-# Make available Windows Fonts.
-
-# install.packages('ragg')
 library(ragg)
-# install.packages('systemfonts')
 library(systemfonts)
-# install.packages('textshaping')
 library(textshaping)
 
 # For RStudio >= 1.4, go to Tools > Global Options > General > Graphics and set
 # the Backend to AGG.
 
-View(systemfonts::system_fonts())
-
+# View(systemfonts::system_fonts())
 # Test Fonts. Use family name!
 
 library(RColorBrewer)
 library(wordcloud2)
-# library(extrafont)
 library(tidyverse)
-# install.packages("stopwords")
 library(stopwords)
-# library(openxlsx)
 library(ggplot2)
-ggplot(NULL, aes(0, 0)) +
-  geom_text(
-    aes(label = "Leelawadee UI"),
-    size = 18, family = "Leelawadee UI"
-)
-
-# PDF-Tools installieren.
-
-# install.packages("webshot")
-# install.packages("htmlwidgets")
-
-# install Ghostscript on Windows 10  # Only 1st time on computer
 
 ```
 
@@ -57,11 +33,7 @@ ggplot(NULL, aes(0, 0)) +
 
 ```{r}
 
-# read data
-# all_videos <- read_csv("all_videos.csv", col_names = TRUE)
-# str(all_videos)
-# head(all_videos)
-
+# Use only videos that have Rolex in the title or in the tags
 rolex_df <- all_videos %>% 
   filter(
     str_detect(title, regex("rolex", ignore_case = TRUE)) |
@@ -77,7 +49,7 @@ rolex_df_aggregated <- rolex_df %>%
 rolex_tags_split <- rolex_df_aggregated %>%
   separate_rows(tags, sep = "\\|")
 
-# Step 3: Clean individual tags
+# Clean individual tags
 rolex_tags_cleaned <- rolex_tags_split %>%
   mutate(
     # Remove leading/trailing whitespace
@@ -89,16 +61,17 @@ rolex_tags_cleaned <- rolex_tags_split %>%
   ) %>%
   # Remove empty tags and stopwords
   filter(
-    tags_clean != "",                                   # Remove empty tags
-    !tags_clean %in% stopwords("en"),                   # Remove English stopwords
-    !tags_clean %in% c("video", "youtube", "content", "2017", "2018", "olexesh", "rolex")   # Add custom stopwords
+    tags_clean != "",
+    !tags_clean %in% stopwords("en"),
+    # Remove additional words you do not want to see in the cloud, namely 'Rolex'
+    !tags_clean %in% c("video", "youtube", "content", "2017", "2018", "olexesh", "rolex")
   ) %>%
   # Keep only the cleaned tags column
   select(tag = tags_clean, total_views)
 
 # View results
-head(rolex_tags_cleaned)
-cat("Total unique clean tags:", n_distinct(rolex_tags_cleaned$tag), "\n")
+# head(rolex_tags_cleaned)
+# cat("Total unique clean tags:", n_distinct(rolex_tags_cleaned$tag), "\n")
 
 # aggregate to have unique tags
 rolex_tags_cleaned_unique <- rolex_tags_cleaned %>%
@@ -107,7 +80,7 @@ rolex_tags_cleaned_unique <- rolex_tags_cleaned %>%
   arrange(desc(total_views))
 
 # View results
-head(rolex_tags_cleaned_unique, 100)
+# head(rolex_tags_cleaned_unique, 100)
 ```
 
 ### Create the Rolex wordcloud
@@ -135,6 +108,7 @@ wordcloud2(rolex_tags_cleaned_unique %>% filter(total_views > 100000),
 
 ```{r}
 
+# Use only videos that have iphone in the title or in the tags
 iphone_df <- all_videos %>% 
   filter(
     str_detect(title, regex("iphone", ignore_case = TRUE)) |
@@ -150,7 +124,7 @@ iphone_df_aggregated <- iphone_df %>%
 iphone_tags_split <- iphone_df_aggregated %>%
   separate_rows(tags, sep = "\\|")
 
-# Step 3: Clean individual tags
+# Clean individual tags
 iphone_tags_cleaned <- iphone_tags_split %>%
   mutate(
     # Remove leading/trailing whitespace
@@ -162,27 +136,30 @@ iphone_tags_cleaned <- iphone_tags_split %>%
   ) %>%
   # Remove empty tags and stopwords
   filter(
-    tags_clean != "",                                   # Remove empty tags
-    !tags_clean %in% stopwords("en"),                   # Remove English stopwords
-    !tags_clean %in% c("video", "youtube", "content", "2017", "2018", "iphone", "iphone x")   # Add custom stopwords
+    tags_clean != "",
+    !tags_clean %in% stopwords("en"),
+    # Remove additional words you do not want to see in the cloud, namely 'iPhone'
+    !tags_clean %in% c("video", "youtube", "content", "2017", "2018", "iphone", "iphone x")
   ) %>%
   # Keep only the cleaned tags column
   select(tag = tags_clean, total_views)
 
 # View results
-head(iphone_tags_cleaned)
-cat("Total unique clean tags:", n_distinct(iphone_tags_cleaned$tag), "\n")
+# head(iphone_tags_cleaned)
+# cat("Total unique clean tags:", n_distinct(iphone_tags_cleaned$tag), "\n")
 
 # aggregate to have unique tags
 iphone_tags_cleaned_unique <- iphone_tags_cleaned %>%
   group_by(tag) %>%
   summarise(total_views = sum(total_views, na.rm = TRUE)) %>%
-  mutate(total_views = total_views / 50) %>% 
   arrange(desc(total_views))
 
 # View results
-head(iphone_tags_cleaned_unique, 100)
+# head(iphone_tags_cleaned_unique, 100)
 ```
+
+### Create the iPhone wordcloud
+
 ```{r}
 # Define colors that match to Apple and specifically to the iPhone X launched 2017/2018.
 
