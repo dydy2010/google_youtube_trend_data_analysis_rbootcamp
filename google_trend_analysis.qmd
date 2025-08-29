@@ -15,7 +15,7 @@ library(rnaturalearth)
 
 ```
 
-## prepare and merge data manually downloaded
+## prepare and merge data manually downloaded from Google Trends
 
 ```{r}
 
@@ -28,10 +28,10 @@ process_trends_csv <- function(filepath, country_code) {
   data <- read.csv(filepath, skip = 2, stringsAsFactors = FALSE)
   
   # Spaltennamen einheitlich setzen
-  colnames(data) <- c("date", "Donald_Trump", "Kendrick_Lamar", "Tesla", "NBA", "Amazon")
+  colnames(data) <- c("date", "iPhone", "Tesla", "Rolex")
 
   # <1 Werte in allen Trend-Spalten zu 0 ändern
-  trend_columns <- c("Donald_Trump", "Kendrick_Lamar", "Tesla", "NBA", "Amazon")
+  trend_columns <- c("iPhone", "Tesla", "Rolex")
 
   data <- data %>%
     mutate(across(all_of(trend_columns),
@@ -53,11 +53,13 @@ process_trends_csv <- function(filepath, country_code) {
 ```{r}
 
 trends_US <- process_trends_csv("./raw_data_from_google/multiTimeline_US.csv", "US")
-trends_UK <- process_trends_csv("./raw_data_from_google/multiTimeline_UK.csv", "UK")
-trends_AU <- process_trends_csv("./raw_data_from_google/multiTimeline_AU.csv", "AU")
+trends_MX <- process_trends_csv("./raw_data_from_google/multiTimeline_MX.csv", "MX")
+trends_DE <- process_trends_csv("./raw_data_from_google/multiTimeline_DE.csv", "DE")
+trends_FR <- process_trends_csv("./raw_data_from_google/multiTimeline_FR.csv", "FR")
+trends_JP <- process_trends_csv("./raw_data_from_google/multiTimeline_JP.csv", "JP")
 
 # Alle Daten zusammenführen und nach Datum und Land sortieren
-trends_combined <- rbind(trends_US, trends_UK, trends_AU) %>%
+trends_combined <- rbind(trends_US, trends_MX, trends_DE, trends_FR, trends_JP) %>%
   arrange(date, country)
 
 # Investigate the data
@@ -66,17 +68,18 @@ trends_combined <- rbind(trends_US, trends_UK, trends_AU) %>%
 # View(trends_combined)
 # summary(trends_combined)
 # table(trends_combined$country)
-# dim(trends_combined)
+
 
 # Daten in long format für Visualisierung
 trends_long <- trends_combined %>%
   pivot_longer(
-    cols = c(`Donald_Trump`, `Kendrick_Lamar`, `Tesla`, `NBA`, `Amazon`),
+    cols = c(`iPhone`, `Tesla`, `Rolex`),
     names_to = "keyword",
     values_to = "hits"
   )
 
 # head(trends_long, 10)
+# View(trends_long)
 
 ```
 
@@ -121,23 +124,32 @@ Source:
 trends_long %>%
   ggplot(aes(x = date, y = hits)) +
   geom_line(colour = "darkblue", linewidth = .6) +
-  facet_wrap(~ keyword + country, nrow = 5, ncol = 3) +
-  theme_minimal()
+  labs(
+    title = "Google Trends searches",
+    y = "Relative importance on that day",
+    caption = "Source: Google Trends (2017-11-14 to 2018-06-14)"
+  ) +
+  facet_wrap(~ country + keyword, nrow = 5, ncol = 3) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold"),
+    panel.grid.minor = element_blank()
+  )
 
 ```
 
 ## Scatterplot Keyword 1 vs. Keyword 2 for all countries
 
-```{r}
+```{r echo=FALSE, message=FALSE}
 
-ggplot(trends_combined, aes(x = Donald_Trump, y = NBA)) +
+ggplot(trends_combined, aes(x = Tesla, y = Rolex)) +
   geom_point(alpha = 0.6, size = 2, color = "darkblue") +
   geom_smooth(method = 'lm', se = TRUE) +
   labs(
-    title = "Korrelation zwischen Suchanfragen",
-    x = "Donald Trump",
-    y = "NBA",
-    caption = "Source: Google Trends"
+    title = "Correlation between Tesla and Rolex in Google Trends searches",
+    x = "Tesla",
+    y = "Rolex",
+    caption = "Source: Google Trends. Each point represents a day from 2017-11-14 to 2018-06-14."
   ) +
   theme_minimal() +
   theme(
@@ -147,28 +159,51 @@ ggplot(trends_combined, aes(x = Donald_Trump, y = NBA)) +
 
 ```
 
-## Scatterplot Keyword 1 US vs. Keyword 1 DE
+## Scatterplot iPhone US vs. iPhone DE
 
-```{r}
+```{r echo=FALSE, message=FALSE}
+
+# Daten umstrukturieren
+plot_data <- trends_combined %>% 
+  filter(country %in% c("US", "DE")) %>% 
+  select(date, country, iPhone) %>% 
+  pivot_wider(names_from = country, values_from = iPhone, names_prefix = "iPhone_")
+
+# Scatterplot erstellen
+ggplot(plot_data, aes(x = iPhone_US, y = iPhone_DE)) +
+  geom_point(alpha = 0.7, size = 2) +
+  geom_abline(intercept = 0, slope = 1, linetype = "dashed", color = "red", alpha = 0.5) +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(
+    title = "iPhone searches: USA vs Germany",
+    x = "iPhone USA",
+    y = "iPhone Germany",
+    caption = "Source: Google Trends. Each point represents a day from 2017-11-14 to 2018-06-14."
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5, size = 14),
+    axis.title = element_text(size = 12)
+  )
 
 ```
 
-## World map with Google Trends data for US, UK and Australia 
+## World map with Google Trends data for US, UK and Australia
 
 ```{r}
 
 # Aggregate the data by country
 aggregated_data <- trends_combined %>%
   group_by(country) %>%
-  summarise(Donald_Trump = mean(Donald_Trump, na.rm = TRUE))
+  summarise(iPhone = mean(iPhone, na.rm = TRUE))
 
 # Get world map data
 world_sf <- ne_countries(scale = "medium", returnclass = "sf")
 
 # Prepare country code mapping (to join with world_sf)
 country_mapping <- data.frame(
-  country_code = c("AU", "US", "UK"),
-  iso_a3 = c("AUS", "USA", "GBR")
+  country_code = c("US", "MX", "DE", "FR", "JP"),
+  iso_a3 = c("USA", "MEX", "DEU", "FRA", "JPN")
 )
 
 # Join the aggregated data with world_sf
@@ -180,7 +215,7 @@ world_sf <- world_sf %>%
 # Minimalist version
 ggplot() +
   geom_sf(data = world_sf, 
-          aes(fill = Donald_Trump), 
+          aes(fill = iPhone), 
           color = "white") +
   scale_fill_gradient(
     low = "lightblue", 
@@ -189,9 +224,9 @@ ggplot() +
     name = "Interest"
   ) +
   labs(
-    title = "Google Trends: Interest in Donald Trump",
-    subtitle = "Average interest across time in US, UK and Australia (min = 0, max 100)",
-    caption = "Data: Google Trends 2017-11-14 - 2018-06-14"
+    title = "Google Trends: Interest in iPhone",
+    subtitle = "Average interest across time in US, MX, DE, FR, JP (min = 0, max 100)",
+    caption = "Source: Google Trends (2017-11-14 to 2018-06-14)"
   ) +
   theme_bw() +
   theme(axis.text = element_blank(),
@@ -199,4 +234,4 @@ ggplot() +
 
 ```
 
-```
+\`\`\`
