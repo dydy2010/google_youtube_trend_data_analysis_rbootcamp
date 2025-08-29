@@ -3,3 +3,5 @@ title: "Final_Quarto_Document"
 format: html
 ---
 
+Hi, this is supposed to be the final report to be submitted, we can start put parts in it already,
+whenever we have a section ready.
