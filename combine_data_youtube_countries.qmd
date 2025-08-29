@@ -6,6 +6,8 @@ format: html
 <br>
 
 ```{r}
+library(tidyverse)
+library(dplyr)
 getwd()
 DEvideos <- read_csv("raw_data_from_kaggle/DEvideos.csv")
 FRvideos <- read_csv("raw_data_from_kaggle/FRvideos.csv")
@@ -21,7 +23,7 @@ str(USvideos)
 
 <br>
 ```{r}
-library(tidyverse)
+
 # Add a 'country' column and standardize data types for each data frame
 DEvideos <- DEvideos %>%
   mutate(
@@ -81,7 +83,7 @@ latest_date
 <br>
 
 ```{r}
-library(tidyverse)
+
 
 # 1. Separate the tags into individual rows
 # The separate_rows() function is perfect for this
@@ -159,7 +161,6 @@ ggplot(category_counts, aes(x = factor(category_id), y = n, fill = country)) +
 
 <br>
 ```{r}
-library(dplyr)
 
 # Filter for the three keywords and create a new 'keyword' column
 relevant_videos <- tags_per_day %>%
@@ -180,6 +181,7 @@ head(relevant_videos)
 <br>
 
 ```{r}
+
 # Aggregate the data by date, country, and keyword
 aggregated_youtube_data <- relevant_videos %>%
   group_by(trending_date, country, keyword) %>%
