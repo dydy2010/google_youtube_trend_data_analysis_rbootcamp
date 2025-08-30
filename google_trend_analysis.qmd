@@ -12,6 +12,8 @@ editor:
 library(tidyverse)
 library(sf)
 library(rnaturalearth)
+library(gtrendsR)
+library(countrycode)
 
 ```
 
@@ -234,4 +236,60 @@ ggplot() +
 
 ```
 
-\`\`\`
+## World map with Google Trends data for Tesla
+
+```{r}
+
+# Get global Google searches for Tesla with country codes (geo = "world")
+res <- gtrends(
+  keyword = "Tesla",
+  geo     = "",
+  time    = "2017-11-14 2018-06-14"
+)
+
+country_data <- res$interest_by_country %>%
+  mutate(
+    iso2c = countrycode(location, "country.name", "iso2c",
+                        custom_match = c("Kosovo" = "XK")),
+    iso3c = countrycode(location, "country.name", "iso3c",
+                        custom_match = c("Kosovo" = "XKX")),
+    hits  = suppressWarnings(as.numeric(ifelse(hits == "<1", 0, hits)))
+  ) %>%
+  select(iso2c, iso3c, country = location, hits, keyword) %>%
+  arrange(desc(hits))
+
+write.csv(country_data, "./raw_data_from_google/gtrends_Tesla_all_countries.csv", row.names = FALSE)
+
+# head(country_data)
+
+# Get world map data
+world_sf <- ne_countries(scale = "medium", returnclass = "sf")
+
+# 3. Join über ISO3
+world_trends <- world_sf %>%
+  left_join(country_data, by = c("iso_a3" = "iso3c"))
+
+# Ergebnis prüfen
+head(world_trends %>% select(name, iso_a3, keyword, hits))
+
+# Minimalist version
+ggplot() +
+  geom_sf(data = world_trends, 
+          aes(fill = hits), 
+          color = "white") +
+  scale_fill_gradient(
+    low = "lightblue", 
+    high = "darkblue",
+    na.value = "lightgrey",
+    name = "Interest"
+  ) +
+  labs(
+    title = "Google Trends: Interest in Tesla",
+    subtitle = "Average interest across time (min = 0, max 100)",
+    caption = "Source: Google Trends (2017-11-14 to 2018-06-14)"
+  ) +
+  theme_bw() +
+  theme(axis.text = element_blank(),
+        axis.ticks = element_blank())
+
+```
