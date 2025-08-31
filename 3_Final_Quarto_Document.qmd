@@ -1,7 +1,49 @@
+
 ---
 title: "Final_Quarto_Document"
-format: html
+format: 
+  html:
+    toc: true
+    toc-float: true
+    toc-depth: 3
+    code-fold:true
+    code-tools: true
+    theme: cosmo
+    lang: en
+    encoding: UTF-8
+execute:
+  warning: false
+  message: false
+  echo: false
+knitr:
+  opts_chunk:
+    fig.width: 10
+    fig.height: 6
 ---
 
 Hi, this is supposed to be the final report to be submitted, we can start put parts in it already,
 whenever we have a section ready.
+
+# Analysis and Visualisation (Dongyuan's part)
+## Part 1: The Big Picture - Comparing the Brands
+```{r graph1}
+# Graph 1: Overall Search Interest Comparison (Line Chart)
+library(ggplot2)
+
+ggplot(data = combined_data_final, aes(x = trending_date, y = hits, color = keyword)) +
+  geom_line() +
+  labs(
+    title = "Google Search Interest Over Time",
+    x = "Date",
+    y = "Relative Search Interest (0-100)",
+    color = "Keyword"
+  )
+```
+
+<br>
+
+## Part 2: [Next Section Title]
+
+```{r graph2}
+# Next analysis code goes here
+```
