@@ -10,6 +10,7 @@ editor:
 
 # library(gtrendsR)  # Downloading was blocked after 3 downloads
 library(tidyverse)
+library(lubridate)
 library(sf)
 library(rnaturalearth)
 library(gtrendsR)
@@ -89,8 +90,8 @@ trends_long <- trends_combined %>%
 
 ```{r}
 
-write.csv(trends_combined, "trends_combined_wide.csv", row.names = FALSE)
-write.csv(trends_long, "trends_combined_long.csv", row.names = FALSE)
+# write.csv(trends_combined, "trends_combined_wide.csv", row.names = FALSE)
+# write.csv(trends_long, "trends_combined_long.csv", row.names = FALSE)
 
 ```
 
@@ -190,49 +191,20 @@ ggplot(plot_data, aes(x = iPhone_US, y = iPhone_DE)) +
 
 ```
 
-## World map with Google Trends data for US, UK and Australia
+## Rolex bar chart with seasonality of Google Trends
 
 ```{r}
 
-# Aggregate the data by country
-aggregated_data <- trends_combined %>%
-  group_by(country) %>%
-  summarise(iPhone = mean(iPhone, na.rm = TRUE))
+plot_data <- trends_long %>% 
+  filter(keyword == "Rolex") %>% 
+  select(date, hits) %>%
+  group_by(month = floor_date(date, "month")) %>%
+  summarise(total_hits = sum(hits, na.rm = TRUE))
 
-# Get world map data
-world_sf <- ne_countries(scale = "medium", returnclass = "sf")
-
-# Prepare country code mapping (to join with world_sf)
-country_mapping <- data.frame(
-  country_code = c("US", "MX", "DE", "FR", "JP"),
-  iso_a3 = c("USA", "MEX", "DEU", "FRA", "JPN")
-)
-
-# Join the aggregated data with world_sf
-world_sf <- world_sf %>%
-  left_join(aggregated_data %>% 
-              left_join(country_mapping, by = c("country" = "country_code")),
-            by = "iso_a3")
-
-# Minimalist version
-ggplot() +
-  geom_sf(data = world_sf, 
-          aes(fill = iPhone), 
-          color = "white") +
-  scale_fill_gradient(
-    low = "lightblue", 
-    high = "darkblue",
-    na.value = "lightgrey",
-    name = "Interest"
-  ) +
-  labs(
-    title = "Google Trends: Interest in iPhone",
-    subtitle = "Average interest across time in US, MX, DE, FR, JP (min = 0, max 100)",
-    caption = "Source: Google Trends (2017-11-14 to 2018-06-14)"
-  ) +
-  theme_bw() +
-  theme(axis.text = element_blank(),
-        axis.ticks = element_blank())
+ggplot(plot_data, aes(x = month, y = total_hits)) +
+  geom_col() +  # Use geom_col() for bar charts with y values
+  labs(x = "Month", y = "Total Hits", title = "Monthly Hits Summary") +
+  theme_minimal()
 
 ```
 
@@ -240,49 +212,51 @@ ggplot() +
 
 ```{r}
 
-# Get global Google searches for Tesla with country codes (geo = "world")
+## Get global Google searches for Tesla with country codes (geo = "world")
 res <- gtrends(
   keyword = "Tesla",
   geo     = "",
   time    = "2017-11-14 2018-06-14"
 )
 
-country_data <- res$interest_by_country %>%
+country_data_Tesla <- res$interest_by_country %>%
   mutate(
     iso2c = countrycode(location, "country.name", "iso2c",
                         custom_match = c("Kosovo" = "XK")),
     iso3c = countrycode(location, "country.name", "iso3c",
                         custom_match = c("Kosovo" = "XKX")),
-    hits  = suppressWarnings(as.numeric(ifelse(hits == "<1", 0, hits)))
-  ) %>%
+    hits = case_when(
+      hits == "<1" ~ 0,
+      is.na(hits) ~ 0,
+      TRUE ~ as.numeric(hits)
+      )) %>%
   select(iso2c, iso3c, country = location, hits, keyword) %>%
   arrange(desc(hits))
 
-write.csv(country_data, "./raw_data_from_google/gtrends_Tesla_all_countries.csv", row.names = FALSE)
+# write.csv(country_data_Tesla, "./raw_data_from_google/gtrends_Tesla_all_countries.csv", row.names = FALSE)
 
 # head(country_data)
 
-# Get world map data
-world_sf <- ne_countries(scale = "medium", returnclass = "sf")
+## Get world map data (some countries like France have -99 in iso_a2 and/or iso_a3)
+world_sf <- ne_countries(scale = "medium", returnclass = "sf") %>% 
+  mutate(iso_a2 = iso_a2_eh,
+         iso_a3 = iso_a3_eh,
+         iso_n3 = iso_n3_eh)
 
-# 3. Join über ISO3
+## Join by ISO3
 world_trends <- world_sf %>%
-  left_join(country_data, by = c("iso_a3" = "iso3c"))
+  left_join(country_data_Tesla, by = c("iso_a3" = "iso3c"))
 
-# Ergebnis prüfen
-head(world_trends %>% select(name, iso_a3, keyword, hits))
+## Check data
+# head(world_trends %>% select(name, iso_a3, keyword, hits))
 
-# Minimalist version
+## Produce map
 ggplot() +
   geom_sf(data = world_trends, 
           aes(fill = hits), 
           color = "white") +
-  scale_fill_gradient(
-    low = "lightblue", 
-    high = "darkblue",
-    na.value = "lightgrey",
-    name = "Interest"
-  ) +
+  scale_fill_gradientn(colors = c("#DEEBF7", "#9ECAE1", "#6BAED6", "#4292C6", "#2171B5",
+                                  "#08519C", "#08306B", "#062254", "#041A3C")) +
   labs(
     title = "Google Trends: Interest in Tesla",
     subtitle = "Average interest across time (min = 0, max 100)",
