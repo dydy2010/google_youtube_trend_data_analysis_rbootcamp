@@ -174,9 +174,9 @@ plot_data <- trends_combined %>%
 
 # Scatterplot erstellen
 ggplot(plot_data, aes(x = iPhone_US, y = iPhone_DE)) +
-  geom_point(alpha = 0.7, size = 2) +
+  geom_point(alpha = 0.7, size = 2, color = "darkblue") +
   geom_abline(intercept = 0, slope = 1, linetype = "dashed", color = "red", alpha = 0.5) +
-  geom_smooth(method = "lm", se = FALSE) +
+  geom_smooth(method = "lm", se = FALSE, color = "blue") +
   labs(
     title = "iPhone searches: USA vs Germany",
     x = "iPhone USA",
@@ -195,22 +195,41 @@ ggplot(plot_data, aes(x = iPhone_US, y = iPhone_DE)) +
 
 ```{r}
 
+res <- gtrends(
+  keyword = "Rolex",
+  geo     = "",
+  time    = "2018-01-01 2018-12-31")
+
+
+
 plot_data <- trends_long %>% 
   filter(keyword == "Rolex") %>% 
   select(date, hits) %>%
   group_by(month = floor_date(date, "month")) %>%
   summarise(total_hits = sum(hits, na.rm = TRUE))
 
-ggplot(plot_data, aes(x = month, y = total_hits)) +
-  geom_col() +  # Use geom_col() for bar charts with y values
+## Prepare month axis
+plot_data <- plot_data %>%
+  mutate(month_abbr = factor(month(month, label = TRUE, abbr = TRUE),
+                            levels = c("Nov", "Dez", "Jan", "Feb", "Mär", "Apr", "Mai", "Jun")))
+## Make the bar chart
+ggplot(plot_data, aes(x = month_abbr, y = total_hits)) +
+  geom_col(fill = "darkblue") +
   labs(x = "Month", y = "Total Hits", title = "Monthly Hits Summary") +
-  theme_minimal()
+  scale_x_discrete(drop = FALSE) +
+  theme_minimal() +
+  labs(
+    title = "Rolex searches worldwide by month",
+    x = "Month",
+    y = "Searches",
+    caption = "Source: Google Trends (November 2017 to Juin 2018)"
+  )
 
 ```
 
 ## World map with Google Trends data for Tesla
 
-```{r}
+```{r, warning=FALSE}
 
 ## Get global Google searches for Tesla with country codes (geo = "world")
 res <- gtrends(
