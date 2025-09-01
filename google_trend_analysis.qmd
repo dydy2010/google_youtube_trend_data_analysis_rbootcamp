@@ -22,9 +22,9 @@ library(countrycode)
 
 ```{r}
 
-# Google Trends CSV-Dateien importieren und zusammenführen
+## Google Trends CSV-Dateien importieren und zusammenführen
 
-# Funktion zum Einlesen und Aufbereiten der CSV-Dateien
+## Funktion zum Einlesen und Aufbereiten der CSV-Dateien
 
 process_trends_csv <- function(filepath, country_code) {
   # CSV einlesen und erste 2 Zeilen überspringen
@@ -61,11 +61,11 @@ trends_DE <- process_trends_csv("./raw_data_from_google/multiTimeline_DE.csv", "
 trends_FR <- process_trends_csv("./raw_data_from_google/multiTimeline_FR.csv", "FR")
 trends_JP <- process_trends_csv("./raw_data_from_google/multiTimeline_JP.csv", "JP")
 
-# Alle Daten zusammenführen und nach Datum und Land sortieren
+## Alle Daten zusammenführen und nach Datum und Land sortieren
 trends_combined <- rbind(trends_US, trends_MX, trends_DE, trends_FR, trends_JP) %>%
   arrange(date, country)
 
-# Investigate the data
+## Investigate the data
 # str(trends_combined)
 # head(trends_combined)
 # View(trends_combined)
@@ -73,7 +73,7 @@ trends_combined <- rbind(trends_US, trends_MX, trends_DE, trends_FR, trends_JP) 
 # table(trends_combined$country)
 
 
-# Daten in long format für Visualisierung
+## Daten in long format für Visualisierung
 trends_long <- trends_combined %>%
   pivot_longer(
     cols = c(`iPhone`, `Tesla`, `Rolex`),
@@ -124,6 +124,8 @@ Source:
 
 ```{r}
 
+## Make the line graph with facets for all combinations
+
 trends_long %>%
   ggplot(aes(x = date, y = hits)) +
   geom_line(colour = "darkblue", linewidth = .6) +
@@ -145,6 +147,8 @@ trends_long %>%
 
 ```{r echo=FALSE, message=FALSE}
 
+## Make the scatter plot with fitted lm line
+
 ggplot(trends_combined, aes(x = Tesla, y = Rolex)) +
   geom_point(alpha = 0.6, size = 2, color = "darkblue") +
   geom_smooth(method = 'lm', se = TRUE) +
@@ -162,38 +166,11 @@ ggplot(trends_combined, aes(x = Tesla, y = Rolex)) +
 
 ```
 
-## Scatterplot iPhone US vs. iPhone DE
-
-```{r echo=FALSE, message=FALSE}
-
-# Daten umstrukturieren
-plot_data <- trends_combined %>% 
-  filter(country %in% c("US", "DE")) %>% 
-  select(date, country, iPhone) %>% 
-  pivot_wider(names_from = country, values_from = iPhone, names_prefix = "iPhone_")
-
-# Scatterplot erstellen
-ggplot(plot_data, aes(x = iPhone_US, y = iPhone_DE)) +
-  geom_point(alpha = 0.7, size = 2, color = "darkblue") +
-  geom_abline(intercept = 0, slope = 1, linetype = "dashed", color = "red", alpha = 0.5) +
-  geom_smooth(method = "lm", se = FALSE, color = "blue") +
-  labs(
-    title = "iPhone searches: USA vs Germany",
-    x = "iPhone USA",
-    y = "iPhone Germany",
-    caption = "Source: Google Trends. Each point represents a day from 2017-11-14 to 2018-06-14."
-  ) +
-  theme_minimal() +
-  theme(
-    plot.title = element_text(hjust = 0.5, size = 14),
-    axis.title = element_text(size = 12)
-  )
-
-```
-
 ## Rolex bar chart with seasonality of Google Trends
 
 ```{r}
+
+## Get and prepare the data
 
 # res <- gtrends(
 #   keyword = "Rolex",
@@ -214,6 +191,7 @@ plot_data <- google_Rolex_2018 %>%
 #                             levels = c("Nov", "Dez", "Jan", "Feb", "Mär", "Apr", "Mai", "Jun")))
 
 ## Make the bar chart
+
 ggplot(plot_data, aes(x = date, y = hits)) +
   geom_col(fill = "darkblue") +
   labs(

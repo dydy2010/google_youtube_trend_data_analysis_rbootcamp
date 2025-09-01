@@ -12,16 +12,19 @@ editor:
 
 plot_data <- aggregated_youtube_data_final %>% 
   filter(keyword == 'Rolex') %>% 
-  select(trending_date, total_views, total_likes)
+  select(trending_date, total_views, total_likes) %>% 
+  mutate(engagement = total_likes / total_views)
 
-ggplot(plot_data, aes(x = total_views, y = total_likes)) +
+## Plot the scatter plot
+
+ggplot(plot_data, aes(x = total_views, y = engagement)) +
   geom_point(alpha = 0.6, size = 2, color = "darkblue") +
   scale_x_continuous(labels = scales::number, expand = expansion(mult = c(0, 0.1))) +
   geom_smooth(method = 'lm', se = FALSE) +
   labs(
-    title = "Correlation between views and likes of Rolex YouTube videos",
+    title = "Correlation between engagement with and views of Rolex YouTube videos",
     x = "Total Views",
-    y = "Total Likes",
+    y = "Engagement: Likes / Views",
     caption = "Source: Google Trends. Each point represents a day from 2017-11-14 to 2018-06-14."
   ) +
   theme_minimal() +
@@ -44,6 +47,8 @@ plot_data <- aggregated_youtube_data_final %>%
   summarise(total_views = sum(total_views), total_likes = sum(total_likes)) %>% 
   mutate(engagement = total_likes / total_views) %>% 
   mutate(keyword = factor(keyword, levels = c('iPhone', 'Tesla', 'Rolex')))
+
+## Make the column plot
 
 ggplot(plot_data,aes(x = keyword, y = engagement)) +
   geom_col(fill = "darkblue") +
@@ -71,13 +76,15 @@ plot_data <- relevant_videos %>%
   group_by(video_id, trending_date, keyword) %>% 
   summarise(total_views = sum(views))
 
-plot_data %>% 
-  group_by(keyword) %>%
-  slice_max(total_views, n = 1) %>%
-  ungroup()
+# plot_data %>% 
+#   group_by(keyword) %>%
+#   slice_max(total_views, n = 1) %>%
+#   ungroup()
 
 plot_data <- plot_data %>% 
   filter(video_id %in% c("RgpoRGq3oBs",	"WpqUOW19aJQ", "2fGXDFiFBhg"))
+
+## Make the line graph
 
 plot_data %>%
   ggplot(aes(x = trending_date, y = total_views, colour = keyword)) +
