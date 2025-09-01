@@ -15,7 +15,7 @@ execute:
   warning: false
   message: false
   echo: false
-  output: true
+  output: false
 knitr:
   opts_chunk:
     fig.width: 10
@@ -23,14 +23,21 @@ knitr:
 ---
 
 Hi, this is supposed to be the final report to be submitted, we can start put parts in it already.
+
 # Preparation of Youtube Data (Dongyuan's part)
 ## Getting data reday for merge, other titles tbd
 <br>
 
 ```{r}
+
 library(tidyverse)
 library(dplyr)
-getwd()
+library(ggplot2)
+library(scales)
+# Load Google Trends data here
+trends_long <- read_csv("trends_combined_long.csv")
+# getwd()
+# Load Youtube Trending Video data here
 DEvideos <- read_csv("raw_data_from_kaggle/DEvideos.csv")
 FRvideos <- read_csv("raw_data_from_kaggle/FRvideos.csv")
 JPvideos <- read_csv("raw_data_from_kaggle/JPvideos.csv")
@@ -86,6 +93,7 @@ str(all_videos)
 <br>
 
 ```{r}
+
 #### Convert the trending_date column to a proper date format
 all_videos <- all_videos %>%
   mutate(trending_date = as.Date(trending_date, format = "%y.%d.%m"))
@@ -113,7 +121,7 @@ tags_per_day <- all_videos %>%
   separate_rows(tags, sep = "\\|")
   
 
-View(tags_per_day)
+#### View(tags_per_day)
 str(tags_per_day)
 #### 2. Group by date and tag, then count occurrences
 trending_tags <- tags_per_day %>%
@@ -135,7 +143,7 @@ most_searched_tag <- tags_per_day %>%
   count(sort = TRUE) %>%
   ungroup()
   
-View(most_searched_tag)
+#### View(most_searched_tag)
 
 #### Finding the Most Searched Tag for Each Country
 most_searched_tags_by_country <- tags_per_day %>%
@@ -145,13 +153,14 @@ most_searched_tags_by_country <- tags_per_day %>%
   ungroup() %>%
   arrange(country)
 
-View(most_searched_tags_by_country)
+#### View(most_searched_tags_by_country)
 ```
 <br>
 
 <br>
 
 ```{r}
+
 #### Group by country and category_id and count the number of videos
 category_counts <- all_videos %>%
   group_by(country, category_id) %>%
@@ -160,7 +169,7 @@ category_counts <- all_videos %>%
 
 #### View the result
 head(category_counts)
-View(category_counts)
+#### View(category_counts)
 
 
 
@@ -184,6 +193,7 @@ ggplot(category_counts, aes(x = factor(category_id), y = n, fill = country)) +
 <br>
 ```{r}
 
+
 #### Filter for the three keywords and create a new 'keyword' column
 relevant_videos <- tags_per_day %>%
   filter(grepl("iphone|tesla|rolex", tags, ignore.case = TRUE)) %>%
@@ -198,11 +208,12 @@ relevant_videos <- tags_per_day %>%
 str(relevant_videos)
 head(relevant_videos)
 
-<br>
 ```
+<br>
 <br>
 
 ```{r}
+
 
 #### Aggregate the data by date, country, and keyword
 aggregated_youtube_data <- relevant_videos %>%
@@ -217,12 +228,13 @@ aggregated_youtube_data <- relevant_videos %>%
   ungroup()
 
 #### Check the new, aggregated dataframe
-View(aggregated_youtube_data)
+#### View(aggregated_youtube_data)
 ```
 
 <br>
 
 ```{r}
+
 #### Calculate the engagement ratios
 aggregated_youtube_data_final <- aggregated_youtube_data %>%
   mutate(
@@ -250,12 +262,13 @@ aggregated_youtube_data_final <- aggregated_youtube_data %>%
   )
 
 #### View the final dataframe, ready for merging
-View(aggregated_youtube_data_final)
+#### View(aggregated_youtube_data_final)
 ```
 
 <br>
 
 ```{r}
+
 #  Calculate the Mean of Proportions and Ratios for each Keyword in each Country
 mean_ratios_by_country_keyword <- aggregated_youtube_data_final %>%
   group_by(country, keyword) %>%
@@ -267,7 +280,7 @@ mean_ratios_by_country_keyword <- aggregated_youtube_data_final %>%
     .groups = 'drop'
   )
 
-View(mean_ratios_by_country_keyword)
+#### View(mean_ratios_by_country_keyword)
 #### colnames(aggregated_youtube_data_final)
 ```
 <br>
@@ -278,6 +291,7 @@ View(mean_ratios_by_country_keyword)
 <br>
 
 ```{r}
+
 
 #  Perform the full join
 combined_data <- full_join(aggregated_youtube_data_final, trends_long, 
@@ -296,13 +310,16 @@ combined_data_final <- combined_data_filled_na %>%
                                   "trending video(s) found"))
 
 # Check your final merged dataset
-View(combined_data_final)
+#### View(combined_data_final)
 colnames(combined_data_final)
 
 ```
 # Data Analysis and Visualisation (Dongyuan's part)
 ## Part 1: The Big Picture - Comparing the Brands
-```{r graph1}
+
+## Google Search Data Comparison
+### Graph 1: Overall Search Interest Comparison v1(Line Chart) v2(Facet Chart)
+```{r graph1 Google Comparison v1}
 #| output: true
 ### Graph 1: Overall Search Interest Comparison (Line Chart) v1
 library(ggplot2)
@@ -315,7 +332,10 @@ ggplot(data = combined_data_final, aes(x = trending_date, y = hits, color = keyw
     y = "Relative Search Interest (0-100)",
     color = "Keyword"
   )
-
+```
+<br>
+### Graph 1: Overall Search Interest Comparison (Facet Chart) v2
+```{r graph1 Google Comparison v2 Facet}
 ### Graph 1: Overall Search Interest Comparison (Facet Chart) v2
 library(ggplot2)
 
@@ -332,14 +352,34 @@ ggplot(data = combined_data_final, aes(x = trending_date, y = hits)) +
 
 <br>
 
-## Part 2: [Next Section Title]
-
-```{r graph2}
+## Youtube Data Comparison v1(Line Chart) 
+### Graph 2: Overall Search Interest Comparison v1 (Line Chart Version)
+```{r graph2 v1}
 #| output: true
-### Graph 1: Overall Search Interest Comparison (Faceted Version)
-library(ggplot2)
-library(scales)
+### Graph 2: Overall Search Interest Comparison v1 (Line Chart Version)
+# library(ggplot2)
+# library(scales)
 
+ggplot(data = combined_data_final, aes(x = trending_date, y = total_views)) +
+  geom_line(aes(color = keyword)) +
+  labs(
+    title = "YouTube Daily Views Over Time",
+    x = "Date",
+    y = "Total Daily Views",
+    color = "Keyword"
+  ) +
+  scale_x_date(date_labels = "%b %Y") +  #### Format dates
+  scale_y_continuous(labels = comma)   #### Apply comma formatting to y-axis, no natural number(scales package)
+
+```
+
+<br>
+
+## Youtube Data Comparison v2(Facet Chart)
+### Graph 2: Overall Search Interest Comparison v2 (no Facet Version)
+```{r graph2 v2}
+#| output: true
+### Graph 2: Overall Search Interest Comparison v2 (no Facet Version)
 ggplot(data = combined_data_final, aes(x = trending_date, y = total_views)) +
   geom_line(aes(color = keyword)) +
   labs(
@@ -351,5 +391,59 @@ ggplot(data = combined_data_final, aes(x = trending_date, y = total_views)) +
   scale_x_date(date_labels = "%b %Y") +  #### Format dates
   scale_y_continuous(labels = comma) +   #### Apply comma formatting to y-axis, no natural number(scales package)
   facet_wrap(~ keyword) #### allow the y-axis of each plot to have own independent scale
+  
+```
+
+<br>
+
+## Graph 4: The iPhone Hype Cycle (Dual-Axis Chart) v1
+
+```{r graph4 v1}
+#| output: true
+
+### Graph 4: The iPhone Hype Cycle (Dual-Axis Chart) v1
+# prepare data, define the iPhone X launch date.
+release_date <- as.Date("2017-11-03")
+start_date <- release_date - days(30)
+end_date <- release_date + days(30)
+
+# filter combined data to get only the iPhone data, 60-day window.
+iphone_hype_data <- combined_data_final %>%
+  filter(keyword == "iPhone",
+         trending_date >= start_date,
+         trending_date <= end_date)
+
+# Create scaling factor for hits, after, both views and hits are visible on the same plot.
+# common method to create a dual axis in ggplot2.
+scaling_factor <- max(iphone_hype_data$total_views, na.rm = TRUE) / max(iphone_hype_data$hits, na.rm = TRUE)
+
+# plot with ggplot2
+ggplot(iphone_hype_data) +
+  # YouTube views for left y-axis, bar.
+  geom_col(aes(x = trending_date, y = total_views), fill = "blue") +
+  
+  # Google search hits for right y-axis.
+  # scale the hits to match the 'total_views'.
+  geom_line(aes(x = trending_date, y = hits * scaling_factor), color = "red", size = 1.2) +
+  
+  # Add the annotation line for the launch date.
+  geom_vline(xintercept = release_date, linetype = "dashed", color = "gray", size = 1) +  # thickness of the line
+  # adds a vertical line to plot, useful for annotations, highlight specific day on time-series graph.
+  
+  # labels and titles.
+  labs(
+    title = "iPhone X Hype Cycle: Views vs. Search Interest",
+    subtitle = paste("60-day window around launch on", format(release_date, "%B %d, %Y")),
+    x = "Date"
+  ) +
+  
+  # Configure the dual y-axis.
+  scale_y_continuous(
+    name = "Total Daily YouTube Views",
+    labels = scales::label_number(scale_cut = cut_short_scale()), # The cut_short_scale() function is a helper from the scales package that automatically sets the cutoffs for thousands (k), millions (M), billions (B), etc. 
+    sec.axis = sec_axis(~./scaling_factor, name = "Google Search Interest (0-100)")  # sec_axis() a common function for building customized y axis.
+    # transformation formula. The . is a placeholder for values on primary y-axis. 
+    # ~ is a shorthand function.
+  ) 
   
 ```
