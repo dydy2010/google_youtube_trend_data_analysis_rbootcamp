@@ -1,0 +1,92 @@
+---
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+## Scatterplot Tesla Youtube-views vs. Youtube-likes
+
+```{r echo=FALSE, message=FALSE}
+
+## Prepare data
+
+plot_data <- aggregated_youtube_data_final %>% 
+  filter(keyword == 'Rolex') %>% 
+  select(trending_date, total_views, total_likes)
+
+ggplot(plot_data, aes(x = total_views, y = total_likes)) +
+  geom_point(alpha = 0.6, size = 2, color = "darkblue") +
+  scale_x_continuous(labels = scales::number, expand = expansion(mult = c(0, 0.1))) +
+  geom_smooth(method = 'lm', se = FALSE) +
+  labs(
+    title = "Correlation between views and likes of Rolex YouTube videos",
+    x = "Total Views",
+    y = "Total Likes",
+    caption = "Source: Google Trends. Each point represents a day from 2017-11-14 to 2018-06-14."
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold"),
+    panel.grid.minor = element_blank()
+  )
+
+```
+
+## Barchart Brand comparison of YouTube-Engagement (i.e. likes / views)
+
+```{r echo=FALSE, message=FALSE}
+
+## Prepare data
+
+plot_data <- aggregated_youtube_data_final %>% 
+  select(trending_date, keyword, total_views, total_likes) %>% 
+  group_by(keyword) %>% 
+  summarise(total_views = sum(total_views), total_likes = sum(total_likes)) %>% 
+  mutate(engagement = total_likes / total_views) %>% 
+  mutate(keyword = factor(keyword, levels = c('iPhone', 'Tesla', 'Rolex')))
+
+ggplot(plot_data,aes(x = keyword, y = engagement)) +
+  geom_col(fill = "darkblue") +
+  geom_text(aes(label = sprintf("%.3f", engagement)),
+            vjust = -0.5, size = 3.2) +
+  scale_y_continuous(limits = c(0, 0.05)) +
+  theme_minimal() +
+  labs(
+    title = "Brand comparison of YouTube video engagement",
+    x = "Keywords",
+    y = "Engagement (total likes / total views)",
+    caption = "Source: Kaggle dataset Youtube (November 2017 to Juin 2018)"
+  )
+
+```
+
+## Longevity of selected YouTube-videos
+
+```{r echo=FALSE, message=FALSE}
+
+## Prepare data
+
+plot_data <- relevant_videos %>% 
+  select(video_id, trending_date, views, keyword) %>% 
+  group_by(video_id, trending_date, keyword) %>% 
+  summarise(total_views = sum(views))
+
+plot_data %>% 
+  group_by(keyword) %>%
+  slice_max(total_views, n = 1) %>%
+  ungroup()
+
+plot_data <- plot_data %>% 
+  filter(video_id %in% c("RgpoRGq3oBs",	"WpqUOW19aJQ", "2fGXDFiFBhg"))
+
+plot_data %>%
+  ggplot(aes(x = trending_date, y = total_views, colour = keyword)) +
+  geom_line(linewidth = .6) +
+  labs(
+    title = "Google Trends searches",
+    y = "Relative importance on that day",
+    caption = "Source: Google Trends (2017-11-14 to 2018-06-14)"
+  ) +
+  theme_minimal()
+
+```
