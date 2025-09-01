@@ -9,4 +9,5 @@ echo "*.rdb" >> .gitignore
 echo "*.html" >> .gitignore
 3_Final_Quarto_Document_cache/
 *.rdb
+*.html
 
