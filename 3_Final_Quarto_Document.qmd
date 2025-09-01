@@ -38,6 +38,8 @@ library(scales)
 trends_long <- read_csv("trends_combined_long.csv")
 # getwd()
 # Load Youtube Trending Video data here
+
+getwd()
 DEvideos <- read_csv("raw_data_from_kaggle/DEvideos.csv")
 FRvideos <- read_csv("raw_data_from_kaggle/FRvideos.csv")
 JPvideos <- read_csv("raw_data_from_kaggle/JPvideos.csv")
@@ -119,10 +121,10 @@ latest_date
 #### The separate_rows() function is perfect for this
 tags_per_day <- all_videos %>%
   separate_rows(tags, sep = "\\|")
-  
 
 #### View(tags_per_day)
 str(tags_per_day)
+
 #### 2. Group by date and tag, then count occurrences
 trending_tags <- tags_per_day %>%
   group_by(trending_date, tags) %>%
@@ -142,7 +144,7 @@ most_searched_tag <- tags_per_day %>%
   group_by(tags) %>%
   count(sort = TRUE) %>%
   ungroup()
-  
+
 #### View(most_searched_tag)
 
 #### Finding the Most Searched Tag for Each Country
@@ -154,6 +156,7 @@ most_searched_tags_by_country <- tags_per_day %>%
   arrange(country)
 
 #### View(most_searched_tags_by_country)
+
 ```
 <br>
 
@@ -170,8 +173,6 @@ category_counts <- all_videos %>%
 #### View the result
 head(category_counts)
 #### View(category_counts)
-
-
 
 #### Create the grouped bar chart
 ggplot(category_counts, aes(x = factor(category_id), y = n, fill = country)) +
@@ -193,7 +194,6 @@ ggplot(category_counts, aes(x = factor(category_id), y = n, fill = country)) +
 <br>
 ```{r}
 
-
 #### Filter for the three keywords and create a new 'keyword' column
 relevant_videos <- tags_per_day %>%
   filter(grepl("iphone|tesla|rolex", tags, ignore.case = TRUE)) %>%
@@ -210,10 +210,8 @@ head(relevant_videos)
 
 ```
 <br>
-<br>
 
 ```{r}
-
 
 #### Aggregate the data by date, country, and keyword
 aggregated_youtube_data <- relevant_videos %>%
@@ -291,7 +289,6 @@ mean_ratios_by_country_keyword <- aggregated_youtube_data_final %>%
 <br>
 
 ```{r}
-
 
 #  Perform the full join
 combined_data <- full_join(aggregated_youtube_data_final, trends_long, 
@@ -445,5 +442,7 @@ ggplot(iphone_hype_data) +
     # transformation formula. The . is a placeholder for values on primary y-axis. 
     # ~ is a shorthand function.
   ) 
-  
+  scale_y_continuous(labels = comma) +   #### Apply comma formatting to y-axis, no natural number(scales package)
+  facet_wrap(~ keyword) #### allow the y-axis of each plot to have own independent scale
+
 ```

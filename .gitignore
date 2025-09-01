@@ -5,9 +5,12 @@
 .DS_Store
 .Rproj.user/
 echo "3_Final_Quarto_Document_cache/" >> .gitignore
+<<<<<<< HEAD
 echo "*.rdb" >> .gitignore
 echo "*.html" >> .gitignore
 3_Final_Quarto_Document_cache/
 *.rdb
 *.html
 
+=======
+>>>>>>> c340877b88380cbddeaf0584973ac3e38b5c5caa
