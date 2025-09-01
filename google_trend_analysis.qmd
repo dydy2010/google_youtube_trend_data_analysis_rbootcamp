@@ -195,34 +195,38 @@ ggplot(plot_data, aes(x = iPhone_US, y = iPhone_DE)) +
 
 ```{r}
 
-res <- gtrends(
-  keyword = "Rolex",
-  geo     = "",
-  time    = "2018-01-01 2018-12-31")
+# res <- gtrends(
+#   keyword = "Rolex",
+#   geo     = "",
+#   time    = "2018-01-01 2018-12-31")
+# 
+# write.csv(res$interest_over_time, "./raw_data_from_google/gtrends_Rolex_all_countries_year_2018.csv")
 
+google_Rolex_2018 <- read.csv("./raw_data_from_google/gtrends_Rolex_all_countries_year_2018.csv")
 
-
-plot_data <- trends_long %>% 
-  filter(keyword == "Rolex") %>% 
-  select(date, hits) %>%
-  group_by(month = floor_date(date, "month")) %>%
-  summarise(total_hits = sum(hits, na.rm = TRUE))
+plot_data <- google_Rolex_2018 %>% 
+  select(date, hits) %>% 
+  filter(date > "2018-01-01")
 
 ## Prepare month axis
-plot_data <- plot_data %>%
-  mutate(month_abbr = factor(month(month, label = TRUE, abbr = TRUE),
-                            levels = c("Nov", "Dez", "Jan", "Feb", "Mär", "Apr", "Mai", "Jun")))
+# plot_data <- plot_data %>%
+#   mutate(month_abbr = factor(month(month, label = TRUE, abbr = TRUE),
+#                             levels = c("Nov", "Dez", "Jan", "Feb", "Mär", "Apr", "Mai", "Jun")))
+
 ## Make the bar chart
-ggplot(plot_data, aes(x = month_abbr, y = total_hits)) +
+ggplot(plot_data, aes(x = date, y = hits)) +
   geom_col(fill = "darkblue") +
-  labs(x = "Month", y = "Total Hits", title = "Monthly Hits Summary") +
-  scale_x_discrete(drop = FALSE) +
-  theme_minimal() +
   labs(
-    title = "Rolex searches worldwide by month",
-    x = "Month",
-    y = "Searches",
-    caption = "Source: Google Trends (November 2017 to Juin 2018)"
+    title = "Rolex searches worldwide 2018 by week",
+    x = "Weeks 2018",
+    y = "Relative search interest (100 for month with most searches",
+    caption = "Source: Google Trends (2018-01-01 to 2018-12-31)"
+  ) +
+  scale_y_continuous(limits = c(0, 100)) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_blank(),  # Remove x-axis text labels
+    axis.ticks.x = element_blank()   # Remove x-axis ticks
   )
 
 ```
@@ -232,27 +236,29 @@ ggplot(plot_data, aes(x = month_abbr, y = total_hits)) +
 ```{r, warning=FALSE}
 
 ## Get global Google searches for Tesla with country codes (geo = "world")
-res <- gtrends(
-  keyword = "Tesla",
-  geo     = "",
-  time    = "2017-11-14 2018-06-14"
-)
-
-country_data_Tesla <- res$interest_by_country %>%
-  mutate(
-    iso2c = countrycode(location, "country.name", "iso2c",
-                        custom_match = c("Kosovo" = "XK")),
-    iso3c = countrycode(location, "country.name", "iso3c",
-                        custom_match = c("Kosovo" = "XKX")),
-    hits = case_when(
-      hits == "<1" ~ 0,
-      is.na(hits) ~ 0,
-      TRUE ~ as.numeric(hits)
-      )) %>%
-  select(iso2c, iso3c, country = location, hits, keyword) %>%
-  arrange(desc(hits))
-
+# res <- gtrends(
+#   keyword = "Tesla",
+#   geo     = "",
+#   time    = "2017-11-14 2018-06-14"
+# )
+# 
+# country_data_Tesla <- res$interest_by_country %>%
+#   mutate(
+#     iso2c = countrycode(location, "country.name", "iso2c",
+#                         custom_match = c("Kosovo" = "XK")),
+#     iso3c = countrycode(location, "country.name", "iso3c",
+#                         custom_match = c("Kosovo" = "XKX")),
+#     hits = case_when(
+#       hits == "<1" ~ 0,
+#       is.na(hits) ~ 0,
+#       TRUE ~ as.numeric(hits)
+#       )) %>%
+#   select(iso2c, iso3c, country = location, hits, keyword) %>%
+#   arrange(desc(hits))
+# 
 # write.csv(country_data_Tesla, "./raw_data_from_google/gtrends_Tesla_all_countries.csv", row.names = FALSE)
+
+country_data_Tesla <- read.csv("./raw_data_from_google/gtrends_Tesla_all_countries.csv")
 
 # head(country_data)
 
