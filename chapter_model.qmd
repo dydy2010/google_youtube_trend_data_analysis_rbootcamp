@@ -1,0 +1,77 @@
+---
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+## Chapter 'fitting a linear regression model and visualize it'
+
+### Data preparation and correlations
+
+```{r echo=FALSE, message=FALSE}
+
+library(tidyverse)
+library(corrplot)
+
+trends_combined <- read.csv("trends_combined_wide.csv")
+
+## Prepare data
+lm_data <- trends_combined %>%
+  select(date, country, iPhone) %>% 
+  pivot_wider(names_from = country, values_from = iPhone, names_prefix = "iPhone_")
+
+```
+
+### Check all correlations
+
+```{r}
+## Calculate the correlation coefficients
+correlation_matrix <- lm_data %>%
+  select(where(is.numeric)) %>%
+  cor(use = "complete.obs")
+
+## Look at the correlations
+corrplot(correlation_matrix, method = "number", type = "upper",
+         tl.col = "black", tl.srt = 45, mar = c(1, 0, 1, 0))
+
+```
+
+### Fitting a linear model
+
+```{r}
+
+## Fit the linear regression model and show a summary
+model <- lm(iPhone_DE ~ iPhone_US, data = lm_data)
+summary(model)
+
+```
+
+### Visualize the linear regression in a scatter plot
+
+```{r, message=FALSE}
+
+## Make a scatter plot with linear regression line.
+ggplot(lm_data, aes(x = iPhone_US, y = iPhone_DE)) +
+  geom_point(alpha = 0.7, size = 2, color = "darkblue") +
+  geom_abline(aes(intercept = 0, slope = 1, color = "Perfect Correlation (y = x)"), 
+              linetype = "dashed", alpha = 0.5) +
+  geom_smooth(method = "lm", se = FALSE, color = "blue") +
+  scale_color_manual(
+    name = "Reference line:",
+    values = c("Perfect Correlation (y = x)" = "red", 
+               "Regression Line" = "blue")
+  ) +
+  labs(
+    title = "iPhone searches: USA vs Germany",
+    x = "iPhone USA",
+    y = "iPhone Germany",
+    caption = "Source: Google Trends. Each point represents a day from 2017-11-14 to 2018-06-14."
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5, size = 14),
+    axis.title = element_text(size = 12),
+    legend.position = "bottom"
+  )
+
+```
