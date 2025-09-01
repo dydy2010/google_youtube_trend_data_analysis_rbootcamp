@@ -83,7 +83,7 @@ plot_data %>%
   ggplot(aes(x = trending_date, y = total_views, colour = keyword)) +
   geom_line(linewidth = .6) +
   labs(
-    title = "Google Trends searches",
+    title = "YouTube most watched videos: Development over time",
     y = "Relative importance on that day",
     caption = "Source: Google Trends (2017-11-14 to 2018-06-14)"
   ) +
