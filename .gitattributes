@@ -1,1 +1,2 @@
+*.rdb filter=lfs diff=lfs merge=lfs -text
 3_Final_Quarto_Document_cache/**/*.rdb filter=lfs diff=lfs merge=lfs -text
