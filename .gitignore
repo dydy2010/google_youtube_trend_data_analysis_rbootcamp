@@ -7,4 +7,6 @@
 echo "3_Final_Quarto_Document_cache/" >> .gitignore
 echo "*.rdb" >> .gitignore
 echo "*.html" >> .gitignore
+3_Final_Quarto_Document_cache/
+*.rdb
 
