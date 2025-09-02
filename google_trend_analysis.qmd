@@ -124,13 +124,13 @@ trends_long %>%
 
 ## Make the scatter plot with fitted lm line
 
-ggplot(trends_combined, aes(x = Tesla, y = Rolex)) +
+ggplot(trends_combined, aes(x = iPhone, y = Rolex)) +
   geom_point(alpha = 0.6, size = 2, color = "darkblue") +
   geom_smooth(method = 'lm', se = TRUE) +
   labs(
-    title = "Correlation between Tesla and Rolex in Google Trends searches",
+    title = "Correlation between iPhone and Rolex in Google Trends searches",
     x = "Tesla",
-    y = "Rolex",
+    y = "iPhone",
     caption = "Source: Google Trends. Each point represents a day from 2017-11-14 to 2018-06-14."
   ) +
   theme_minimal() +
