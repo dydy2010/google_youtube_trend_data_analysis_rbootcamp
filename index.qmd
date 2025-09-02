@@ -1,5 +1,21 @@
 ---
-title: "index"
-format: html
+editor: 
+  markdown: 
+    wrap: 72
 ---
 
+# Welcome to the R Bootcamp Project
+
+This project explores **Brand and Product Strategy for Consumer Brands**.  
+It combines data analysis, visualization, and modeling in R, as part of
+our bootcamp learning journey.  
+
+---
+
+## How to Use This Book
+
+- Each chapter introduces concepts step by step.  
+- You will find code examples (in R) and exercises to practice.  
+- Tables, figures, and notes are included to help you follow along.  
+
+---

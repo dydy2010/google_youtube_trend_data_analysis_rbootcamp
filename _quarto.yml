@@ -1,5 +1,45 @@
----
-title: "_quarto"
-format: html
----
+project:
+  type: book
 
+book:
+  title: "R Bootcamp Project"
+  subtitle: "Brand and Product Strategy for Consumer Brands"
+  author: "Daniel Huber & Dongyuan Gao"
+  date: "today"
+  chapters:
+    - index.qmd
+    - 1_Our_Story.qmd                                     
+    - 2_Data_Description.qmd                               
+    - 3_Prepare_the_Data_for_Analysis.qmd                 
+    - 4.1_Analysis_Visualisation_Dongyuan_part.qmd        
+    - chapter_model.qmd
+    - chapter_package_of_choice.qmd
+
+format:
+  html:
+    toc: true
+    theme: flatly
+    page-layout: full
+    css: styles.css
+    title-block-style: none   # disables default bootstrap card，block automatically uses .title-box
+    title-block-banner: false # no banner background
+  pdf:
+    toc: true
+    number-sections: true
+    documentclass: report
+    include-in-header:
+      text: |
+        \usepackage{titlesec}
+        \titleformat{\chapter}[block]
+          {\normalfont\Large\bfseries}
+          {\thechapter.}
+          {1em}
+          {}
+    
+    geometry: top=2.5cm, bottom=1.5cm, left=2cm, right=2cm
+    mainfont: Arial
+
+execute:
+  echo: true
+  warning: false
+  message: false
