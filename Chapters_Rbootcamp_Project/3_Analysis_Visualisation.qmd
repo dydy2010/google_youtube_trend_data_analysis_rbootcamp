@@ -986,7 +986,6 @@ wc_iPhone <- wordcloud2(iphone_tags_cleaned_unique %>% filter(total_views > 5000
            color = rep_len(pal_iphone, nrow(iphone_tags_cleaned_unique)))
 
 wc_iPhone
-
 ## Export a png
 
 ## Step 1: Save as HTML in a known folder
