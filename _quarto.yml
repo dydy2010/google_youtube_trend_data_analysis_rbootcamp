@@ -8,12 +8,11 @@ book:
   date: "today"
   chapters:
     - index.qmd
-    - 1_Our_Story.qmd                                     
-    - 2_Data_Description.qmd                               
-    - 3_Prepare_the_Data_for_Analysis.qmd                 
-    - 4.1_Analysis_Visualisation_Dongyuan_part.qmd        
-    - chapter_model.qmd
-    - chapter_package_of_choice.qmd
+    - 2_Prepare_the_Data_for_Analysis.qmd                 
+    - 3_Analysis_Visualisation_Dongyuan_part.qmd
+    - 4_chapter_package_of_choice.qmd
+    - 5_Generative_AI.qmd
+    - 6_Conclusion_Limitation_Outlook.qmd
 
 format:
   html:
