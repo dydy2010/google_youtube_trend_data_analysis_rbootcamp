@@ -22,8 +22,6 @@ knitr:
     fig.height: 6
 ---
 
-Hi, this is supposed to be the final report to be submitted, we can start put parts in it already.
-
 # Preparation of Youtube Data (Dongyuan's part)
 ## Getting data reday for merge, other titles tbd
 <br>
