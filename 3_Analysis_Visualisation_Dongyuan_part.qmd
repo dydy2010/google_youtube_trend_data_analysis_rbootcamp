@@ -22,11 +22,12 @@ knitr:
     fig.height: 6
 ---
 
-# Preparation of Youtube Data (Dongyuan's part)
-## Getting data reday for merge, other titles tbd
 <br>
 
 ```{r}
+#### Preparation of Youtube Data (Dongyuan's part)
+#### Getting data reday for merge, other titles tbd
+
 #### install.packages("ggridges")
 #### install.packages("rnaturalearthdata")
 library(ggridges)
@@ -161,39 +162,6 @@ most_searched_tags_by_country <- tags_per_day %>%
 
 ```
 <br>
-
-<br>
-
-```{r}
-
-#### Group by country and category_id and count the number of videos
-category_counts <- all_videos %>%
-  group_by(country, category_id) %>%
-  count() %>%
-  ungroup()
-
-#### View the result
-head(category_counts)
-#### View(category_counts)
-
-#### Create the grouped bar chart
-ggplot(category_counts, aes(x = factor(category_id), y = n, fill = country)) +
-  geom_bar(stat = "identity", position = "dodge") +
-  labs(
-    title = "Count of Trending Videos by Category and Country",
-    x = "Category ID",
-    y = "Number of Trending Videos",
-    fill = "Country"
-  ) +
-  theme_minimal() +
-  theme(
-    axis.text.x = element_text(angle = 45, hjust = 1)
-  )
-```
-<br>
-
-
-<br>
 ```{r}
 
 #### Filter for the three keywords and create a new 'keyword' column
@@ -313,8 +281,8 @@ combined_data_final <- combined_data_filled_na %>%
 colnames(combined_data_final)
 ```
 
-# Data Analysis and Visualisation (Dongyuan's part)
-## Part 1: The Big Picture - Comparing the Brands
+# 3. Data Analysis and Visualisation (Dongyuan's part)
+## 3.1 Part 1: The Big Picture - Comparing the Brands
 ## Google Search Data Comparison
 ### Graph 1: Overall Search Interest Comparison v1(Line Chart)
 ```{r graph1 Google Comparison v1, fig.width=14, fig.height=6}
@@ -545,120 +513,513 @@ print(plot_youtube)
 #### good practice reset to default
 par(mfrow = c(1, 1))
 ```
+## 3.2 Google Search Trend Analysis
+#### Install/Load libraries
 
+```{r echo=FALSE}
 
+### library(gtrendsR)  # Downloading was blocked after 3 downloads
+library(tidyverse)
+library(lubridate)
+library(sf)
+library(rnaturalearth)
+library(gtrendsR)
+library(countrycode)
 
-<br>
-
-## Graph 6: Geographic Hype Distribution (Map) v1
-### google search interest for "iPhone" and "Tesla" and "Rolex"by country (geo = "")
-
-```{r graph6 v1, fig.width=20, fig.height=10}
-#| output: true
-#### Graph 6: Geographic Hype Distribution (Map)
-#### search interest for "iPhone" and "Tesla" and "Rolex"by country (geo = "")
-#### library(sf)
-#### library(rnaturalearth)
-
-#### Load world map data
-world_map <- ne_countries(scale = "medium", returnclass = "sf")
-
-#### Calculate mean hits by country and keyword
-trends_mean <- trends_long %>%
-  mutate(country_full_name = case_when(
-    country == "DE" ~ "Germany",
-    country == "FR" ~ "France",
-    country == "JP" ~ "Japan",
-    country == "MX" ~ "Mexico",
-    country == "US" ~ "United States of America" 
-  )) %>%
-  group_by(country_full_name, keyword) %>%
-  summarize(mean_hits = mean(hits, na.rm = TRUE), .groups = "drop")
-
-#### Join Google Trends data with the world map data
-world_map_with_trends <- left_join(world_map, trends_mean, by = c("name" = "country_full_name"))
-
-#### Faceted map plot - showing each keyword separately
-ggplot(world_map_with_trends) +
-  geom_sf(aes(fill = mean_hits), color = "white", linewidth = 0.2) +
-  scale_fill_viridis_c(
-    option = "plasma", 
-    name = "Mean Search Interest (0-100)",
-    na.value = "grey"
-  ) +
-  labs(
-    title = "Mean Search Interest by Keyword and Country",
-    subtitle = "Based on Google Trends Data for iPhone, Tesla, and Rolex",
-    caption = "Source: Google Trends"
-  ) +
-  theme(
-    plot.title = element_text(hjust = 0.5, face = "bold"),
-    plot.subtitle = element_text(hjust = 0.5),
-    legend.position = "bottom"
-  ) +
-  facet_wrap(~ keyword)+
-  coord_sf(
-    xlim = c(-170, 170),   #### keep nearly full longitude range
-    ylim = c(0, 85),       #### only show from equator up to north pole
-    expand = FALSE
-  )
 ```
 
-<br>
+## prepare and merge data manually downloaded from Google Trends
 
-## Graph 6: Geographic Hype Distribution (Map)
-###  youtube views for "iPhone" and "Tesla" and "Rolex"by country (geo = "")
+```{r}
 
-```{r graph6 v2, fig.width=20, fig.height=10}
-#| output: true
-#### Graph 6: Geographic Hype Distribution (Map) v2
-#### youtube views for "iPhone" and "Tesla" and "Rolex"by country (geo = "")
-#### library(sf)
-#### library(rnaturalearth)
+#### Google Trends CSV-Dateien importieren und zusammenführen
 
-#### Load world map data
-world_map <- ne_countries(scale = "medium", returnclass = "sf")
+#### Funktion zum Einlesen und Aufbereiten der CSV-Dateien
 
-#### Calculate mean total_views by country and keyword
-combined_data_final_add_country_full <- combined_data_final %>%
-  mutate(country_full_name = case_when(
-    country == "DE" ~ "Germany",
-    country == "FR" ~ "France",
-    country == "JP" ~ "Japan",
-    country == "MX" ~ "Mexico",
-    country == "US" ~ "United States of America" 
-  )) %>%
-  group_by(country_full_name, keyword) %>%
-  summarize(total_views_mean = mean(total_views, na.rm = TRUE), .groups = "drop")
+process_trends_csv <- function(filepath, country_code) {
+  #### CSV einlesen und erste 2 Zeilen überspringen
+  data <- read.csv(filepath, skip = 2, stringsAsFactors = FALSE)
+  
+  #### Spaltennamen einheitlich setzen
+  colnames(data) <- c("date", "iPhone", "Tesla", "Rolex")
 
-#### Join YouTube data with the world map data
-world_map_with_views <- left_join(world_map, combined_data_final_add_country_full, 
-                                  by = c("name" = "country_full_name"))
+  #### <1 Werte in allen Trend-Spalten zu 0 ändern
+  trend_columns <- c("iPhone", "Tesla", "Rolex")
 
-#### Faceted map plot - showing each keyword separately
-ggplot(world_map_with_views) +
-  geom_sf(aes(fill = total_views_mean), color = "white", linewidth = 0.2) +
-  scale_fill_viridis_c(
-    option = "plasma", 
-    name = "YouTube Mean Total Views",
-    na.value = "grey",
-    labels = label_number(scale = 1e-6, suffix = "M")
-  ) +
+  data <- data %>%
+    mutate(across(all_of(trend_columns),
+                  ~ as.numeric(str_replace(., "<1", "0"))))
+    
+  #### Datum konvertieren
+  data$date <- as.Date(data$date)
+  
+  #### Country-Spalte hinzufügen
+  data$country <- country_code
+  
+  return(data)
+  }
+
+```
+
+#### Alle drei CSV-Dateien einlesen
+
+```{r}
+
+trends_US <- process_trends_csv("./raw_data_from_google/multiTimeline_US.csv", "US")
+trends_MX <- process_trends_csv("./raw_data_from_google/multiTimeline_MX.csv", "MX")
+trends_DE <- process_trends_csv("./raw_data_from_google/multiTimeline_DE.csv", "DE")
+trends_FR <- process_trends_csv("./raw_data_from_google/multiTimeline_FR.csv", "FR")
+trends_JP <- process_trends_csv("./raw_data_from_google/multiTimeline_JP.csv", "JP")
+
+#### Alle Daten zusammenführen und nach Datum und Land sortieren
+trends_combined <- rbind(trends_US, trends_MX, trends_DE, trends_FR, trends_JP) %>%
+  arrange(date, country)
+
+##### Investigate the data
+#### str(trends_combined)
+#### head(trends_combined)
+#### View(trends_combined)
+#### summary(trends_combined)
+#### table(trends_combined$country)
+
+
+#### Daten in long format für Visualisierung
+trends_long <- trends_combined %>%
+  pivot_longer(
+    cols = c(`iPhone`, `Tesla`, `Rolex`),
+    names_to = "keyword",
+    values_to = "hits"
+  )
+
+#### head(trends_long, 10)
+#### View(trends_long)
+
+```
+
+#### Speichern der kombinierten Daten
+
+```{r}
+
+#### write.csv(trends_combined, "trends_combined_wide.csv", row.names = FALSE)
+#### write.csv(trends_long, "trends_combined_long.csv", row.names = FALSE)
+
+```
+
+## Facet line chart for all combinations of country & keyword.
+
+```{r}
+
+#### Make the line graph with facets for all combinations
+
+trends_long %>%
+  ggplot(aes(x = date, y = hits)) +
+  geom_line(colour = "darkblue", linewidth = .6) +
   labs(
-    title = "Mean Total Views by Keyword and Country",
-    subtitle = "Based on YouTube Trending Videos Data",
-    caption = "Source: Kaggle"
+    title = "Google Trends searches",
+    y = "Relative importance on that day",
+    caption = "Source: Google Trends (2017-11-14 to 2018-06-14)"
   ) +
+  facet_wrap(~ country + keyword, nrow = 5, ncol = 3) +
+  theme_minimal() +
   theme(
     plot.title = element_text(hjust = 0.5, face = "bold"),
-    plot.subtitle = element_text(hjust = 0.5),
-    legend.position = "bottom"
-  ) +
-  facet_wrap(~ keyword)+
-  #### need to zoom in on the northern atmosphere
-  coord_sf(
-    xlim = c(-170, 170),   #### full longitude range
-    ylim = c(0, 85),       #### only show from equator up to north pole
-    expand = FALSE
+    panel.grid.minor = element_blank()
   )
+
+```
+
+## Scatterplot Keyword 1 vs. Keyword 2 for all countries
+
+```{r echo=FALSE, message=FALSE}
+
+#### Make the scatter plot with fitted lm line
+
+ggplot(trends_combined, aes(x = iPhone, y = Rolex)) +
+  geom_point(alpha = 0.6, size = 2, color = "darkblue") +
+  geom_smooth(method = 'lm', se = TRUE) +
+  labs(
+    title = "Correlation between iPhone and Rolex in Google Trends searches",
+    x = "Tesla",
+    y = "iPhone",
+    caption = "Source: Google Trends. Each point represents a day from 2017-11-14 to 2018-06-14."
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold"),
+    panel.grid.minor = element_blank()
+  )
+
+```
+
+## Rolex bar chart with seasonality of Google Trends
+
+```{r}
+
+#### Get and prepare the data
+
+#### res <- gtrends(
+####   keyword = "Rolex",
+####   geo     = "",
+####   time    = "2018-01-01 2018-12-31")
+#### 
+#### write.csv(res$interest_over_time, "./raw_data_from_google/gtrends_Rolex_all_countries_year_2018.csv")
+
+google_Rolex_2018 <- read.csv("./raw_data_from_google/gtrends_Rolex_all_countries_year_2018.csv")
+
+plot_data <- google_Rolex_2018 %>% 
+  select(date, hits) %>% 
+  filter(date > "2018-01-01")
+
+#### Prepare month axis
+#### plot_data <- plot_data %>%
+####   mutate(month_abbr = factor(month(month, label = TRUE, abbr = TRUE),
+####                             levels = c("Nov", "Dez", "Jan", "Feb", "Mär", "Apr", "Mai", "Jun")))
+
+#### Make the bar chart
+
+ggplot(plot_data, aes(x = date, y = hits)) +
+  geom_col(fill = "darkblue") +
+  labs(
+    title = "Rolex searches worldwide 2018 by week",
+    x = "Weeks 2018",
+    y = "Relative search interest (100 for month with most searches",
+    caption = "Source: Google Trends (2018-01-01 to 2018-12-31)"
+  ) +
+  scale_y_continuous(limits = c(0, 100)) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_blank(),  #### Remove x-axis text labels
+    axis.ticks.x = element_blank()   #### Remove x-axis ticks
+  )
+
+```
+## 3.3 Model Anlaysis (to be added)
+
+## 3.4 Youtube Videos Analysis
+
+## Scatterplot Tesla Youtube-views vs. Youtube-likes
+
+```{r echo=FALSE, message=FALSE}
+
+## Prepare data
+
+plot_data <- aggregated_youtube_data_final %>% 
+  filter(keyword == 'Rolex') %>% 
+  select(trending_date, total_views, total_likes) %>% 
+  mutate(engagement = total_likes / total_views)
+
+## Plot the scatter plot
+
+ggplot(plot_data, aes(x = total_views, y = engagement)) +
+  geom_point(alpha = 0.6, size = 2, color = "darkblue") +
+  scale_x_continuous(labels = scales::number, expand = expansion(mult = c(0, 0.1))) +
+  geom_smooth(method = 'lm', se = FALSE) +
+  labs(
+    title = "Correlation between engagement with and views of Rolex YouTube videos",
+    x = "Total Views",
+    y = "Engagement: Likes / Views",
+    caption = "Source: Google Trends. Each point represents a day from 2017-11-14 to 2018-06-14."
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold"),
+    panel.grid.minor = element_blank()
+  )
+
+```
+
+## Barchart Brand comparison of YouTube-Engagement (i.e. likes / views and dislikes / views)
+
+```{r echo=FALSE, message=FALSE}
+
+## Prepare data
+
+plot_data <- aggregated_youtube_data_final %>% 
+  select(trending_date, keyword, total_views, total_likes, total_dislikes) %>% 
+  group_by(keyword) %>% 
+  summarise(total_views = sum(total_views),
+            total_likes = sum(total_likes),
+            total_dislikes = sum(total_dislikes)) %>% 
+  mutate(like_ratio = total_likes / total_views,
+         dislike_ratio = total_dislikes / total_views) %>% 
+  mutate(keyword = factor(keyword, levels = c('iPhone', 'Tesla', 'Rolex')))
+
+## Make the column plot
+
+# ggplot(plot_data,aes(x = keyword, y = like_ratio)) +
+#   geom_col(fill = "darkblue") +
+#   geom_text(aes(label = sprintf("%.3f", like_ratio)),
+#             vjust = -0.5, size = 3.2) +
+#   scale_y_continuous(limits = c(0, 0.05)) +
+#   theme_minimal() +
+#   labs(
+#     title = "Brand comparison of YouTube video engagement",
+#     x = "Keywords",
+#     y = "Engagement (total likes / total views)",
+#     caption = "Source: Kaggle dataset Youtube (November 2017 to Juin 2018)"
+#   )
+
+## Make a combined column plot for like- and dislike-ratio
+
+## Convert to long format: one column for metric type, one for value
+plot_long <- plot_data %>%
+  pivot_longer(cols = c(like_ratio, dislike_ratio),
+               names_to = "metric",
+               values_to = "ratio")
+
+## Plot with grouped bars
+ggplot(plot_long, aes(x = keyword, y = ratio, fill = metric)) +
+  geom_col(position = "dodge") +
+  geom_text(aes(label = sprintf("%.3f", ratio)),
+            vjust = -0.5, size = 3.2,
+            position = position_dodge(width = 0.9)) +
+  scale_y_continuous(limits = c(0, 0.05)) +
+  scale_fill_manual(values = c("like_ratio" = "darkblue",
+                               "dislike_ratio" = "firebrick")) +
+  theme_minimal() +
+  labs(
+    title = "Brand comparison of YouTube video engagement",
+    x = "Keywords",
+    y = "Engagement (likes/dislikes per views)",
+    fill = "Metric",
+    caption = "Source: Kaggle dataset Youtube (Nov 2017 – Jun 2018)"
+  )
+
+
+
+```
+
+## Longevity of selected YouTube-videos
+
+```{r echo=FALSE, message=FALSE}
+
+## Prepare data
+
+plot_data <- relevant_videos %>% 
+  select(video_id, trending_date, views, keyword) %>% 
+  group_by(video_id, trending_date, keyword) %>% 
+  summarise(total_views = sum(views))
+
+# plot_data %>% 
+#   group_by(keyword) %>%
+#   slice_max(total_views, n = 1) %>%
+#   ungroup()
+
+plot_data <- plot_data %>% 
+  filter(video_id %in% c("RgpoRGq3oBs",	"WpqUOW19aJQ", "2fGXDFiFBhg"))
+
+## Make the line graph
+
+plot_data %>%
+  ggplot(aes(x = trending_date, y = total_views, colour = keyword)) +
+  geom_line(linewidth = .6) +
+  labs(
+    title = "YouTube most watched videos: Development over time",
+    y = "Relative importance on that day",
+    caption = "Source: Google Trends (2017-11-14 to 2018-06-14)"
+  ) +
+  theme_minimal()
+
+```
+## 3.5 WordCloud
+
+### Install packages
+
+```{r echo=FALSE}
+#  Wordcloud2.
+
+library(ragg)
+library(systemfonts)
+library(textshaping)
+
+# For RStudio >= 1.4, go to Tools > Global Options > General > Graphics and set
+# the Backend to AGG.
+
+# View(systemfonts::system_fonts())
+# Test Fonts. Use family name!
+
+library(RColorBrewer)
+library(wordcloud2)
+library(tidyverse)
+library(stopwords)
+library(webshot2)
+library(htmlwidgets)
+
+```
+
+### Prepare the Rolex data
+
+```{r}
+
+# Use only videos that have Rolex in the title or in the tags
+rolex_df <- all_videos %>% 
+  filter(
+    str_detect(title, regex("rolex", ignore_case = TRUE)) |
+    str_detect(tags, regex("rolex", ignore_case = TRUE))
+  )
+
+# Aggregate by video_id (sum views, keep tags)
+rolex_df_aggregated <- rolex_df %>%
+  group_by(video_id, tags) %>%
+  summarise(total_views = sum(views, na.rm = TRUE), .groups = "drop")
+
+# Split tags by "|" separator (creates multiple rows per video)
+rolex_tags_split <- rolex_df_aggregated %>%
+  separate_rows(tags, sep = "\\|")
+
+# Clean individual tags
+rolex_tags_cleaned <- rolex_tags_split %>%
+  mutate(
+    # Remove leading/trailing whitespace
+    tags_clean = str_trim(tags),
+    # Convert to lowercase for consistency
+    tags_clean = str_to_lower(tags_clean),
+    # Remove extra whitespace within tags
+    tags_clean = str_squish(tags_clean)
+  ) %>%
+  # Remove empty tags and stopwords
+  filter(
+    tags_clean != "",
+    !tags_clean %in% stopwords("en"),
+    # Remove additional words you do not want to see in the cloud, namely 'Rolex'
+    !tags_clean %in% c("video", "youtube", "content", "2017", "2018", "olexesh", "rolex")
+  ) %>%
+  # Keep only the cleaned tags column
+  select(tag = tags_clean, total_views)
+
+# View results
+# head(rolex_tags_cleaned)
+# cat("Total unique clean tags:", n_distinct(rolex_tags_cleaned$tag), "\n")
+
+# aggregate to have unique tags
+rolex_tags_cleaned_unique <- rolex_tags_cleaned %>%
+  group_by(tag) %>%
+  summarise(total_views = sum(total_views, na.rm = TRUE)) %>%
+  arrange(desc(total_views))
+
+# View results
+# head(rolex_tags_cleaned_unique, 100)
+```
+
+### Create the Rolex wordcloud
+
+```{r}
+
+# Define luxurious colors that match to the Rolex brand.
+
+pal_rolex <- c("#228B22", "#0A1931", "#B09770", "#722F37", "#B36A5E", "#454545", "#006D77", "#4C3F91")
+
+# Create the Rolex wordcloud
+
+wc_Rolex <- wordcloud2(rolex_tags_cleaned_unique %>% filter(total_views > 100000),
+           size = 0.3, rotateRatio = 0,
+           minRotation = -pi/2, maxRotation = -pi/2,
+           fontFamily = 'Garamond',
+           fontWeight = 800,
+           gridSize = 4, 
+           shuffle = TRUE,
+           shape = 'circle', ellipticity = 0.5,
+           # color = palKH2[factor(df2$Word)])
+           color = rep_len(pal_rolex, nrow(rolex_tags_cleaned_unique)))
+
+wc_Rolex
+
+## Export a png
+
+## Step 1: Save as HTML in a known folder
+# html_file <- "C:/Users/dhub1/Pictures/Screenshots/wordcloud_Rolex.html"
+# saveWidget(wc_Rolex, file = html_file, selfcontained = TRUE)
+
+## Step 2: Take PNG snapshot of that HTML
+# png_file <- "C:/Users/dhub1/Pictures/Screenshots/wordcloud_Rolex.png"
+# webshot2::webshot(html_file, png_file, vwidth = 800, vheight = 600)
+
+```
+
+### Prepare the iPhone data
+
+```{r}
+
+# Use only videos that have iphone in the title or in the tags
+iphone_df <- all_videos %>% 
+  filter(
+    str_detect(title, regex("iphone", ignore_case = TRUE)) |
+    str_detect(tags, regex("iphone", ignore_case = TRUE))
+  )
+
+# Aggregate by video_id (sum views, keep tags)
+iphone_df_aggregated <- iphone_df %>%
+  group_by(video_id, tags) %>%
+  summarise(total_views = sum(views, na.rm = TRUE), .groups = "drop")
+
+# Split tags by "|" separator (creates multiple rows per video)
+iphone_tags_split <- iphone_df_aggregated %>%
+  separate_rows(tags, sep = "\\|")
+
+# Clean individual tags
+iphone_tags_cleaned <- iphone_tags_split %>%
+  mutate(
+    # Remove leading/trailing whitespace
+    tags_clean = str_trim(tags),
+    # Convert to lowercase for consistency
+    tags_clean = str_to_lower(tags_clean),
+    # Remove extra whitespace within tags
+    tags_clean = str_squish(tags_clean)
+  ) %>%
+  # Remove empty tags and stopwords
+  filter(
+    tags_clean != "",
+    !tags_clean %in% stopwords("en"),
+    # Remove additional words you do not want to see in the cloud, namely 'iPhone'
+    !tags_clean %in% c("video", "youtube", "content", "2017", "2018", "iphone", "iphone x")
+  ) %>%
+  # Keep only the cleaned tags column
+  select(tag = tags_clean, total_views)
+
+# View results
+# head(iphone_tags_cleaned)
+# cat("Total unique clean tags:", n_distinct(iphone_tags_cleaned$tag), "\n")
+
+# aggregate to have unique tags
+iphone_tags_cleaned_unique <- iphone_tags_cleaned %>%
+  group_by(tag) %>%
+  summarise(total_views = sum(total_views, na.rm = TRUE)) %>%
+  arrange(desc(total_views))
+
+# View results
+# head(iphone_tags_cleaned_unique, 100)
+```
+
+### Create the iPhone wordcloud
+
+```{r}
+# Define colors that match to Apple and specifically to the iPhone X launched 2017/2018.
+
+pal_iphone <- c("#FF375F", "#32D74B", "#0A84FF", "#FF9F0A", "#BF5AF2", "#1D1D1F", "#E4E4E2")
+
+# iPhone wordcloud
+
+wc_iPhone <- wordcloud2(iphone_tags_cleaned_unique %>% filter(total_views > 500000),
+           size = 0.2, rotateRatio = 0,
+           minRotation = -pi/2, maxRotation = -pi/2,
+           fontFamily = 'Helvetica Neue LT Std',
+           fontWeight = 800,
+           gridSize = 4, 
+           shuffle = TRUE,
+           shape = 'circle', ellipticity = 0.5,
+           # color = palKH2[factor(df2$Word)])
+           color = rep_len(pal_iphone, nrow(iphone_tags_cleaned_unique)))
+
+wc_iPhone
+
+## Export a png
+
+## Step 1: Save as HTML in a known folder
+# html_file <- "C:/Users/dhub1/Pictures/Screenshots/wordcloud_iPhone.html"
+# saveWidget(wc_iPhone, file = html_file, selfcontained = TRUE)
+
+## Step 2: Take PNG snapshot of that HTML
+# png_file <- "C:/Users/dhub1/Pictures/Screenshots/wordcloud_iPhone.png"
+# webshot2::webshot(html_file, png_file, vwidth = 800, vheight = 600)
+
 ```
