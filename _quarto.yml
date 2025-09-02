@@ -21,6 +21,8 @@ format:
     theme: flatly
     page-layout: full
     css: styles.css
+    title-block-style: none   # disables default bootstrap card，block automatically uses .title-box
+    title-block-banner: false # no banner background
   pdf:
     toc: true
     number-sections: true
