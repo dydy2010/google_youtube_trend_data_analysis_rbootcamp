@@ -12,6 +12,7 @@ editor:
 
 library(tidyverse)
 library(corrplot)
+library(patchwork)
 
 trends_combined <- read.csv("trends_combined_wide.csv")
 
@@ -50,28 +51,63 @@ summary(model)
 
 ```{r, message=FALSE}
 
-## Make a scatter plot with linear regression line.
-ggplot(lm_data, aes(x = iPhone_US, y = iPhone_DE)) +
+# Add fitted values & residuals
+lm_data$fitted <- fitted(model)
+lm_data$residuals <- residuals(model)
+
+# Extract coefficients for regression line
+coef_intercept <- coef(model)[1]
+coef_slope <- coef(model)[2]
+
+## Scatterplot with regression line (from model)
+plot_1 <- ggplot(lm_data, aes(x = iPhone_US, y = iPhone_DE)) +
   geom_point(alpha = 0.7, size = 2, color = "darkblue") +
-  geom_abline(aes(intercept = 0, slope = 1, color = "Perfect Correlation (y = x)"), 
-              linetype = "dashed", alpha = 0.5) +
-  geom_smooth(method = "lm", se = FALSE, color = "blue") +
+  geom_abline(
+    aes(intercept = 0, slope = 1, color = "Perfect Correlation (y = x)"),
+    linetype = "dashed", alpha = 0.7) +
+  geom_abline(
+    aes(intercept = coef_intercept, slope = coef_slope, color = "Regression Line"),
+    size = 1) +
   scale_color_manual(
     name = "Reference line:",
-    values = c("Perfect Correlation (y = x)" = "red", 
-               "Regression Line" = "blue")
-  ) +
+    values = c("Perfect Correlation (y = x)" = "red",
+               "Regression Line" = "blue")) +
   labs(
-    title = "iPhone searches: USA vs Germany",
+    title = "Google searches Germany vs USA", ,
     x = "iPhone USA",
     y = "iPhone Germany",
-    caption = "Source: Google Trends. Each point represents a day from 2017-11-14 to 2018-06-14."
-  ) +
+    caption = "Source: Google Trends. Each point represents a day from 2017-11-14 to 2018-06-14.") +
   theme_minimal() +
-  theme(
-    plot.title = element_text(hjust = 0.5, size = 14),
-    axis.title = element_text(size = 12),
-    legend.position = "bottom"
+  theme(legend.position = "bottom"
   )
+
+## Residuals vs Fitted
+plot_2 <- ggplot(lm_data, aes(fitted, residuals)) +
+  geom_point(alpha = 0.7, color = "darkblue") +
+  geom_hline(yintercept = 0, color = "red", linetype = "dashed") +
+  labs(title = "Residuals vs Fitted", x = "Fitted", y = "Residuals") +
+  theme_minimal()
+
+## Q-Q Plot
+plot_3 <- ggplot(lm_data, aes(sample = residuals)) +
+  stat_qq(alpha = 0.7, color = "darkblue") +
+  stat_qq_line(color = "red") +
+  labs(title = "Q-Q Plot of Residuals") +
+  theme_minimal()
+
+## Observed vs Fitted
+plot_4 <- ggplot(lm_data, aes(fitted, iPhone_DE)) +
+  geom_point(alpha = 0.7, color = "darkblue") +
+  geom_abline(intercept = 0, slope = 1, color = "red", linetype = "dashed") +
+  labs(title = "Observed vs Fitted", x = "Fitted", y = "Observed") +
+  theme_minimal()
+
+## Arrange plots
+# (plot_1 | plot_2) / (plot_3 | plot_4)
+
+plot_1
+plot_2
+plot_3
+plot_4
 
 ```
