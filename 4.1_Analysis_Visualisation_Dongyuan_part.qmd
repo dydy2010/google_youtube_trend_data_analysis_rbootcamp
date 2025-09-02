@@ -354,10 +354,10 @@ ggplot(data = combined_data_final, aes(x = trending_date, y = hits)) +
 
 <br>
 
-### Graph 2: Overall YouTube Engagement Comparison (Line Chart) v1 
+### Graph 2: Overall YouTube Views Comparison (Line Chart) v1 
 ```{r graph2 v1, fig.width=10, fig.height=6}
 #| output: true
-### Graph 2: Overall YouTube Engagement Comparison (Line Chart) v1 (no facet) 
+### Graph 2: Overall YouTube Views Comparison (Line Chart) v1 (no facet) 
 #### library(ggplot2)
 #### library(scales)
 
@@ -376,10 +376,10 @@ ggplot(data = combined_data_final, aes(x = trending_date, y = total_views)) +
 
 <br>
 
-### Graph 2: Overall YouTube Engagement Comparison v2 (Facet Version)
+### Graph 2: Overall YouTube Views Comparison v2 (Facet Version)
 ```{r graph2 v2, fig.width=14, fig.height=6}
 #| output: true
-#### Graph 2: Overall YouTube Engagement Comparison v2 (no Facet Version)
+#### Graph 2: Overall YouTube Views Comparison v2 (no Facet Version)
 ggplot(data = combined_data_final, aes(x = trending_date, y = total_views)) +
   geom_line(aes(color = keyword)) +
   labs(
@@ -393,7 +393,7 @@ ggplot(data = combined_data_final, aes(x = trending_date, y = total_views)) +
   facet_wrap(~keyword, scales = "free_y", nrow=3) #### allow the y-axis of each plot to have own independent scale
 ```
 <br>
-### Graph 3: Distribution of Engagement v1 Box Plot, doesnt work well with single data point per day somehow
+### Graph 3: Distribution of Views v1 Box Plot, doesnt work well with single data point per day somehow
 ### Compare the distribution of daily views for Tesla vs. iPhone vs. Rolex videos.
 ```{r graph3 v1}
 #| output: true
