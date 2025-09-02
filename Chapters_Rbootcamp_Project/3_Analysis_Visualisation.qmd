@@ -22,8 +22,6 @@ knitr:
     fig.height: 6
 ---
 
-
-
 ```{r}
 #### Preparation of Youtube Data (Dongyuan's part)
 #### Getting data reday for merge, other titles tbd
