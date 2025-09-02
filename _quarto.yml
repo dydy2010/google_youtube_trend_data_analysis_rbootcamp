@@ -8,18 +8,18 @@ book:
   date: "today"
   chapters:
     - index.qmd
-    - 2_Prepare_the_Data_for_Analysis.qmd                 
-    - 3_Analysis_Visualisation_Dongyuan_part.qmd
-    - 4_chapter_package_of_choice.qmd
-    - 5_Generative_AI.qmd
-    - 6_Conclusion_Limitation_Outlook.qmd
+    - Chapters_Rbootcamp_Project/2_Prepare_the_Data_for_Analysis.qmd
+    - Chapters_Rbootcamp_Project/3_Analysis_Visualisation.qmd
+    - Chapters_Rbootcamp_Project/4_chapter_package_of_choice.qmd
+    - Chapters_Rbootcamp_Project/5_Generative_AI.qmd
+    - Chapters_Rbootcamp_Project/6_Conclusion_Limitation_Outlook.qmd
 
 format:
   html:
     toc: true
     theme: flatly
     page-layout: full
-    css: styles.css
+    css: style.css
     title-block-style: none   # disables default bootstrap card，block automatically uses .title-box
     title-block-banner: false # no banner background
   pdf:
