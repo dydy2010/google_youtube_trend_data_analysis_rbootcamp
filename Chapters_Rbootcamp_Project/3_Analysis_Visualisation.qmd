@@ -1,6 +1,6 @@
 
 ---
-title: "Final_Quarto_Document"
+title: "Analysis and Visualisation"
 format: 
   html:
     toc: true
@@ -237,7 +237,7 @@ aggregated_youtube_data_final <- aggregated_youtube_data %>%
 
 ```{r}
 
-#  Calculate the Mean of Proportions and Ratios for each Keyword in each Country
+# Calculate the Mean of Proportions and Ratios for each Keyword in each Country
 mean_ratios_by_country_keyword <- aggregated_youtube_data_final %>%
   group_by(country, keyword) %>%
   summarise(
@@ -254,12 +254,12 @@ mean_ratios_by_country_keyword <- aggregated_youtube_data_final %>%
 <br>
 
 
-# Merging data (Youtube Trending Videos and Google Search)
-## Other titles tbd
+
 <br>
 
 ```{r}
 
+#### Merging data (Youtube Trending Videos and Google Search)
 ####  Perform the full join
 combined_data <- full_join(aggregated_youtube_data_final, trends_long, 
                            by = c("trending_date" = "date", "country", "keyword"))
@@ -281,10 +281,10 @@ combined_data_final <- combined_data_filled_na %>%
 colnames(combined_data_final)
 ```
 
-# 3. Data Analysis and Visualisation (Dongyuan's part)
-## 3.1 Part 1: The Big Picture - Comparing the Brands
-## Google Search Data Comparison
-### Graph 1: Overall Search Interest Comparison v1(Line Chart)
+
+## Part 1: The Big Picture - Comparing the Brands
+   Google Search Data Comparison
+   Graph 1: Overall Search Interest Comparison v1(Line Chart)
 ```{r graph1 Google Comparison v1, fig.width=14, fig.height=6}
 #| output: true
 #### Graph 1: Overall Search Interest Comparison (Line Chart) v1
@@ -300,7 +300,7 @@ ggplot(data = combined_data_final, aes(x = trending_date, y = hits, color = keyw
   )
 ```
 <br>
-### Graph 1: Overall Search Interest Comparison (Facet Chart) v2
+Graph 1: Overall Search Interest Comparison (Facet Chart) v2
 ```{r graph1 Google Comparison v2 Facet, fig.width=14, fig.height=6}
 ### Graph 1: Overall Search Interest Comparison (Facet Chart) v2
 library(ggplot2)
@@ -322,7 +322,7 @@ ggplot(data = combined_data_final, aes(x = trending_date, y = hits)) +
 
 <br>
 
-### Graph 2: Overall YouTube Views Comparison (Line Chart) v1 
+Graph 2: Overall YouTube Views Comparison (Line Chart) v1 
 ```{r graph2 v1, fig.width=10, fig.height=6}
 #| output: true
 ### Graph 2: Overall YouTube Views Comparison (Line Chart) v1 (no facet) 
@@ -344,7 +344,7 @@ ggplot(data = combined_data_final, aes(x = trending_date, y = total_views)) +
 
 <br>
 
-### Graph 2: Overall YouTube Views Comparison v2 (Facet Version)
+Graph 2: Overall YouTube Views Comparison v2 (Facet Version)
 ```{r graph2 v2, fig.width=14, fig.height=6}
 #| output: true
 #### Graph 2: Overall YouTube Views Comparison v2 (no Facet Version)
@@ -361,8 +361,8 @@ ggplot(data = combined_data_final, aes(x = trending_date, y = total_views)) +
   facet_wrap(~keyword, scales = "free_y", nrow=3) #### allow the y-axis of each plot to have own independent scale
 ```
 <br>
-### Graph 3: Distribution of Views v1 Box Plot, doesnt work well with single data point per day somehow
-### Compare the distribution of daily views for Tesla vs. iPhone vs. Rolex videos.
+Graph 3: Distribution of Views v1 Box Plot, doesnt work well with single data point per day somehow
+Compare the distribution of daily views for Tesla vs. iPhone vs. Rolex videos.
 ```{r graph3 v1}
 #| output: true
 ggplot(data = combined_data_final, aes(x = keyword, y = total_views)) +
@@ -378,8 +378,8 @@ ggplot(data = combined_data_final, aes(x = keyword, y = total_views)) +
 ```
 
 <br>
-### Graph 3: Distribution of Engagement v2 Violin Plot, doesnt work well, due to single data point per day somehow
-### Compare the distribution of daily views for iPhone vs. Rolex videos.
+Graph 3: Distribution of Engagement v2 Violin Plot, doesnt work well, due to single data point per day somehow
+Compare the distribution of daily views for iPhone vs. Rolex videos.
 ```{r graph3 v2}
 #| output: true
 ggplot(data = combined_data_final, aes(x = keyword, y = total_views)) +
@@ -394,9 +394,9 @@ ggplot(data = combined_data_final, aes(x = keyword, y = total_views)) +
 
 ```
 <br>
-### Graph 3: Distribution of Engagement v3 Ridge Plot
-### ridge plot is a modern and visually compelling way to compare distributions. It is especially effective data that shows peaks and valleys
-### Compare the distribution of daily views for iPhone vs. Rolex videos.
+Graph 3: Distribution of Engagement v3 Ridge Plot
+ridge plot is a modern and visually compelling way to compare distributions. It is especially effective data that shows peaks and valleys
+Compare the distribution of daily views for iPhone vs. Rolex videos.
 ```{r graph3 v3}
 #| output: true
 #### install.packages("ggridges")
@@ -423,8 +423,8 @@ ggplot(data = combined_data_final, aes(x = total_views, y = keyword, fill = keyw
 ```
 <br>
 
-## Graph 4: The iPhone Hype Cycle (Dual-Axis Chart) v1
-### 210-day window around the iPhone X launch.
+Graph 4: The iPhone Hype Cycle (Dual-Axis Chart) v1
+210-day window around the iPhone X launch.
 
 ```{r graph4 v1}
 #| output: true
@@ -485,8 +485,8 @@ ggplot(iphone_hype_data) +
 
 <br>
 
-## Graph 4: The iPhone Hype Cycle (Separate Chart) v2
-### 210-day window around the iPhone X launch.
+Graph 4: The iPhone Hype Cycle (Separate Chart) v2
+210-day window around the iPhone X launch.
 
 ```{r graph4 v2}
 #| output: true
@@ -513,11 +513,11 @@ print(plot_youtube)
 #### good practice reset to default
 par(mfrow = c(1, 1))
 ```
-## 3.2 Google Search Trend Analysis
-#### Install/Load libraries
+3.2 Google Search Trend Analysis
+
 
 ```{r echo=FALSE}
-
+#### Install/Load libraries
 ### library(gtrendsR)  # Downloading was blocked after 3 downloads
 library(tidyverse)
 library(lubridate)
@@ -528,12 +528,11 @@ library(countrycode)
 
 ```
 
-## prepare and merge data manually downloaded from Google Trends
 
-```{r}
+
+```{r prepare and merge data manually downloaded from Google Trends}
 
 #### Google Trends CSV-Dateien importieren und zusammenführen
-
 #### Funktion zum Einlesen und Aufbereiten der CSV-Dateien
 
 process_trends_csv <- function(filepath, country_code) {
@@ -561,9 +560,8 @@ process_trends_csv <- function(filepath, country_code) {
 
 ```
 
-#### Alle drei CSV-Dateien einlesen
 
-```{r}
+```{r Alle drei CSV-Dateien einlesen}
 
 trends_US <- process_trends_csv("./raw_data_from_google/multiTimeline_US.csv", "US")
 trends_MX <- process_trends_csv("./raw_data_from_google/multiTimeline_MX.csv", "MX")
@@ -596,18 +594,16 @@ trends_long <- trends_combined %>%
 
 ```
 
-#### Speichern der kombinierten Daten
 
-```{r}
+```{r Speichern der kombinierten Daten}
 
 #### write.csv(trends_combined, "trends_combined_wide.csv", row.names = FALSE)
 #### write.csv(trends_long, "trends_combined_long.csv", row.names = FALSE)
 
 ```
 
-## Facet line chart for all combinations of country & keyword.
 
-```{r}
+```{r Facet line chart for all combinations of country & keyword}
 
 #### Make the line graph with facets for all combinations
 
@@ -628,12 +624,10 @@ trends_long %>%
 
 ```
 
-## Scatterplot Keyword 1 vs. Keyword 2 for all countries
 
-```{r echo=FALSE, message=FALSE}
+```{r Scatterplot Keyword 1 vs. Keyword 2 for all countries, echo=FALSE, message=FALSE}
 
 #### Make the scatter plot with fitted lm line
-
 ggplot(trends_combined, aes(x = iPhone, y = Rolex)) +
   geom_point(alpha = 0.6, size = 2, color = "darkblue") +
   geom_smooth(method = 'lm', se = TRUE) +
@@ -651,9 +645,8 @@ ggplot(trends_combined, aes(x = iPhone, y = Rolex)) +
 
 ```
 
-## Rolex bar chart with seasonality of Google Trends
 
-```{r}
+```{r Rolex bar chart with seasonality of Google Trends}
 
 #### Get and prepare the data
 
@@ -693,11 +686,11 @@ ggplot(plot_data, aes(x = date, y = hits)) +
   )
 
 ```
-## 3.3 Model Anlaysis (to be added)
+## Model Anlaysis (to be added)
 
-## 3.4 Youtube Videos Analysis
+## Youtube Videos Analysis
 
-## Scatterplot Tesla Youtube-views vs. Youtube-likes
+Scatterplot Tesla Youtube-views vs. Youtube-likes
 
 ```{r echo=FALSE, message=FALSE}
 
@@ -728,7 +721,7 @@ ggplot(plot_data, aes(x = total_views, y = engagement)) +
 
 ```
 
-## Barchart Brand comparison of YouTube-Engagement (i.e. likes / views and dislikes / views)
+Barchart Brand comparison of YouTube-Engagement (i.e. likes / views and dislikes / views)
 
 ```{r echo=FALSE, message=FALSE}
 
@@ -789,7 +782,7 @@ ggplot(plot_long, aes(x = keyword, y = ratio, fill = metric)) +
 
 ```
 
-## Longevity of selected YouTube-videos
+Longevity of selected YouTube-videos
 
 ```{r echo=FALSE, message=FALSE}
 
@@ -821,13 +814,13 @@ plot_data %>%
   theme_minimal()
 
 ```
-## 3.5 WordCloud
+## WordCloud
 
-### Install packages
+
 
 ```{r echo=FALSE}
-#  Wordcloud2.
-
+###  Wordcloud2.
+#### Install packages
 library(ragg)
 library(systemfonts)
 library(textshaping)
@@ -847,9 +840,8 @@ library(htmlwidgets)
 
 ```
 
-### Prepare the Rolex data
 
-```{r}
+```{r Prepare the Rolex data}
 
 # Use only videos that have Rolex in the title or in the tags
 rolex_df <- all_videos %>% 
@@ -901,7 +893,7 @@ rolex_tags_cleaned_unique <- rolex_tags_cleaned %>%
 # head(rolex_tags_cleaned_unique, 100)
 ```
 
-### Create the Rolex wordcloud
+Create the Rolex wordcloud
 
 ```{r}
 
@@ -936,9 +928,8 @@ wc_Rolex
 
 ```
 
-### Prepare the iPhone data
 
-```{r}
+```{r Prepare the iPhone data}
 
 # Use only videos that have iphone in the title or in the tags
 iphone_df <- all_videos %>% 
@@ -990,7 +981,7 @@ iphone_tags_cleaned_unique <- iphone_tags_cleaned %>%
 # head(iphone_tags_cleaned_unique, 100)
 ```
 
-### Create the iPhone wordcloud
+Create the iPhone wordcloud
 
 ```{r}
 # Define colors that match to Apple and specifically to the iPhone X launched 2017/2018.
@@ -1021,5 +1012,4 @@ wc_iPhone
 ## Step 2: Take PNG snapshot of that HTML
 # png_file <- "C:/Users/dhub1/Pictures/Screenshots/wordcloud_iPhone.png"
 # webshot2::webshot(html_file, png_file, vwidth = 800, vheight = 600)
-
 ```

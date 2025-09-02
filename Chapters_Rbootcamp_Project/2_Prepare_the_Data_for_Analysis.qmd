@@ -1,6 +1,6 @@
 ---
-title: "2_Prepare_the_Data_for_Analysis"
+title: "Prepare_the_Data_for_Analysis"
 format: html
 ---
 
-# prepare data content to be added
+prepare data content to be added
