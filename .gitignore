@@ -13,5 +13,5 @@ echo "*.pdf" >> .gitignore
 *.html
 *.pdf
 *_files/
-
+_book/
 /.quarto/
