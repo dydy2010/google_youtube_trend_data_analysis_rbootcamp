@@ -380,7 +380,7 @@ ggplot(data = combined_data_final, aes(x = keyword, y = total_views)) +
 <br>
 ### Graph 3: Distribution of Engagement v2 Violin Plot, doesnt work well, due to single data point per day somehow
 ### Compare the distribution of daily views for iPhone vs. Rolex videos.
-```{r graph3 v1}
+```{r graph3 v2}
 #| output: true
 ggplot(data = combined_data_final, aes(x = keyword, y = total_views)) +
   geom_violin(aes(fill = keyword), alpha = 0.6) +
