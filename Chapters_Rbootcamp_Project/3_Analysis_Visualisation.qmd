@@ -22,7 +22,7 @@ knitr:
     fig.height: 6
 ---
 
-<br>
+
 
 ```{r}
 #### Preparation of Youtube Data (Dongyuan's part)
@@ -55,7 +55,6 @@ str(MXvideos)
 str(USvideos)
 ```
 
-<br>
 ```{r}
 
 #### Add a 'country' column and standardize data types for each data frame
@@ -95,7 +94,7 @@ all_videos <- bind_rows(DEvideos, FRvideos, JPvideos, MXvideos, USvideos)
 #### Check the structure of the new, combined data frame
 str(all_videos)
 ```
-<br>
+
 
 ```{r}
 
@@ -113,9 +112,7 @@ earliest_date
 latest_date
 #### wordcloud nicht vergessen
 ```
-<br>
 
-<br>
 
 ```{r}
 
@@ -161,7 +158,7 @@ most_searched_tags_by_country <- tags_per_day %>%
 #### View(most_searched_tags_by_country)
 
 ```
-<br>
+
 ```{r}
 
 #### Filter for the three keywords and create a new 'keyword' column
@@ -179,7 +176,7 @@ str(relevant_videos)
 head(relevant_videos)
 
 ```
-<br>
+
 
 ```{r}
 
@@ -199,7 +196,6 @@ aggregated_youtube_data <- relevant_videos %>%
 #### View(aggregated_youtube_data)
 ```
 
-<br>
 
 ```{r}
 
@@ -233,7 +229,7 @@ aggregated_youtube_data_final <- aggregated_youtube_data %>%
 #### View(aggregated_youtube_data_final)
 ```
 
-<br>
+
 
 ```{r}
 
@@ -251,11 +247,7 @@ mean_ratios_by_country_keyword <- aggregated_youtube_data_final %>%
 #### View(mean_ratios_by_country_keyword)
 #### colnames(aggregated_youtube_data_final)
 ```
-<br>
 
-
-
-<br>
 
 ```{r}
 
@@ -282,7 +274,7 @@ colnames(combined_data_final)
 ```
 
 
-## Part 1: The Big Picture - Comparing the Brands
+## The Big Picture - Comparing the Brands
    Google Search Data Comparison
    Graph 1: Overall Search Interest Comparison v1(Line Chart)
 ```{r graph1 Google Comparison v1, fig.width=14, fig.height=6}
