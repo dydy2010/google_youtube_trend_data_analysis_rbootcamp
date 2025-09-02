@@ -4,34 +4,113 @@ editor:
     wrap: 72
 ---
 
-## Google Trends data
+## The R Package *gtrendsR*
 
-The numbers from 0 to 100 on Google Trends represent normalized,
-relative search interest, not an absolute number of search queries. The
-value 100 indicates the peak popularity of a search term in a selected
-time period and region. All other values are relative to this peak
-value. A value of 0 means that there is insufficient data or that the
-search term has a very low search volume.
+The package **gtrendsR** provides an R interface to the **Google Trends
+API**. It enables us to download and analyze data about how frequently
+certain terms are searched on Google. Search interest can be studied
+across different **regions**, **time windows**, and **categories**,
+which makes the package useful for projects that aim to investigate
+public attention toward specific topics.
+
+------------------------------------------------------------------------
+
+### Core Function
+
+The central function is: gtrends()
+
+### Main Parameters
+
+Some of the most relevant arguments we can specify in `gtrends()` are:
+
+-   **`keyword:`** One or more search terms (character vector).
+
+-   **`geo:`** Geographic scope of the search. Examples:
+
+    -   `"US"` → United States
+    -   `"DE"` → Germany
+    -   `""` → worldwide
+
+-   **`time:`** The time frame of interest. Possible values include:
+
+    -   `"now 7-d"` → past 7 days
+    -   `"today 12-m"` → past 12 months
+    -   `"YYYY-MM-DD YYYY-MM-DD"` → custom date range
+
+-   **`gprop:`** The Google search property (some examples):
+
+    -   `"web"` (default)
+    -   `"news"`
+    -   `"images"`
+
+-   **`category:`** Restricts results to a specific category (e.g.,
+    `"67"` for Finance).
+
+### Structure of the Results
+
+A typical call to `gtrends()` returns a **list of data frames**. The
+most commonly used components are:
+
+-   **`interest_over_time`**\
+    Time series of relative search interest (scaled 0–100) for the
+    chosen keyword(s).
+
+-   **`interest_by_country`**\
+    Aggregated search interest at the country level.
+
+-   **`interest_by_region`**\
+    Regional breakdown (e.g., states, cities, DMA) depending on `geo`.
+
+-   **`related_topics`**\
+    Topics that are often searched together with the given keyword(s).
+
+### Summary
+
+In summary, the package **gtrendsR** allows us to bring Google Trends
+data directly into R.\
+With it, we can:
+
+-   Track search interest **over time**,
+-   Compare search intensity **across regions**, and
+-   Explore **related queries and topics** that frequently appear
+    alongside our keywords.
+
+### Interpretation of the data
+
+The **numbers from 0 to 100** on Google Trends represent **normalized,
+relative search interest**, not an absolute number of search queries.
+The value 100 indicates the peak popularity of a search term in a
+selected time period and region. **All other values are relative to this
+peak value**. A value of 0 means that there is insufficient data or that
+the search term has a very low search volume.
 
 How the numbers work:
 
-1.  Normalization: Google Trends normalizes the data on a scale from 0
-    to 100 to represent search interest in relation to all search
+1.  **Normalization**: Google Trends normalizes the data on a scale from
+    0 to 100 to represent search interest in relation to all search
     queries.
-2.  Relative values: The numbers are not absolute quantities, but show
-    how often a term was searched for in comparison to its own peak.
+2.  **Relative values**: The numbers are not absolute quantities, but
+    show how often a term was searched for in comparison to its own
+    peak.
 3.  The number 100: This represents the time or region when a search
     term reached its peak popularity.
 4.  The number 0: This means that there was insufficient data for the
     search term at that time or in that region.
-5.  Example: If a search term receives a 50, this means that search
+5.  **Example**: If a search term receives a 50, this means that search
     interest was only half as high as the peak value, which is 100.
+6.  **Keep in mind**: If you combine a search with a very popular and a
+    rather rare search term, the rare search term will get (very) low
+    numbers. But when you are only searching for the rare term it will
+    also get a 100 once, namely for the one day when it was most often
+    searched for.
 
-## Install/Load libraries
+## Example: World map with Google Trends data for Tesla
+
+### Import libraries
 
 ```{r echo=FALSE}
 
-# library(gtrendsR)  # Downloading was blocked after 3 downloads
+library(gtrendsR)
 library(tidyverse)
 library(gtrendsR)
 library(sf)
@@ -40,9 +119,15 @@ library(countrycode)
 
 ```
 
-## World map with Google Trends data for Tesla
+### Load data
 
-```{r, warning=FALSE}
+Google is restricting the download of Google Trends data. Sometimes
+already after one download it is not possible to make another download.
+As the behavior is - also based on comments of other users - very
+unpredictable, we saved successful downloads as RData objects and load
+the data whenever needed.
+
+```{r, echo=TRUE, warning=FALSE}
 
 ## Get global Google searches for Tesla with country codes (geo = "world")
 # res <- gtrends(
@@ -54,6 +139,16 @@ library(countrycode)
 # save(res, file = "gtrends_Tesla_world.RData")
 
 load("gtrends_Tesla_world.RData")
+
+```
+
+### Prepare the data in the gtrends df 'interest_by_country'
+
+We have to adjust some location iso-codes so they fit to the map data.
+And the main metric 'hits' has '\<1' which makes the column a character.
+We set \<1 and NA to 0 and the column to numeric.
+
+```{r, echo=TRUE, warning=FALSE}
 
 country_data_Tesla <- res$interest_by_country %>%
   mutate(
@@ -69,15 +164,34 @@ country_data_Tesla <- res$interest_by_country %>%
   select(iso2c, iso3c, country = location, hits, keyword) %>%
   arrange(desc(hits))
 
-## Get world map data (some countries like France have -99 in iso_a2 and/or iso_a3)
+```
+
+### Load and prepare the map data using ne_countries function from the rnaturalearth package.
+
+Some missings can be replaced with values from other columns (e.g.
+France with its overseas regions was a bit of an issue). Then the data
+is left joined with the prepared Google Trends data.
+
+```{r, echo=TRUE, warning=FALSE}
+
+## Get world map data
 world_sf <- ne_countries(scale = "medium", returnclass = "sf") %>% 
-  mutate(iso_a2 = iso_a2_eh,
-         iso_a3 = iso_a3_eh,
-         iso_n3 = iso_n3_eh)
+  mutate(
+    iso_a2 = if_else(iso_a2 == "" | is.na(iso_a2) | iso_a2 == "-99", iso_a2_eh, iso_a2),
+    iso_a3 = if_else(iso_a3 == "" | is.na(iso_a3) | iso_a3 == "-99", iso_a3_eh, iso_a3),
+    iso_n3 = if_else(iso_n3 == "" | is.na(iso_n3) | iso_n3 == "-99", iso_n3_eh, iso_n3))
 
 ## Join by ISO3
 world_trends <- world_sf %>%
   left_join(country_data_Tesla, by = c("iso_a3" = "iso3c"))
+
+```
+
+### Producing the world map with geom_sf
+
+Additionally we specify a color coding from bright to dark blues.
+
+```{r, echo=TRUE, warning=FALSE}
 
 ## Produce map
 ggplot() +
@@ -85,14 +199,16 @@ ggplot() +
           aes(fill = hits), 
           color = "white") +
   scale_fill_gradientn(colors = c("#DEEBF7", "#9ECAE1", "#6BAED6", "#4292C6", "#2171B5",
-                                  "#08519C", "#08306B", "#062254", "#041A3C")) +
+                                  "#08519C", "#08306B", "#062254", "#041A3C"),
+                       ,name = "Interest") +
   labs(
     title = "Google Trends: Interest in Tesla",
-    subtitle = "Average interest across time (min = 0, max 100)",
+    subtitle = "Average interest level",
     caption = "Source: Google Trends (2017-11-14 to 2018-06-14)"
   ) +
   theme_bw() +
   theme(axis.text = element_blank(),
-        axis.ticks = element_blank())
+        axis.ticks = element_blank(),
+        plot.title = element_text(face = "bold"))
 
 ```
