@@ -29,15 +29,19 @@ Hi, this is supposed to be the final report to be submitted, we can start put pa
 <br>
 
 ```{r}
-
+#### install.packages("ggridges")
+#### install.packages("rnaturalearthdata")
+library(ggridges)
 library(tidyverse)
 library(dplyr)
 library(ggplot2)
 library(scales)
-# Load Google Trends data here
+library(sf)
+library(rnaturalearth)
+#### Load Google Trends data here
 trends_long <- read_csv("trends_combined_long.csv")
-# getwd()
-# Load Youtube Trending Video data here
+#### getwd()
+#### Load Youtube Trending Video data here
 
 getwd()
 DEvideos <- read_csv("raw_data_from_kaggle/DEvideos.csv")
@@ -290,35 +294,34 @@ mean_ratios_by_country_keyword <- aggregated_youtube_data_final %>%
 
 ```{r}
 
-#  Perform the full join
+####  Perform the full join
 combined_data <- full_join(aggregated_youtube_data_final, trends_long, 
                            by = c("trending_date" = "date", "country", "keyword"))
 
-# Because every day there is a google trend index, but not every day for each tag there is trendy videos
-# Replace NA values with 0 for all columns except the keywords
-# This handles the days with no trending videos
+#### Because every day there is a google trend index, but not every day for each tag there is trendy videos
+#### Replace NA values with 0 for all columns except the keywords
+#### This handles the days with no trending videos
 combined_data_filled_na <- combined_data %>%
   mutate(across(-c(trending_date, country, keyword), ~replace_na(., 0)))
 
-# Add the status column to indicate if a video was trending
+#### Add the status column to indicate if a video was trending
 combined_data_final <- combined_data_filled_na %>%
   mutate(youtube_status = if_else(total_views == 0,
                                   "no trending video today for this keyword",
                                   "trending video(s) found"))
 
-# Check your final merged dataset
+#### Check your final merged dataset
 #### View(combined_data_final)
 colnames(combined_data_final)
-
 ```
+
 # Data Analysis and Visualisation (Dongyuan's part)
 ## Part 1: The Big Picture - Comparing the Brands
-
 ## Google Search Data Comparison
-### Graph 1: Overall Search Interest Comparison v1(Line Chart) v2(Facet Chart)
-```{r graph1 Google Comparison v1}
+### Graph 1: Overall Search Interest Comparison v1(Line Chart)
+```{r graph1 Google Comparison v1, fig.width=14, fig.height=6}
 #| output: true
-### Graph 1: Overall Search Interest Comparison (Line Chart) v1
+#### Graph 1: Overall Search Interest Comparison (Line Chart) v1
 library(ggplot2)
 
 ggplot(data = combined_data_final, aes(x = trending_date, y = hits, color = keyword)) +
@@ -332,7 +335,7 @@ ggplot(data = combined_data_final, aes(x = trending_date, y = hits, color = keyw
 ```
 <br>
 ### Graph 1: Overall Search Interest Comparison (Facet Chart) v2
-```{r graph1 Google Comparison v2 Facet}
+```{r graph1 Google Comparison v2 Facet, fig.width=14, fig.height=6}
 ### Graph 1: Overall Search Interest Comparison (Facet Chart) v2
 library(ggplot2)
 
@@ -344,18 +347,21 @@ ggplot(data = combined_data_final, aes(x = trending_date, y = hits)) +
     y = "Relative Search Interest (0-100)",
     color = "Keyword"
   ) +
-  facet_wrap(~ keyword, scales = "free_y")
+  scale_x_date(
+    date_labels = "%Y-%m",       # format Year-Month
+    date_breaks = "1 month"      # show every month
+  ) +
+  facet_wrap(~ keyword, scales = "free_y", nrow=3)
 ```
 
 <br>
 
-## Youtube Data Comparison v1(Line Chart) 
-### Graph 2: Overall Search Interest Comparison v1 (Line Chart Version)
-```{r graph2 v1}
+### Graph 2: Overall YouTube Engagement Comparison (Line Chart) v1 
+```{r graph2 v1, fig.width=10, fig.height=6}
 #| output: true
-### Graph 2: Overall Search Interest Comparison v1 (Line Chart Version)
-# library(ggplot2)
-# library(scales)
+### Graph 2: Overall YouTube Engagement Comparison (Line Chart) v1 (no facet) 
+#### library(ggplot2)
+#### library(scales)
 
 ggplot(data = combined_data_final, aes(x = trending_date, y = total_views)) +
   geom_line(aes(color = keyword)) +
@@ -372,11 +378,10 @@ ggplot(data = combined_data_final, aes(x = trending_date, y = total_views)) +
 
 <br>
 
-## Youtube Data Comparison v2(Facet Chart)
-### Graph 2: Overall Search Interest Comparison v2 (no Facet Version)
-```{r graph2 v2}
+### Graph 2: Overall YouTube Engagement Comparison v2 (Facet Version)
+```{r graph2 v2, fig.width=14, fig.height=6}
 #| output: true
-### Graph 2: Overall Search Interest Comparison v2 (no Facet Version)
+#### Graph 2: Overall YouTube Engagement Comparison v2 (no Facet Version)
 ggplot(data = combined_data_final, aes(x = trending_date, y = total_views)) +
   geom_line(aes(color = keyword)) +
   labs(
@@ -387,62 +392,275 @@ ggplot(data = combined_data_final, aes(x = trending_date, y = total_views)) +
   ) +
   scale_x_date(date_labels = "%b %Y") +  #### Format dates
   scale_y_continuous(labels = comma) +   #### Apply comma formatting to y-axis, no natural number(scales package)
-  facet_wrap(~ keyword) #### allow the y-axis of each plot to have own independent scale
-  
+  facet_wrap(~keyword, scales = "free_y", nrow=3) #### allow the y-axis of each plot to have own independent scale
+```
+<br>
+### Graph 3: Distribution of Engagement v1 Box Plot, doesnt work well with single data point per day somehow
+### Compare the distribution of daily views for Tesla vs. iPhone vs. Rolex videos.
+```{r graph3 v1}
+#| output: true
+ggplot(data = combined_data_final, aes(x = keyword, y = total_views)) +
+  geom_boxplot() +
+  labs(
+    title = "Distribution of Daily YouTube Views",
+    subtitle = "Comparing Engagement for iPhone, Tesla, and Rolex",
+    x = "Keyword",
+    y = "Daily Views"
+  ) +
+  scale_y_continuous(labels = scales::comma) #### Apply comma formatting to y-axis, no natural number(scales package)
+
 ```
 
 <br>
+### Graph 3: Distribution of Engagement v2 Violin Plot, doesnt work well, due to single data point per day somehow
+### Compare the distribution of daily views for iPhone vs. Rolex videos.
+```{r graph3 v1}
+#| output: true
+ggplot(data = combined_data_final, aes(x = keyword, y = total_views)) +
+  geom_violin(aes(fill = keyword), alpha = 0.6) +
+  labs(
+    title = "Distribution of Daily YouTube Views",
+    subtitle = "Comparing Engagement for iPhone, Tesla, and Rolex",
+    x = "Keyword",
+    y = "Daily Views"
+  ) +
+  scale_y_continuous(labels = label_number(scale = 1e-6, suffix = "M")) #### Apply comma formatting to y-axis, no natural number(scales package)
+
+```
+<br>
+### Graph 3: Distribution of Engagement v3 Ridge Plot
+### ridge plot is a modern and visually compelling way to compare distributions. It is especially effective data that shows peaks and valleys
+### Compare the distribution of daily views for iPhone vs. Rolex videos.
+```{r graph3 v3}
+#| output: true
+#### install.packages("ggridges")
+#### library(ggridges)
+
+ggplot(data = combined_data_final, aes(x = total_views, y = keyword, fill = keyword)) +
+  geom_density_ridges(alpha = 0.8) +
+  labs(
+    title = "Distribution of Daily YouTube Views",
+    subtitle = "Comparing Engagement for iPhone, Tesla, and Rolex",
+    x = "Daily Views",
+    y = "Keyword"
+  ) +
+  scale_x_continuous(labels = scales::comma) +
+  theme(
+    legend.position = "none",
+    #### Increase the aspect ratio, make the plot less squished
+    #### adjusts the height-to-width ratio. value less than 1 will make the plot wider
+    aspect.ratio = 0.5,
+    #### Left-align the titles for better readability
+    plot.title = element_text(hjust = 0),
+    plot.subtitle = element_text(hjust = 0)
+  )
+```
+<br>
 
 ## Graph 4: The iPhone Hype Cycle (Dual-Axis Chart) v1
+### 210-day window around the iPhone X launch.
 
 ```{r graph4 v1}
 #| output: true
-
 ### Graph 4: The iPhone Hype Cycle (Dual-Axis Chart) v1
-# prepare data, define the iPhone X launch date.
+#### prepare data, define the iPhone X launch date.
 release_date <- as.Date("2017-11-03")
 start_date <- release_date - days(30)
-end_date <- release_date + days(30)
+end_date <- release_date + days(180)
 
-# filter combined data to get only the iPhone data, 60-day window.
+#### filter combined data to get only the iPhone data, 60-day window.
 iphone_hype_data <- combined_data_final %>%
   filter(keyword == "iPhone",
          trending_date >= start_date,
          trending_date <= end_date)
 
-# Create scaling factor for hits, after, both views and hits are visible on the same plot.
-# common method to create a dual axis in ggplot2.
+#### Create scaling factor for hits, after, both views and hits are visible on the same plot.
+#### common method to create a dual axis in ggplot2.
 scaling_factor <- max(iphone_hype_data$total_views, na.rm = TRUE) / max(iphone_hype_data$hits, na.rm = TRUE)
 
-# plot with ggplot2
+#### plot with ggplot2
 ggplot(iphone_hype_data) +
-  # YouTube views for left y-axis, bar.
+  #### YouTube views for left y-axis, bar.
   geom_col(aes(x = trending_date, y = total_views), fill = "blue") +
   
-  # Google search hits for right y-axis.
-  # scale the hits to match the 'total_views'.
-  geom_line(aes(x = trending_date, y = hits * scaling_factor), color = "red", size = 1.2) +
+  #### Google search hits for right y-axis.
+  #### scale the hits to match the 'total_views'.
+  geom_smooth(aes(x = trending_date, y = hits * scaling_factor), color = "red", size = 1.2) +
   
-  # Add the annotation line for the launch date.
-  geom_vline(xintercept = release_date, linetype = "dashed", color = "gray", size = 1) +  # thickness of the line
-  # adds a vertical line to plot, useful for annotations, highlight specific day on time-series graph.
+  #### Add the annotation line for the launch date.
+  geom_vline(xintercept = release_date, linetype = "dashed", color = "gray", size = 1) +
   
-  # labels and titles.
+  #### labels and titles.
   labs(
     title = "iPhone X Hype Cycle: Views vs. Search Interest",
     subtitle = paste("60-day window around launch on", format(release_date, "%B %d, %Y")),
     x = "Date"
   ) +
   
-  # Configure the dual y-axis.
+  #### Configure the dual y-axis.
   scale_y_continuous(
     name = "Total Daily YouTube Views",
-    labels = scales::label_number(scale_cut = cut_short_scale()), # The cut_short_scale() function is a helper from the scales package that automatically sets the cutoffs for thousands (k), millions (M), billions (B), etc. 
-    sec.axis = sec_axis(~./scaling_factor, name = "Google Search Interest (0-100)")  # sec_axis() a common function for building customized y axis.
-    # transformation formula. The . is a placeholder for values on primary y-axis. 
-    # ~ is a shorthand function.
-  ) 
-  scale_y_continuous(labels = comma) +   #### Apply comma formatting to y-axis, no natural number(scales package)
-  facet_wrap(~ keyword) #### allow the y-axis of each plot to have own independent scale
+    #### Using label_number with scale and suffix to format the large nums
+    labels = scales::label_number(scale = 1e-6, suffix = "M"), 
+    sec.axis = sec_axis(~./scaling_factor, name = "Google Search Interest (0-100)")
+  ) +
+  
+  #### Theme settings.
+  theme(
+    legend.position = "none",
+    #### Increase the aspect ratio, make the plot less squished
+    #### adjusts the height-to-width ratio. value less than 1 will make the plot wider
+    aspect.ratio = 0.5,
+    plot.title = element_text(hjust = 0),
+    plot.subtitle = element_text(hjust = 0)
+  )
+```
 
+
+<br>
+
+## Graph 4: The iPhone Hype Cycle (Separate Chart) v2
+### 210-day window around the iPhone X launch.
+
+```{r graph4 v2}
+#| output: true
+### Graph 4: The iPhone Hype Cycle (Seperate Chart) v2
+#### prepare data, define the iPhone X launch date.
+#### layout 1 row and 2 columns
+par(mfrow = c(1, 2))
+
+#### Plot the Google Trends data
+plot_google <- ggplot(iphone_hype_data) +
+  geom_smooth(aes(x = trending_date, y = hits), color = "red", size = 1.2, se = FALSE) + ### se=FALSE,standard error. geom_smooth() plots a line, default, it also adds a shaded area around. 
+  geom_vline(xintercept = release_date, linetype = "dashed", color = "gray", size = 1) +
+  labs(title = "Google Search Interest", x = "Date", y = "Relative Interest")
+
+#### Plot the YouTube Views data
+plot_youtube <- ggplot(iphone_hype_data) +
+  geom_col(aes(x = trending_date, y = total_views), fill = "blue") +
+  geom_vline(xintercept = release_date, linetype = "dashed", color = "gray", size = 1) +
+  labs(title = "YouTube Daily Views", x = "Date", y = "Total Daily Views") +
+  scale_y_continuous(labels = scales::comma) 
+# print needed with par(mfrow)
+print(plot_google)
+print(plot_youtube)
+#### good practice reset to default
+par(mfrow = c(1, 1))
+```
+
+
+
+<br>
+
+## Graph 6: Geographic Hype Distribution (Map) v1
+### google search interest for "iPhone" and "Tesla" and "Rolex"by country (geo = "")
+
+```{r graph6 v1, fig.width=20, fig.height=10}
+#| output: true
+#### Graph 6: Geographic Hype Distribution (Map)
+#### search interest for "iPhone" and "Tesla" and "Rolex"by country (geo = "")
+#### library(sf)
+#### library(rnaturalearth)
+
+#### Load world map data
+world_map <- ne_countries(scale = "medium", returnclass = "sf")
+
+#### Calculate mean hits by country and keyword
+trends_mean <- trends_long %>%
+  mutate(country_full_name = case_when(
+    country == "DE" ~ "Germany",
+    country == "FR" ~ "France",
+    country == "JP" ~ "Japan",
+    country == "MX" ~ "Mexico",
+    country == "US" ~ "United States of America" 
+  )) %>%
+  group_by(country_full_name, keyword) %>%
+  summarize(mean_hits = mean(hits, na.rm = TRUE), .groups = "drop")
+
+#### Join Google Trends data with the world map data
+world_map_with_trends <- left_join(world_map, trends_mean, by = c("name" = "country_full_name"))
+
+#### Faceted map plot - showing each keyword separately
+ggplot(world_map_with_trends) +
+  geom_sf(aes(fill = mean_hits), color = "white", linewidth = 0.2) +
+  scale_fill_viridis_c(
+    option = "plasma", 
+    name = "Mean Search Interest (0-100)",
+    na.value = "grey"
+  ) +
+  labs(
+    title = "Mean Search Interest by Keyword and Country",
+    subtitle = "Based on Google Trends Data for iPhone, Tesla, and Rolex",
+    caption = "Source: Google Trends"
+  ) +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold"),
+    plot.subtitle = element_text(hjust = 0.5),
+    legend.position = "bottom"
+  ) +
+  facet_wrap(~ keyword)+
+  coord_sf(
+    xlim = c(-170, 170),   #### keep nearly full longitude range
+    ylim = c(0, 85),       #### only show from equator up to north pole
+    expand = FALSE
+  )
+```
+
+<br>
+
+## Graph 6: Geographic Hype Distribution (Map)
+###  youtube views for "iPhone" and "Tesla" and "Rolex"by country (geo = "")
+
+```{r graph6 v2, fig.width=20, fig.height=10}
+#| output: true
+#### Graph 6: Geographic Hype Distribution (Map) v2
+#### youtube views for "iPhone" and "Tesla" and "Rolex"by country (geo = "")
+#### library(sf)
+#### library(rnaturalearth)
+
+#### Load world map data
+world_map <- ne_countries(scale = "medium", returnclass = "sf")
+
+#### Calculate mean total_views by country and keyword
+combined_data_final_add_country_full <- combined_data_final %>%
+  mutate(country_full_name = case_when(
+    country == "DE" ~ "Germany",
+    country == "FR" ~ "France",
+    country == "JP" ~ "Japan",
+    country == "MX" ~ "Mexico",
+    country == "US" ~ "United States of America" 
+  )) %>%
+  group_by(country_full_name, keyword) %>%
+  summarize(total_views_mean = mean(total_views, na.rm = TRUE), .groups = "drop")
+
+#### Join YouTube data with the world map data
+world_map_with_views <- left_join(world_map, combined_data_final_add_country_full, 
+                                  by = c("name" = "country_full_name"))
+
+#### Faceted map plot - showing each keyword separately
+ggplot(world_map_with_views) +
+  geom_sf(aes(fill = total_views_mean), color = "white", linewidth = 0.2) +
+  scale_fill_viridis_c(
+    option = "plasma", 
+    name = "YouTube Mean Total Views",
+    na.value = "grey",
+    labels = label_number(scale = 1e-6, suffix = "M")
+  ) +
+  labs(
+    title = "Mean Total Views by Keyword and Country",
+    subtitle = "Based on YouTube Trending Videos Data",
+    caption = "Source: Kaggle"
+  ) +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold"),
+    plot.subtitle = element_text(hjust = 0.5),
+    legend.position = "bottom"
+  ) +
+  facet_wrap(~ keyword)+
+  #### need to zoom in on the northern atmosphere
+  coord_sf(
+    xlim = c(-170, 170),   #### full longitude range
+    ylim = c(0, 85),       #### only show from equator up to north pole
+    expand = FALSE
+  )
 ```
