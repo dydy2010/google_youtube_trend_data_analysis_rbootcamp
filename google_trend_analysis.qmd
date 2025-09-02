@@ -95,31 +95,6 @@ trends_long <- trends_combined %>%
 
 ```
 
-## Google Trends data
-
-The numbers from 0 to 100 on Google Trends represent normalized,
-relative search interest, not an absolute number of search queries. The
-value 100 indicates the peak popularity of a search term in a selected
-time period and region. All other values are relative to this peak
-value. A value of 0 means that there is insufficient data or that the
-search term has a very low search volume.
-
-How the numbers work:
-
-1.  Normalization: Google Trends normalizes the data on a scale from 0
-    to 100 to represent search interest in relation to all search
-    queries.
-2.  Relative values: The numbers are not absolute quantities, but show
-    how often a term was searched for in comparison to its own peak.
-3.  The number 100: This represents the time or region when a search
-    term reached its peak popularity.
-4.  The number 0: This means that there was insufficient data for the
-    search term at that time or in that region.
-5.  Example: If a search term receives a 50, this means that search
-    interest was only half as high as the peak value, which is 100.
-
-Source:
-
 ## Facet line chart for all combinations of country & keyword.
 
 ```{r}
@@ -209,64 +184,3 @@ ggplot(plot_data, aes(x = date, y = hits)) +
 
 ```
 
-## World map with Google Trends data for Tesla
-
-```{r, warning=FALSE}
-
-## Get global Google searches for Tesla with country codes (geo = "world")
-# res <- gtrends(
-#   keyword = "Tesla",
-#   geo     = "",
-#   time    = "2017-11-14 2018-06-14"
-# )
-# 
-# country_data_Tesla <- res$interest_by_country %>%
-#   mutate(
-#     iso2c = countrycode(location, "country.name", "iso2c",
-#                         custom_match = c("Kosovo" = "XK")),
-#     iso3c = countrycode(location, "country.name", "iso3c",
-#                         custom_match = c("Kosovo" = "XKX")),
-#     hits = case_when(
-#       hits == "<1" ~ 0,
-#       is.na(hits) ~ 0,
-#       TRUE ~ as.numeric(hits)
-#       )) %>%
-#   select(iso2c, iso3c, country = location, hits, keyword) %>%
-#   arrange(desc(hits))
-# 
-# write.csv(country_data_Tesla, "./raw_data_from_google/gtrends_Tesla_all_countries.csv", row.names = FALSE)
-
-country_data_Tesla <- read.csv("./raw_data_from_google/gtrends_Tesla_all_countries.csv")
-
-# head(country_data)
-
-## Get world map data (some countries like France have -99 in iso_a2 and/or iso_a3)
-world_sf <- ne_countries(scale = "medium", returnclass = "sf") %>% 
-  mutate(iso_a2 = iso_a2_eh,
-         iso_a3 = iso_a3_eh,
-         iso_n3 = iso_n3_eh)
-
-## Join by ISO3
-world_trends <- world_sf %>%
-  left_join(country_data_Tesla, by = c("iso_a3" = "iso3c"))
-
-## Check data
-# head(world_trends %>% select(name, iso_a3, keyword, hits))
-
-## Produce map
-ggplot() +
-  geom_sf(data = world_trends, 
-          aes(fill = hits), 
-          color = "white") +
-  scale_fill_gradientn(colors = c("#DEEBF7", "#9ECAE1", "#6BAED6", "#4292C6", "#2171B5",
-                                  "#08519C", "#08306B", "#062254", "#041A3C")) +
-  labs(
-    title = "Google Trends: Interest in Tesla",
-    subtitle = "Average interest across time (min = 0, max 100)",
-    caption = "Source: Google Trends (2017-11-14 to 2018-06-14)"
-  ) +
-  theme_bw() +
-  theme(axis.text = element_blank(),
-        axis.ticks = element_blank())
-
-```
