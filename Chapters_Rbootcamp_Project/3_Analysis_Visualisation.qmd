@@ -970,7 +970,6 @@ Create the iPhone wordcloud
 ```{r}
 #| output: true
 # Define colors that match to Apple and specifically to the iPhone X launched 2017/2018.
-
 pal_iphone <- c("#FF375F", "#32D74B", "#0A84FF", "#FF9F0A", "#BF5AF2", "#1D1D1F", "#E4E4E2")
 
 # iPhone wordcloud
