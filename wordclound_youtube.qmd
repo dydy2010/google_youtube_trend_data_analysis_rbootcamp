@@ -25,7 +25,8 @@ library(RColorBrewer)
 library(wordcloud2)
 library(tidyverse)
 library(stopwords)
-library(ggplot2)
+library(webshot2)
+library(htmlwidgets)
 
 ```
 
@@ -86,13 +87,14 @@ rolex_tags_cleaned_unique <- rolex_tags_cleaned %>%
 ### Create the Rolex wordcloud
 
 ```{r}
+
 # Define luxurious colors that match to the Rolex brand.
 
 pal_rolex <- c("#228B22", "#0A1931", "#B09770", "#722F37", "#B36A5E", "#454545", "#006D77", "#4C3F91")
 
 # Create the Rolex wordcloud
 
-wordcloud2(rolex_tags_cleaned_unique %>% filter(total_views > 100000),
+wc_Rolex <- wordcloud2(rolex_tags_cleaned_unique %>% filter(total_views > 100000),
            size = 0.3, rotateRatio = 0,
            minRotation = -pi/2, maxRotation = -pi/2,
            fontFamily = 'Garamond',
@@ -103,7 +105,20 @@ wordcloud2(rolex_tags_cleaned_unique %>% filter(total_views > 100000),
            # color = palKH2[factor(df2$Word)])
            color = rep_len(pal_rolex, nrow(rolex_tags_cleaned_unique)))
 
+wc_Rolex
+
+## Export a png
+
+## Step 1: Save as HTML in a known folder
+# html_file <- "C:/Users/dhub1/Pictures/Screenshots/wordcloud_Rolex.html"
+# saveWidget(wc_Rolex, file = html_file, selfcontained = TRUE)
+
+## Step 2: Take PNG snapshot of that HTML
+# png_file <- "C:/Users/dhub1/Pictures/Screenshots/wordcloud_Rolex.png"
+# webshot2::webshot(html_file, png_file, vwidth = 800, vheight = 600)
+
 ```
+
 ### Prepare the iPhone data
 
 ```{r}
@@ -167,7 +182,7 @@ pal_iphone <- c("#FF375F", "#32D74B", "#0A84FF", "#FF9F0A", "#BF5AF2", "#1D1D1F"
 
 # iPhone wordcloud
 
-wordcloud2(iphone_tags_cleaned_unique %>% filter(total_views > 500000),
+wc_iPhone <- wordcloud2(iphone_tags_cleaned_unique %>% filter(total_views > 500000),
            size = 0.2, rotateRatio = 0,
            minRotation = -pi/2, maxRotation = -pi/2,
            fontFamily = 'Helvetica Neue LT Std',
@@ -177,5 +192,17 @@ wordcloud2(iphone_tags_cleaned_unique %>% filter(total_views > 500000),
            shape = 'circle', ellipticity = 0.5,
            # color = palKH2[factor(df2$Word)])
            color = rep_len(pal_iphone, nrow(iphone_tags_cleaned_unique)))
+
+wc_iPhone
+
+## Export a png
+
+## Step 1: Save as HTML in a known folder
+# html_file <- "C:/Users/dhub1/Pictures/Screenshots/wordcloud_iPhone.html"
+# saveWidget(wc_iPhone, file = html_file, selfcontained = TRUE)
+
+## Step 2: Take PNG snapshot of that HTML
+# png_file <- "C:/Users/dhub1/Pictures/Screenshots/wordcloud_iPhone.png"
+# webshot2::webshot(html_file, png_file, vwidth = 800, vheight = 600)
 
 ```
