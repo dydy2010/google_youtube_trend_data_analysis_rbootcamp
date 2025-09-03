@@ -3,4 +3,20 @@ title: "Prepare_the_Data_for_Analysis"
 format: html
 ---
 
-prepare data content to be added
+# Chapter 2: Data Acquisition and Preparation
+## Data Description
+### YouTube Trending Video Dataset
+### Google Search Interest Dataset
+
+## Data Preparation and Cleaning
+### YouTube Data: Cleaning and Preprocessing
+#### Combining Country-Specific Datasets
+#### Extracting and Preparing Keywords from Tags
+#### Identifying Keywords for Google Trends Queries
+
+### Google Trends Data: Acquisition and Combination
+#### Automated Google Trends Query Function
+#### Executing Queries and Storing Results
+#### Loading Processed Google Trends Data
+
+### Final Dataset Integration

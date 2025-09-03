@@ -274,6 +274,7 @@ Comparison v1(Line Chart)
 ```{r graph1 Google Comparison v1, fig.width=14, fig.height=6}
 #| output: true
 #### Graph 1: Overall Search Interest Comparison (Line Chart) v1
+#### maybe combining the data points on the same day to one data point, avg, same day
 library(ggplot2)
 
 ggplot(data = combined_data_final, aes(x = trending_date, y = hits, color = keyword)) +
