@@ -3,5 +3,22 @@ title: "Generative_AI"
 format: html
 ---
 
+## Use of artificial intelligence in data analysis and visualization
 
-generative ai content to be added
+To work on this project, we primarily relied on the materials provided in the R-Bootcamp, the help functions of R and RStudio, as well as some vignettes in CRAN. These sources formed the basis for our work with the YouTube and Google data. In addition, we already had some script fragments and Quarto templates from projects in the previous semester that we could use.
+
+However, various challenges arose during the course of the project, particularly with regard to more complex issues relating to data preparation and visualization. To solve these, we used two additional strategies:
+
+**Research with Google**
+
+Through targeted searches, we were able to find solutions to typical R problems, such as how to use certain packages or how to interpret error messages.
+
+**Use of AI tools**
+
+In addition, we used AI-based assistance systems in specific cases. These primarily served to:\
+- explain error messages in understandable language and\
+- optimize non-functioning scripts that we had developed ourselves.
+
+It became apparent that the solutions proposed by the AI were not always immediately ready for use. We often had to further adapt the code, fix errors, or restructure parts of it before it could be used for our analyses and visualizations.
+
+The use of AI was therefore not a substitute for our own understanding, but rather a complementary support and learning aid. By critically examining the suggestions, we were able to deepen our knowledge and learn the R methods in a more sustainable way.
