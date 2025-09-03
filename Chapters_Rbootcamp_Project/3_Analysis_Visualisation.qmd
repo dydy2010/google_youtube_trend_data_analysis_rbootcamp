@@ -109,7 +109,7 @@ earliest_date <- min(all_videos$trending_date)
 latest_date <- max(all_videos$trending_date)
 earliest_date
 latest_date
-#### wordcloud nicht vergessen
+
 ```
 
 ```{r}
@@ -243,7 +243,10 @@ mean_ratios_by_country_keyword <- aggregated_youtube_data_final %>%
 ```
 
 ```{r}
-
+# Ensure trending_date is Date type before joining
+# Use the same date format specification as before
+aggregated_youtube_data_final <- aggregated_youtube_data_final %>%
+  mutate(trending_date = as.Date(trending_date, format = "%y.%d.%m"))
 #### Merging data (Youtube Trending Videos and Google Search)
 ####  Perform the full join
 combined_data <- full_join(aggregated_youtube_data_final, trends_long, 

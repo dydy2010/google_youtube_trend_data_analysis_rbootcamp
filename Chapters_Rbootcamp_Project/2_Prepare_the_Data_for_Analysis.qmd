@@ -4,8 +4,20 @@ format: html
 ---
 
 # Chapter 2: Data Acquisition and Preparation
+
 ## Data Description
+Before showing the data preparation process, it is important to understand the data, e.g., charactistics, timespan and quality of our raw data sources. Here in this section, we will provide a overview of the 2 datasets that we have chosen and extracted using a R package.
 ### YouTube Trending Video Dataset
+First, for youtube trending video data, we have found a kaggle data project that contains the data that we want: [YouTube Trending Video Dataset on Kaggle](https://www.kaggle.com/datasets/datasnaek/youtube-new). 
+
+"This dataset includes several months (and counting) of data on daily trending YouTube videos. Data is included for the US, GB, DE, CA, and FR regions (USA, Great Britain, Germany, Canada, and France, respectively), with up to 200 listed trending videos per day.
+
+Each region’s data is in a separate file. Data includes the video title, channel title, publish time, tags, views, likes and dislikes, description, and comment count."
+
+The data spans from 2017-11-14 to 2018-06-14, so is our case study. As the author of the project claims, the original data was extracted using Youtube API. And we have chosen 5 countries' data: the US, Japan, Mexico, Germany and France. After combining the 5 countries' into one dataframe, there are 183487 rows and 17 columns. And after seperating the tags(keyword) of each videos into a single row, the dataframe has 3002056 rows and 17 columns.
+
+ ![A screenshot of one of the raw data file is as follow](Chapters_Rbootcamp_Project/youtube.png)
+
 ### Google Search Interest Dataset
 
 ## Data Preparation and Cleaning

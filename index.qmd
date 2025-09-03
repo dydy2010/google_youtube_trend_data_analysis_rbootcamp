@@ -4,10 +4,13 @@ editor:
     wrap: 72
 ---
 
-Welcome to our R Bootcamp Project
+Welcome to our R Bootcamp Project.
 
 This project explores **Brand and Product Strategy for Iphone, Tesla and Rolex**.  
-By diving deep into Youtube Trending Video and Google Search Trend data, we have conducted data analysis, visualization, and modeling analysis in R. The goal is to demonstrate insights for hypothetical clients and to deepen our learning in R, as part of our bootcamp learning journey.  
+
+By diving deep into Youtube Trending Video and Google Search Trend data, we have conducted data analysis, visualization, and modeling analysis in R. 
+
+The goal is to demonstrate insights for hypothetical clients and to deepen our learning in R, as part of our bootcamp learning journey.  
 
 # Our Story
 ## The Beginning of an Idea
@@ -20,20 +23,26 @@ and explore useful insights. To showcase our capabilities, we have chosen to ana
 
 ## How to Use This Book
 
-- Navigating through the report 
+### Navigating through the report
+
 You can interact with the report in two primary ways. For dynamic experience, we recommend viewing the HTML version. Simply open the _book/index.html file in your web browser after rendering. 
 
 If you prefer a static document, the PDF version as _book/book.pdf can be also a good choice. 
 
 You can read them directly or generate and play around yourself. However, to generate both formats, ensure you have R, RStudio, and Quarto installed, then in your Rstudio terminal, execute the command quarto render. This will first build the book, then both versions will be available in the _book folder.
 
-- Each chapter introduces concepts step by step.  
-- You will find the following chapters in our project.  
+Each chapter introduces concepts step by step.  
+### You will find the following chapters in our project.  
 *   **Chapter 1: Our Story:** You are right here, reading about how the idea was generated and how you should navigate through our project in chapters.
+
 *   **Chapter 2: Preparing the Data for Analysis:** Details about the meticulous process of data extraction, cleaning, and transformation, from raw YouTube and Google Trends sources.
+
 *   **Chapter 3: Analysis and Visualization:** Presentation of the core analytical findings, from broad descriptive statistics to in-depth correlation and trend analysis. Here you can understand the data with the help of various visualizations.
+
 *   **Chapter 4: Chapter of Choice - The `gtrendsR` Package:** Demonstration of a focused exploration of the `gtrendsR` package, we will showcase its capabilities and the technical aspects project implementation.
+
 *   **Chapter 5: Generative AI Usage and Guidelines:** Explanation of what kind of approach we use to apply Generative AI tools in our research, so that you can understand why it helps the research process and how it is implemented in a responsive way.
+
 *   **Chapter 6: Conclusion, Limitations, and Outlook:** Summarise of the key takeaways from our research, discussion of the limitations of the study, and potential improvement aspects for future projects.
 
 ---
