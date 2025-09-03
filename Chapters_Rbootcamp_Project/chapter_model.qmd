@@ -6,26 +6,44 @@ editor:
 
 ## Chapter 'fitting a linear regression model and visualize it'
 
-### Data preparation and correlations
+### Data visualisation
 
 ```{r echo=FALSE, message=FALSE}
 
 library(tidyverse)
 library(corrplot)
-library(patchwork)
+# library(patchwork)
 
 trends_combined <- read.csv("trends_combined_wide.csv")
 
-## Prepare data
+## Prepare data for weekly line graph
+trends_combined_week <- trends_combined %>%
+  mutate(week = floor_date(ymd(date), "week")) %>% 
+  group_by(week, country) %>% 
+  summarise(iPhone = sum(iPhone, na.rm = TRUE),
+            .groups = 'drop')          
+
+## Make the weekly line graph
+ggplot(data = trends_combined_week, aes(x = week, y = iPhone, color = country)) +
+  geom_line() +
+  labs(
+    title = "Google Search Interest Over Time",
+    x = "Date",
+    y = "Relative Search Interest (0-100)",
+    color = "Country"
+  )
+
+```
+
+### Prepare the data for modelling and Check all correlations
+
+```{r}
+
+## Prepare data for the modelling
 lm_data <- trends_combined %>%
   select(date, country, iPhone) %>% 
   pivot_wider(names_from = country, values_from = iPhone, names_prefix = "iPhone_")
 
-```
-
-### Check all correlations
-
-```{r}
 ## Calculate the correlation coefficients
 correlation_matrix <- lm_data %>%
   select(where(is.numeric)) %>%
