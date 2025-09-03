@@ -1050,6 +1050,8 @@ library(htmlwidgets)
 
 ```
 
+### Rolex wordcloud
+
 ```{r Prepare the Rolex data}
 
 # Use only videos that have Rolex in the title or in the tags
@@ -1139,6 +1141,9 @@ wc_Rolex
 # webshot2::webshot(html_file, png_file, vwidth = 800, vheight = 600)
 
 ```
+
+
+### iPhone wordcloud
 
 **As a second example**, to give an impression on how diverse wordclouds
 can become, we do a wordcloud for **iPhone** with the respective YouTube
