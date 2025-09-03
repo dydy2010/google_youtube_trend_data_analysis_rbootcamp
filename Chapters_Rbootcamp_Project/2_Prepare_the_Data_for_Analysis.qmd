@@ -21,7 +21,7 @@ The data spans from 2017-11-14 to 2018-06-14, so is our case study. As the autho
 *   **Initial Observations/Challenges:** 
 The first thing that we went to look into was the "tags" column, which are the topics/keywords that we plan to filter and analyze, however there are many tags in each row, which means we will need to seperate them using a delimeter later.
 
- ![A screenshot of one of the raw data file](Chapters_Rbootcamp_Project/youtube.png)
+ ![A screenshot of one of the raw data file](youtube.png)
 
 ### Google Search Interest Dataset
 
