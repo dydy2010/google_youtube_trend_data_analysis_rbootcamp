@@ -1,9 +1,9 @@
 ---
-title: "Prepare_the_Data_for_Analysis"
+title: "Data Acquisition and Preparation"
 format: html
+
 ---
 
-# Chapter 2: Data Acquisition and Preparation
 
 ## Data Description
 Before showing the data preparation process, it is important to understand the data, e.g., charactistics, timespan and quality of our raw data sources. Here in this section, we will provide a overview of the 2 datasets that we have chosen and extracted using a R package.

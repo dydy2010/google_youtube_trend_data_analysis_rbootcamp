@@ -21,6 +21,7 @@ format:
     page-layout: full
     css: style.css
     title-block-style: none   # disables default bootstrap card，block automatically uses .title-box
+    #title-block-style: default # using this to make all titles go left?
     title-block-banner: false # no banner background
   pdf:
     toc: true
