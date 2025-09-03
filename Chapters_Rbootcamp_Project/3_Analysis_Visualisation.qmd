@@ -1,4 +1,3 @@
-
 ---
 title: "Analysis and Visualisation"
 format: 
@@ -20,6 +19,9 @@ knitr:
   opts_chunk:
     fig.width: 10
     fig.height: 6
+editor: 
+  markdown: 
+    wrap: 72
 ---
 
 ```{r}
@@ -93,7 +95,6 @@ all_videos <- bind_rows(DEvideos, FRvideos, JPvideos, MXvideos, USvideos)
 str(all_videos)
 ```
 
-
 ```{r}
 
 #### Convert the trending_date column to a proper date format
@@ -110,7 +111,6 @@ earliest_date
 latest_date
 #### wordcloud nicht vergessen
 ```
-
 
 ```{r}
 
@@ -175,7 +175,6 @@ head(relevant_videos)
 
 ```
 
-
 ```{r}
 
 #### Aggregate the data by date, country, and keyword
@@ -193,7 +192,6 @@ aggregated_youtube_data <- relevant_videos %>%
 #### Check the new, aggregated dataframe
 #### View(aggregated_youtube_data)
 ```
-
 
 ```{r}
 
@@ -227,8 +225,6 @@ aggregated_youtube_data_final <- aggregated_youtube_data %>%
 #### View(aggregated_youtube_data_final)
 ```
 
-
-
 ```{r}
 
 # Calculate the Mean of Proportions and Ratios for each Keyword in each Country
@@ -245,7 +241,6 @@ mean_ratios_by_country_keyword <- aggregated_youtube_data_final %>%
 #### View(mean_ratios_by_country_keyword)
 #### colnames(aggregated_youtube_data_final)
 ```
-
 
 ```{r}
 
@@ -271,10 +266,11 @@ combined_data_final <- combined_data_filled_na %>%
 colnames(combined_data_final)
 ```
 
-
 ## The Big Picture - Comparing the Brands
-   Google Search Data Comparison
-   Graph 1: Overall Search Interest Comparison v1(Line Chart)
+
+Google Search Data Comparison Graph 1: Overall Search Interest
+Comparison v1(Line Chart)
+
 ```{r graph1 Google Comparison v1, fig.width=14, fig.height=6}
 #| output: true
 #### Graph 1: Overall Search Interest Comparison (Line Chart) v1
@@ -289,8 +285,9 @@ ggplot(data = combined_data_final, aes(x = trending_date, y = hits, color = keyw
     color = "Keyword"
   )
 ```
-<br>
-Graph 1: Overall Search Interest Comparison (Facet Chart) v2
+
+<br> Graph 1: Overall Search Interest Comparison (Facet Chart) v2
+
 ```{r graph1 Google Comparison v2 Facet, fig.width=14, fig.height=6}
 ### Graph 1: Overall Search Interest Comparison (Facet Chart) v2
 library(ggplot2)
@@ -312,7 +309,8 @@ ggplot(data = combined_data_final, aes(x = trending_date, y = hits)) +
 
 <br>
 
-Graph 2: Overall YouTube Views Comparison (Line Chart) v1 
+Graph 2: Overall YouTube Views Comparison (Line Chart) v1
+
 ```{r graph2 v1, fig.width=10, fig.height=6}
 #| output: true
 ### Graph 2: Overall YouTube Views Comparison (Line Chart) v1 (no facet) 
@@ -335,6 +333,7 @@ ggplot(data = combined_data_final, aes(x = trending_date, y = total_views)) +
 <br>
 
 Graph 2: Overall YouTube Views Comparison v2 (Facet Version)
+
 ```{r graph2 v2, fig.width=14, fig.height=6}
 #| output: true
 #### Graph 2: Overall YouTube Views Comparison v2 (no Facet Version)
@@ -350,9 +349,11 @@ ggplot(data = combined_data_final, aes(x = trending_date, y = total_views)) +
   scale_y_continuous(labels = comma) +   #### Apply comma formatting to y-axis, no natural number(scales package)
   facet_wrap(~keyword, scales = "free_y", nrow=3) #### allow the y-axis of each plot to have own independent scale
 ```
-<br>
-Graph 3: Distribution of Views v1 Box Plot, doesnt work well with single data point per day somehow
-Compare the distribution of daily views for Tesla vs. iPhone vs. Rolex videos.
+
+<br> Graph 3: Distribution of Views v1 Box Plot, doesnt work well with
+single data point per day somehow Compare the distribution of daily
+views for Tesla vs. iPhone vs. Rolex videos.
+
 ```{r graph3 v1}
 #| output: true
 ggplot(data = combined_data_final, aes(x = keyword, y = total_views)) +
@@ -367,9 +368,10 @@ ggplot(data = combined_data_final, aes(x = keyword, y = total_views)) +
 
 ```
 
-<br>
-Graph 3: Distribution of Engagement v2 Violin Plot, doesnt work well, due to single data point per day somehow
-Compare the distribution of daily views for iPhone vs. Rolex videos.
+<br> Graph 3: Distribution of Engagement v2 Violin Plot, doesnt work
+well, due to single data point per day somehow Compare the distribution
+of daily views for iPhone vs. Rolex videos.
+
 ```{r graph3 v2}
 #| output: true
 ggplot(data = combined_data_final, aes(x = keyword, y = total_views)) +
@@ -383,10 +385,12 @@ ggplot(data = combined_data_final, aes(x = keyword, y = total_views)) +
   scale_y_continuous(labels = label_number(scale = 1e-6, suffix = "M")) #### Apply comma formatting to y-axis, no natural number(scales package)
 
 ```
-<br>
-Graph 3: Distribution of Engagement v3 Ridge Plot
-ridge plot is a modern and visually compelling way to compare distributions. It is especially effective data that shows peaks and valleys
-Compare the distribution of daily views for iPhone vs. Rolex videos.
+
+<br> Graph 3: Distribution of Engagement v3 Ridge Plot ridge plot is a
+modern and visually compelling way to compare distributions. It is
+especially effective data that shows peaks and valleys Compare the
+distribution of daily views for iPhone vs. Rolex videos.
+
 ```{r graph3 v3}
 #| output: true
 #### install.packages("ggridges")
@@ -411,10 +415,11 @@ ggplot(data = combined_data_final, aes(x = total_views, y = keyword, fill = keyw
     plot.subtitle = element_text(hjust = 0)
   )
 ```
+
 <br>
 
-Graph 4: The iPhone Hype Cycle (Dual-Axis Chart) v1
-210-day window around the iPhone X launch.
+Graph 4: The iPhone Hype Cycle (Dual-Axis Chart) v1 210-day window
+around the iPhone X launch.
 
 ```{r graph4 v1}
 #| output: true
@@ -472,11 +477,10 @@ ggplot(iphone_hype_data) +
   )
 ```
 
-
 <br>
 
-Graph 4: The iPhone Hype Cycle (Separate Chart) v2
-210-day window around the iPhone X launch.
+Graph 4: The iPhone Hype Cycle (Separate Chart) v2 210-day window around
+the iPhone X launch.
 
 ```{r graph4 v2}
 #| output: true
@@ -503,7 +507,8 @@ print(plot_youtube)
 #### good practice reset to default
 par(mfrow = c(1, 1))
 ```
-## Google Search Trend Analysis
+
+## Google Search Trend Analysis (Daniel's part)
 
 ```{r echo=FALSE}
 #### Install/Load libraries
@@ -516,8 +521,6 @@ library(gtrendsR)
 library(countrycode)
 
 ```
-
-
 
 ```{r prepare and merge data manually downloaded from Google Trends}
 
@@ -548,7 +551,6 @@ process_trends_csv <- function(filepath, country_code) {
   }
 
 ```
-
 
 ```{r Alle drei CSV-Dateien einlesen}
 
@@ -583,14 +585,12 @@ trends_long <- trends_combined %>%
 
 ```
 
-
 ```{r Speichern der kombinierten Daten}
 
 #### write.csv(trends_combined, "trends_combined_wide.csv", row.names = FALSE)
 #### write.csv(trends_long, "trends_combined_long.csv", row.names = FALSE)
 
 ```
-
 
 ```{r Facet line chart for all combinations of country & keyword}
 #| output: true
@@ -613,7 +613,6 @@ trends_long %>%
 
 ```
 
-
 ```{r Scatterplot Keyword 1 vs. Keyword 2 for all countries, echo=FALSE, message=FALSE}
 #| output: true
 #### Make the scatter plot with fitted lm line
@@ -633,7 +632,6 @@ ggplot(trends_combined, aes(x = iPhone, y = Rolex)) +
   )
 
 ```
-
 
 ```{r Rolex bar chart with seasonality of Google Trends}
 #| output: true
@@ -675,7 +673,191 @@ ggplot(plot_data, aes(x = date, y = hits)) +
   )
 
 ```
-## Model Anlaysis (to be added)
+
+## Model Anlaysis: fitting a linear regression model and visualize it
+
+### Data visualization
+
+We want to find out how Google Searches for 'iPhone' in different
+countries are related. Are days with many searches for iPhone in the US
+also days with many searches in Germany? We would expect so as iPhone is
+a global topic and news, e.g. the launch of a new iPhone version, swap
+across the globe in no time. But still, let's check if we can proof it
+with the data.
+
+First we do a line graph comparing the Google Trends data for iPhone
+country by country. To get a nicer graph we aggregate the data from
+daily to weekly.
+
+```{r echo=FALSE, message=FALSE}
+
+library(tidyverse)
+library(corrplot)
+# library(patchwork)
+
+trends_combined <- read.csv("trends_combined_wide.csv")
+
+## Prepare data for weekly line graph
+trends_combined_week <- trends_combined %>%
+  mutate(week = floor_date(ymd(date), "week")) %>% 
+  group_by(week, country) %>% 
+  summarise(iPhone = sum(iPhone, na.rm = TRUE),
+            .groups = 'drop')          
+
+## Make the weekly line graph
+ggplot(data = trends_combined_week, aes(x = week, y = iPhone, color = country)) +
+  geom_line() +
+  labs(
+    title = "Google Search Interest Over Time",
+    x = "Date",
+    y = "Relative Search Interest (0-100)",
+    color = "Country"
+  )
+
+```
+
+As we can see the relative search interest in 'iPhone' is moving quite
+similar in all five countries. Now we want do check with a model how
+close two countries are related. We pick US and Germany as we are most
+interested in these countries. As they are also behaving very similar
+across time we expect a high correlation and a strong linear model
+explaining the interest in Germany with the interest in the US.
+
+### Prepare the data for modelling and checking all correlations
+
+As initial step we have to prepare the data. We use the daily data as we
+want to have data as rich as possible for modelling. For the linear
+regression model `lm()` we need separate columns for iPhone search
+interest per country. As a first analysis we calculate all correlations
+and visualize them with `corrplot`. Especially the correlations between
+iPhone_DE and iPhone_US are close to 1 (0.93).
+
+```{r}
+
+## Prepare data for the modelling
+lm_data <- trends_combined %>%
+  select(date, country, iPhone) %>% 
+  pivot_wider(names_from = country, values_from = iPhone, names_prefix = "iPhone_")
+
+## Calculate the correlation coefficients
+correlation_matrix <- lm_data %>%
+  select(where(is.numeric)) %>%
+  cor(use = "complete.obs")
+
+## Look at the correlations
+corrplot(correlation_matrix, method = "number", type = "upper",
+         tl.col = "black", tl.srt = 45, mar = c(1, 0, 1, 0))
+
+```
+
+### Fitting a linear model
+
+With the data already prepared the fitting of a linear model is straight
+forward and with `summary()` we get all relevant information about the
+fit.
+
+```{r}
+
+## Fit the linear regression model and show a summary
+model <- lm(iPhone_DE ~ iPhone_US, data = lm_data)
+summary(model)
+
+```
+
+As expected the linear regression model shows a strong relation between
+the Google search interest in iPhone between the US and Germany: The
+p-value of the model is close to 0 and therefore significant. The same
+is true for the iPhone_US estimate of 0.878. This means an increase of
+interest by 1 in the US goes along with an increase of interest in
+Germany by 0.878.
+
+### Visualize the linear regression and the quality of the model
+
+We do four visualizations for the model. First a scatter plot showing
+all data points (i.e. days) with iPhone_US on the x and iPhone_DE on the
+y axis. We add a line for the perfect correlation (y = x) and the
+regression line calculated with the model. Therefore we extract
+intercept and slope from the coefficients that we received when fitting
+the model.
+
+Then we do three standard graphs that are used to check the quality of a
+linear regression model:
+
+-   Residuals vs. Fitted to check linearity and constant variance: Any
+    clear pattern indicates an issue.
+-   Q-Q-plot of Residuals to check the normal distribution of errors.
+    Points should follow the line.
+-   Observed vs. Fitted to check visually how good model accuracy and
+    predictive power are.
+
+```{r, message=FALSE}
+
+# Add fitted values & residuals
+lm_data$fitted <- fitted(model)
+lm_data$residuals <- residuals(model)
+
+# Extract coefficients for regression line
+coef_intercept <- coef(model)[1]
+coef_slope <- coef(model)[2]
+
+## Scatterplot with regression line (from model)
+plot_1 <- ggplot(lm_data, aes(x = iPhone_US, y = iPhone_DE)) +
+  geom_point(alpha = 0.7, size = 2, color = "darkblue") +
+  geom_abline(
+    aes(intercept = 0, slope = 1, color = "Perfect Correlation (y = x)"),
+    linetype = "dashed", alpha = 0.7) +
+  geom_abline(
+    aes(intercept = coef_intercept, slope = coef_slope, color = "Regression Line"),
+    size = 1) +
+  scale_color_manual(
+    name = "Reference line:",
+    values = c("Perfect Correlation (y = x)" = "red",
+               "Regression Line" = "blue")) +
+  labs(
+    title = "Google searches Germany vs USA", ,
+    x = "iPhone USA",
+    y = "iPhone Germany",
+    caption = "Source: Google Trends. Each point represents a day from 2017-11-14 to 2018-06-14.") +
+  theme_minimal() +
+  theme(legend.position = "bottom"
+  )
+
+## Residuals vs Fitted
+plot_2 <- ggplot(lm_data, aes(fitted, residuals)) +
+  geom_point(alpha = 0.7, color = "darkblue") +
+  geom_hline(yintercept = 0, color = "red", linetype = "dashed") +
+  labs(title = "Residuals vs Fitted", x = "Fitted", y = "Residuals") +
+  theme_minimal()
+
+## Q-Q Plot
+plot_3 <- ggplot(lm_data, aes(sample = residuals)) +
+  stat_qq(alpha = 0.7, color = "darkblue") +
+  stat_qq_line(color = "red") +
+  labs(title = "Q-Q Plot of Residuals") +
+  theme_minimal()
+
+## Observed vs Fitted
+plot_4 <- ggplot(lm_data, aes(fitted, iPhone_DE)) +
+  geom_point(alpha = 0.7, color = "darkblue") +
+  geom_abline(intercept = 0, slope = 1, color = "red", linetype = "dashed") +
+  labs(title = "Observed vs Fitted", x = "Fitted", y = "Observed") +
+  theme_minimal()
+
+## Arrange plots
+# (plot_1 | plot_2) / (plot_3 | plot_4)
+
+plot_1
+plot_2
+plot_3
+plot_4
+
+```
+
+To keep the story short: There are no major issues with the model. It is
+explaining the Google search interest in Germany very well with the
+Google search interest in the US. Therefore the result of the analysis
+confirms our initial expectation.
+
 
 ## Youtube Videos Analysis
 
@@ -710,7 +892,8 @@ ggplot(plot_data, aes(x = total_views, y = engagement)) +
 
 ```
 
-Barchart Brand comparison of YouTube-Engagement (i.e. likes / views and dislikes / views)
+Barchart Brand comparison of YouTube-Engagement (i.e. likes / views and
+dislikes / views)
 
 ```{r echo=FALSE, message=FALSE}
 
@@ -801,11 +984,52 @@ plot_data %>%
   theme_minimal()
 
 ```
+
 ## WordCloud
 
+After all these analyses and visualizations of basically 'numbers' we
+should not forget that YouTube and Google Searches are primarily about
+**content**. What is actually the content of the videos watched in
+YouTube besides the fact that they are tagged with the keywords 'Rolex'
+or 'iPhone'? With a wordcloud we can give a very good first impression
+of the content based on all tags that were given to the videos. We think
+knowing what the content of the videos is, is as important as knowing
+how often they have been watched.
+
+First we do a wordcloud for **Rolex**. This means: We are counting all
+tags given to all Rolex videos. As a reminder: A Rolex video is a video
+that contains Rolex in the title or in the tags. Then we select the most
+frequent tags (besides Rolex) and arrange them in a form that usually is
+a kind of a flat circle. The most frequent tags/words are placed first
+in the center and with a larger font than the less frequent words that
+get a smaller font and are placed later where there is empty space to
+put them.
+
+The R package `wordcloud2` provides many parameters which allow to
+define a very specific look of the wordcloud. Without going to much into
+detail **the process has two steps**:
+
+1.  You have to prepare the words to be displayed in a **dataframe with
+    two columns**: the words and their counts. Regarding the words some
+    cleaning is needed like removing white spaces and stopwords (words
+    with no relevance for the wordcloud like 'and' etc. ). And when you
+    see the first wordcloud you will most likely remove other words that
+    you don't want to be shown or words that are just written
+    differently that you want to combine.
+2.  Then you call the `wordcloud2()` function and define all **visual
+    parameters**. This step requires a trial and error approach to set
+    all size parameters correctly to get a nice wordcloud. The
+    documentation of the package is good, so you know which parameter
+    does what. But still you will be surprised how minor changes make
+    the wordcloud look good or rather useless.
+
+Now follows the preparation of the data. Short note: Some packages
+loaded here are not necessary for the wordcloud but allow to e.g. check
+the fonts that you can use (`systemfonts`) or to export the wordcloud
+image as pdf (`webshot2`and `htmlwidgets`).
+
 ```{r echo=FALSE}
-###  Wordcloud2.
-#### Install packages
+
 library(ragg)
 library(systemfonts)
 library(textshaping)
@@ -824,7 +1048,6 @@ library(webshot2)
 library(htmlwidgets)
 
 ```
-
 
 ```{r Prepare the Rolex data}
 
@@ -878,7 +1101,10 @@ rolex_tags_cleaned_unique <- rolex_tags_cleaned %>%
 # head(rolex_tags_cleaned_unique, 100)
 ```
 
-Create the Rolex wordcloud
+Then we create the Rolex wordcloud. We restrict the data to words with
+more than 100k views and set a specific palette that represents the
+corporate identity of Rolex. And we set the font to Garamond which is
+close to the font Rolex uses.
 
 ```{r}
 #| output: true
@@ -913,6 +1139,15 @@ wc_Rolex
 
 ```
 
+**As a second example**, to give an impression on how diverse wordclouds
+can become, we do a wordcloud for **iPhone** with the respective YouTube
+tags. We adjust the color palette to the colors Apple used for their
+iPhones in 2017/18 and we adjust the font to a type of Helvetica. Here
+we have to restrict the number of words to 500k. And it is even possible
+to **define the form of the wordcloud based on a picture**. We use the
+apple logo (a png file with the logo in black on a white background) and
+`wordcloud2` will try to fill the space used by the Apple logo. This is
+definitely something we will try out the next time we do a wordcloud.
 
 ```{r Prepare the iPhone data}
 # Use only videos that have iphone in the title or in the tags
@@ -963,18 +1198,18 @@ iphone_tags_cleaned_unique <- iphone_tags_cleaned %>%
 
 # View results
 # head(iphone_tags_cleaned_unique, 100)
+
 ```
 
-Create the iPhone wordcloud
-
 ```{r}
-#| output: true
-# Define colors that match to Apple and specifically to the iPhone X launched 2017/2018.
+
+## Define colors that match to Apple and specifically to the iPhone X launched 2017/2018.
+
 pal_iphone <- c("#FF375F", "#32D74B", "#0A84FF", "#FF9F0A", "#BF5AF2", "#1D1D1F", "#E4E4E2")
 
 # iPhone wordcloud
 
-wc_iPhone <- wordcloud2(iphone_tags_cleaned_unique %>% filter(total_views > 500000),
+wc_iPhone <- wordcloud2(iphone_tags_cleaned_unique %>% filter(total_views > 5000000),
            size = 0.2, rotateRatio = 0,
            minRotation = -pi/2, maxRotation = -pi/2,
            fontFamily = 'Helvetica Neue LT Std',
@@ -986,6 +1221,7 @@ wc_iPhone <- wordcloud2(iphone_tags_cleaned_unique %>% filter(total_views > 5000
            color = rep_len(pal_iphone, nrow(iphone_tags_cleaned_unique)))
 
 wc_iPhone
+
 ## Export a png
 
 ## Step 1: Save as HTML in a known folder
@@ -995,4 +1231,5 @@ wc_iPhone
 ## Step 2: Take PNG snapshot of that HTML
 # png_file <- "C:/Users/dhub1/Pictures/Screenshots/wordcloud_iPhone.png"
 # webshot2::webshot(html_file, png_file, vwidth = 800, vheight = 600)
+
 ```
