@@ -37,7 +37,7 @@ format:
           {}
         % Reduce space before Table of Contents title
         \usepackage[titles]{tocloft}
-        \setlength{\cftbeforetoctitleskip}{-3em}  % Adjust this value if blank space above table of content is too big
+        \setlength{\cftbeforetoctitleskip}{-10em}  % Adjust this value if blank space above table of content is too big
         \renewcommand{\cfttoctitlefont}{\normalfont\Large\bfseries}
     geometry: top=2.5cm, bottom=1.5cm, left=2cm, right=2cm
     mainfont: Arial
