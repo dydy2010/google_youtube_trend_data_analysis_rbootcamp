@@ -4,17 +4,17 @@ editor:
     wrap: 72
 ---
 
-## Use of artificial intelligence in data analysis and visualization
+# Usage of artificial intelligence tools
 
 To work on this project, we primarily relied on the materials provided in the R-Bootcamp, the help functions of R and RStudio, as well as some vignettes in CRAN. These sources formed the basis for our work with the YouTube and Google data. In addition, we already had some script fragments and Quarto templates from projects in the previous semester that we could use.
 
 However, various challenges arose during the course of the project, particularly with regard to more complex issues relating to data preparation and visualization. To solve these, we used two additional strategies:
 
-**Research with Google**
+## Research with Google
 
 Through targeted searches, we were able to find solutions to typical R problems, such as how to use certain packages or how to interpret error messages.
 
-**Use of AI tools**
+## Use of AI tools
 
 In addition, we used AI-based assistance systems in specific cases. These primarily served to:\
 - explain error messages in understandable language and\
