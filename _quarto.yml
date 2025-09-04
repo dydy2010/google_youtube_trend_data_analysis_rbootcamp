@@ -26,7 +26,8 @@ format:
   pdf:
     toc: true
     number-sections: true
-    documentclass: report
+    documentclass: report 
+    classoption: 12pt # font was a bit small, increasing from 10 to 12
     include-in-header:
       text: |
         \usepackage{titlesec}
