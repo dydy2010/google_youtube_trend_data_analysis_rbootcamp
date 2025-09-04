@@ -4,7 +4,7 @@ editor:
     wrap: 72
 ---
 
-## The R Package *gtrendsR*
+# Chapter of choice: The R Package *gtrendsR*
 
 The package **gtrendsR** provides an R interface to the **Google Trends
 API**. It enables us to download and analyze data about how frequently
@@ -13,13 +13,11 @@ across different **regions**, **time windows**, and **categories**,
 which makes the package useful for projects that aim to investigate
 public attention toward specific topics.
 
-------------------------------------------------------------------------
-
-### Core Function
+## Core Function
 
 The central function is: gtrends()
 
-### Main Parameters
+## Main Parameters
 
 Some of the most relevant arguments we can specify in `gtrends()` are:
 
@@ -46,7 +44,7 @@ Some of the most relevant arguments we can specify in `gtrends()` are:
 -   **`category:`** Restricts results to a specific category (e.g.,
     `"67"` for Finance).
 
-### Structure of the Results
+## Structure of the Results
 
 A typical call to `gtrends()` returns a **list of data frames**. The
 most commonly used components are:
@@ -64,7 +62,7 @@ most commonly used components are:
 -   **`related_topics`**\
     Topics that are often searched together with the given keyword(s).
 
-### Summary
+## Summary
 
 In summary, the package **gtrendsR** allows us to bring Google Trends
 data directly into R.\
@@ -75,7 +73,7 @@ With it, we can:
 -   Explore **related queries and topics** that frequently appear
     alongside our keywords.
 
-### Interpretation of the data
+## Interpretation of the data
 
 The **numbers from 0 to 100** on Google Trends represent **normalized,
 relative search interest**, not an absolute number of search queries.
@@ -127,7 +125,7 @@ As the behavior is - also based on comments of other users - very
 unpredictable, we saved successful downloads as RData objects and load
 the data whenever needed.
 
-```{r, echo=TRUE, warning=FALSE}
+```{r, echo=FALSE, warning=FALSE}
 
 ## Get global Google searches for Tesla with country codes (geo = "world")
 # res <- gtrends(
