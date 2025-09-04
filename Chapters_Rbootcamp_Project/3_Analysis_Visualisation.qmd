@@ -499,6 +499,7 @@ library(countrycode)
 ```
 
 ```{r prepare and merge data manually downloaded from Google Trends}
+#| include: false
 
 ## import and join Google Trends csv datasets
 
@@ -528,6 +529,8 @@ process_trends_csv <- function(filepath, country_code) {
 ```
 
 ```{r Alle drei CSV-Dateien einlesen}
+
+#| include: false
 
 ## read all data
 trends_US <- process_trends_csv("./raw_data_from_google/multiTimeline_US.csv", "US")
@@ -561,6 +564,7 @@ trends_long <- trends_combined %>%
 ```
 
 ```{r Speichern der kombinierten Daten}
+#| include: false
 
 # write.csv(trends_combined, "trends_combined_wide.csv", row.names = FALSE)
 # write.csv(trends_long, "trends_combined_long.csv", row.names = FALSE)
@@ -574,6 +578,8 @@ been imported correctly.
 
 ```{r Facet line chart for all combinations of country & keyword}
 #| output: true
+#| include: false
+
 ## Make the line graph with facets for all combinations
 
 trends_long %>%
@@ -637,6 +643,8 @@ at the end of the year could result in increased searches on Google.
 
 ```{r Rolex bar chart with seasonality of Google Trends}
 #| output: true
+#| include: false
+
 ## Get and prepare the data
 
 # res <- gtrends(
@@ -743,6 +751,7 @@ and visualize them with `corrplot`. Especially the correlations between
 iPhone_DE and iPhone_US are close to 1 (0.93).
 
 ```{r}
+#| include: false
 
 ## Prepare data for the modelling
 lm_data <- trends_combined %>%
@@ -801,6 +810,8 @@ linear regression model:
     predictive power are.
 
 ```{r, message=FALSE}
+#| include: false
+#| output: true
 
 ## Add fitted values & residuals
 lm_data$fitted <- fitted(model)
@@ -888,6 +899,7 @@ Scatterplot Tesla Youtube-views vs. Youtube-likes
 
 ```{r echo=FALSE, message=FALSE}
 #| output: true
+
 ## Prepare data
 
 plot_data <- aggregated_youtube_data_final %>% 
@@ -1073,6 +1085,7 @@ library(htmlwidgets)
 ### Rolex wordcloud
 
 ```{r Prepare the Rolex data}
+#| include: false
 
 ## Use only videos that have Rolex in the title or in the tags
 rolex_df <- all_videos %>% 
@@ -1136,8 +1149,7 @@ close to the font Rolex uses.
 pal_rolex <- c("#228B22", "#0A1931", "#B09770", "#722F37", "#B36A5E", "#454545", "#006D77", "#4C3F91")
 
 ## Create the Rolex wordcloud
-
-wc_Rolex <- wordcloud2(rolex_tags_cleaned_unique %>% filter(total_views > 100000),
+wordcloud2(rolex_tags_cleaned_unique %>% filter(total_views > 100000),
            size = 0.3, rotateRatio = 0,
            minRotation = -pi/2, maxRotation = -pi/2,
            fontFamily = 'Garamond',
@@ -1147,18 +1159,6 @@ wc_Rolex <- wordcloud2(rolex_tags_cleaned_unique %>% filter(total_views > 100000
            shape = 'circle', ellipticity = 0.5,
            # color = palKH2[factor(df2$Word)])
            color = rep_len(pal_rolex, nrow(rolex_tags_cleaned_unique)))
-
-wc_Rolex
-
-## Export a png
-
-## Step 1: Save as HTML in a known folder
-# html_file <- "C:/Users/dhub1/Pictures/Screenshots/wordcloud_Rolex.html"
-# saveWidget(wc_Rolex, file = html_file, selfcontained = TRUE)
-
-## Step 2: Take PNG snapshot of that HTML
-# png_file <- "C:/Users/dhub1/Pictures/Screenshots/wordcloud_Rolex.png"
-# webshot2::webshot(html_file, png_file, vwidth = 800, vheight = 600)
 
 ```
 
@@ -1187,6 +1187,8 @@ to get it working, but it is definitely something we will try out the
 next time we do a wordcloud.
 
 ```{r Prepare the iPhone data}
+#| include: false
+#| output: true
 ## Use only videos that have iphone in the title or in the tags
 iphone_df <- all_videos %>% 
   filter(
@@ -1239,6 +1241,8 @@ iphone_tags_cleaned_unique <- iphone_tags_cleaned %>%
 ```
 
 ```{r}
+#| include: false
+#| output: true
 
 ## Define colors that match to Apple and specifically to the iPhone X launched 2017/2018.
 
