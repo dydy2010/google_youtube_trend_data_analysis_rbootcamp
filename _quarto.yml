@@ -4,7 +4,7 @@ project:
 book:
   title: "R Bootcamp Project"
   subtitle: "Brand and Product Strategy for Consumer Brands"
-  author: "Daniel Huber & Dongyuan Gao"
+  author: "**Daniel Huber & Dongyuan Gao**"
   date: "today"
   chapters:
     - index.qmd
@@ -35,7 +35,10 @@ format:
           {\thechapter.}
           {1em}
           {}
-    
+        % Reduce space before Table of Contents title
+        \usepackage[titles]{tocloft}
+        \setlength{\cftbeforetoctitleskip}{-3em}  % Adjust this value
+        \renewcommand{\cfttoctitlefont}{\normalfont\Large\bfseries}
     geometry: top=2.5cm, bottom=1.5cm, left=2cm, right=2cm
     mainfont: Arial
 
