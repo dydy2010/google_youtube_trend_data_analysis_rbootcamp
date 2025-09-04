@@ -1,6 +1,7 @@
 ---
-title: "Data Acquisition and Preparation"
-format: html
+editor: 
+  markdown: 
+    wrap: 72
 ---
 
 ## Data Description

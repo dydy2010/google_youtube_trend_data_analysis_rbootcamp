@@ -1,6 +1,7 @@
 ---
-title: "Conclusion_Limitation_Outlook"
-format: html
+editor: 
+  markdown: 
+    wrap: 72
 ---
 
 conclusion limitation outlook to be added

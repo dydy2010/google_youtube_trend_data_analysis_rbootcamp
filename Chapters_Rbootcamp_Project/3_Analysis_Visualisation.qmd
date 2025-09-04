@@ -1,24 +1,4 @@
 ---
-title: "Analysis and Visualisation"
-format: 
-  html:
-    toc: true
-    toc-float: true
-    toc-depth: 3
-    code-fold: true
-    code-tools: true
-    theme: cosmo
-    lang: en
-    encoding: UTF-8
-execute:
-  warning: false
-  message: false
-  echo: false
-  output: false
-knitr:
-  opts_chunk:
-    fig.width: 10
-    fig.height: 6
 editor: 
   markdown: 
     wrap: 72
