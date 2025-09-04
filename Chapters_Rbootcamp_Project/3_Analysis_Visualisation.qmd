@@ -512,7 +512,7 @@ print(plot_youtube)
 par(mfrow = c(1, 1))
 ```
 
-## Google Search Trend Analysis (Daniel's part)
+## Google Search Trend Analysis
 
 ```{r echo=FALSE}
 #### Install/Load libraries
@@ -678,7 +678,7 @@ ggplot(plot_data, aes(x = date, y = hits)) +
 
 ```
 
-## Model Anlaysis: fitting a linear regression model and visualize it
+## Model Analysis: fitting a linear regression model and visualize it
 
 ### Data visualization
 
@@ -705,7 +705,7 @@ trends_combined <- read.csv("trends_combined_wide.csv")
 trends_combined_week <- trends_combined %>%
   mutate(week = floor_date(ymd(date), "week")) %>% 
   group_by(week, country) %>% 
-  summarise(iPhone = sum(iPhone, na.rm = TRUE),
+  summarise(iPhone = mean(iPhone, na.rm = TRUE),
             .groups = 'drop')          
 
 ## Make the weekly line graph
@@ -862,6 +862,19 @@ explaining the Google search interest in Germany very well with the
 Google search interest in the US. Therefore the result of the analysis
 confirms our initial expectation.
 
+### Conclusion for our clients
+
+For any brand it is important to know the level of interest (potential)
+clients show over time. Especially when a major event is planned a
+monitoring of Google Search should be set up to understand how
+effectively the event triggered interest, how it developed afterwards
+and how the interest was in the markets/countries the brand is most
+interested in.
+
+In some countries, the event may have caused a sharp increase in
+interest that will last for a long time. While in other countries the
+effect may be rather short-lived. It is essential to be aware of such
+effects in order to respond appropriately with marketing measures.
 
 ## Youtube Videos Analysis
 
@@ -992,13 +1005,14 @@ plot_data %>%
 ## WordCloud
 
 After all these analyses and visualizations of basically 'numbers' we
-should not forget that YouTube and Google Searches are primarily about
-**content**. What is actually the content of the videos watched in
-YouTube besides the fact that they are tagged with the keywords 'Rolex'
-or 'iPhone'? With a wordcloud we can give a very good first impression
-of the content based on all tags that were given to the videos. We think
-knowing what the content of the videos is, is as important as knowing
-how often they have been watched.
+should not forget that brands and branding are primarily about
+**content.** Here we have good news: YouTube and Google Searches are
+too! One should and can examine what the actual content of the videos
+watched in YouTube is, besides the fact that they are tagged with the
+keywords 'Rolex' or 'iPhone'. With a wordcloud we can give a very good
+first impression of the content based on all tags that were given to the
+videos. We believe knowing what the content of the videos is, is as
+important as knowing how often they have been watched.
 
 First we do a wordcloud for **Rolex**. This means: We are counting all
 tags given to all Rolex videos. As a reminder: A Rolex video is a video
@@ -1145,6 +1159,15 @@ wc_Rolex
 
 ```
 
+The resulting word cloud is brilliant: it shows that the most-watched
+YouTube videos are heavily influenced by the **German hip-hop** scene!
+Bushido, Kollegah, Farid Bang, and Nimo are well-known German rappers,
+and they clearly like to show off their Rolex watches. We don't think
+the folks in charge of Rolex branding are too happy about this. We'd
+suggest they try to counteract the German videos. Of course, having the
+Rolex brand in hip-hop videos is a good thing in itself. But Rolex
+should try to make sure that YouTube videos show other Rolex values
+besides just “expensive.”
 
 ### iPhone wordcloud
 
@@ -1152,11 +1175,13 @@ wc_Rolex
 can become, we do a wordcloud for **iPhone** with the respective YouTube
 tags. We adjust the color palette to the colors Apple used for their
 iPhones in 2017/18 and we adjust the font to a type of Helvetica. Here
-we have to restrict the number of words to 500k. And it is even possible
-to **define the form of the wordcloud based on a picture**. We use the
-apple logo (a png file with the logo in black on a white background) and
-`wordcloud2` will try to fill the space used by the Apple logo. This is
-definitely something we will try out the next time we do a wordcloud.
+we have to restrict the number of words to 500k. According to the
+package description it would be even possible to **define the form of
+the wordcloud based on a picture**. We could use the apple logo (a png
+file with the logo in black on a white background) and `wordcloud2` will
+try to fill the space used by the Apple logo. So far we did not manage
+to get it working, but it is definitely something we will try out the
+next time we do a wordcloud.
 
 ```{r Prepare the iPhone data}
 # Use only videos that have iphone in the title or in the tags
@@ -1242,3 +1267,19 @@ wc_iPhone
 # webshot2::webshot(html_file, png_file, vwidth = 800, vheight = 600)
 
 ```
+
+We think this word cloud is much more in line with what iPhone managers
+expect. iPhone YouTube videos are tagged with terms from the world of
+**smartphones** and the **gaming scene**. Apple itself also seems to
+have a strong influence: the terms “unbox therapy” and “unboxing”
+probably originate from videos by **influencers** who are paid by Apple
+to unbox a new iPhone and share their first impressions with their
+followers. But it could be interesting to see how the word cloud
+develops thematically when no new iPhone is being launched.
+
+In **summary**, we can say that it is very worthwhile to use word clouds
+to get a feel for the content of videos. Major brands such as Apple and
+Rolex are already doing this, and there are undoubtedly more advanced
+content analysis tools than word clouds. But for **smaller brands** in
+particular, it could be a first step toward better understanding the
+image their brand projects on YouTube.

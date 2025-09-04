@@ -1,57 +1,49 @@
 ---
 title: "Data Acquisition and Preparation"
 format: html
-
 ---
 
-
 ## Data Description
+
 Before showing the data preparation process, it is important to understand the data, e.g., charactistics, timespan and quality of our raw data sources. Here in this section, we will provide a overview of the 2 datasets that we have chosen and extracted using a R package.
 
 ### YouTube Trending Video Dataset
 
-First, for youtube trending video data, we have found a kaggle data project that contains the data that we want:
-*   **Source:** [YouTube Trending Video Dataset on Kaggle](https://www.kaggle.com/datasets/datasnaek/youtube-new). 
-"This dataset includes several months (and counting) of data on daily trending YouTube videos. Data is included for the US, GB, DE, CA, and FR regions (USA, Great Britain, Germany, Canada, and France, respectively), with up to 200 listed trending videos per day."
+First, for youtube trending video data, we have found a kaggle data project that contains the data that we want: \* **Source:** [YouTube Trending Video Dataset on Kaggle](https://www.kaggle.com/datasets/datasnaek/youtube-new). "This dataset includes several months (and counting) of data on daily trending YouTube videos. Data is included for the US, GB, DE, CA, and FR regions (USA, Great Britain, Germany, Canada, and France, respectively), with up to 200 listed trending videos per day."
 
-*   **Key Variables (Raw):** 
-"Each region’s data is in a separate file. Data includes the video title, channel title, publish time, tags, views, likes and dislikes, description, and comment count."
+-   **Key Variables (Raw):** "Each region’s data is in a separate file. Data includes the video title, channel title, publish time, tags, views, likes and dislikes, description, and comment count."
 
-*   **Data Volume:** 
-The data spans from 2017-11-14 to 2018-06-14, so is our case study. As the author of the project claims, the original data was extracted using Youtube API. And we have chosen 5 countries' data: the US, Japan, Mexico, Germany and France. After combining the 5 countries' into one dataframe, there are 183487 rows and 17 columns. And after seperating the tags(keyword) of each videos into a single row, the data frame has 3002056 rows and 17 columns.
+-   **Data Volume:** The data spans from 2017-11-14 to 2018-06-14, so is our case study. As the author of the project claims, the original data was extracted using Youtube API. And we have chosen 5 countries' data: the US, Japan, Mexico, Germany and France. After combining the 5 countries' into one dataframe, there are 183487 rows and 17 columns. And after seperating the tags(keyword) of each videos into a single row, the data frame has 3002056 rows and 17 columns.
 
-*   **Initial Observations/Challenges:** 
-The first thing that we went to look into was the "tags" column, which are the topics/keywords that we plan to filter and analyze, however there are many tags in each row, which means we will need to seperate them using a delimeter later.
+-   **Initial Observations/Challenges:** The first thing that we went to look into was the "tags" column, which are the topics/keywords that we plan to filter and analyze, however there are many tags in each row, which means we will need to seperate them using a delimeter later.
 
- ![A screenshot of one of the raw data file](youtube.png){width=3000px,height=3000px}
+![A screenshot of one of the raw data file](youtube.png){width="3000px,height=3000px"}
 
 ### Google Search Interest Dataset
 
 We obtained this data set by extracting google search data ourselves, instead of using ready-to-use data.
 
-*   **Source:** Google Trends, accessed via the `gtrendsR` R package.
+-   **Source:** Google Trends, accessed via the `gtrendsR` R package.
 
-*   **Key Variables (from `gtrendsR` output):**
-    *   `date`: Date of search interest.
-    *   `hits`: A Google defined index of search interest (0-100).
-    *   `keyword`: The search term queried: Iphone, Rolex and Tesla.
-    *   `geo`: Geographic region of the search (we only define 5 countries that we chose).
-    
-*   **Initial Observations:** After reading into the package information and data, we found out that:
-                              the hits(0-100) reflects relative search interest, not absolute search volume.
+-   **Key Variables (from `gtrendsR` output):**
+
+    -   `date`: Date of search interest.
+    -   `hits`: A Google defined index of search interest (0-100).
+    -   `keyword`: The search term queried: Iphone, Rolex and Tesla.
+    -   `geo`: Geographic region of the search (we only define 5 countries that we chose).
+
+-   **Initial Observations:** After reading into the package information and data, we found out that: the hits(0-100) reflects relative search interest, not absolute search volume.
 
 ## Data Preparation and Cleaning
-The data preparation and cleaning was done in a exploratory way, step by step, heading to towards one goal:
-to have a data frame ready for merging with the google data set. As we have already analyzed the content of the raw data set, we have then later written down the exact data structure from both sides, which contain the exact information we want. To acheive that, the following was needed: group data, add and delete columns, filter and merge, etc. 
 
-In summary, our primary objective was to create a unified dataset that captures daily trending patterns for our target keywords (iPhone, Tesla, and Rolex) across five countries. 
+The data preparation and cleaning was done in a exploratory way, step by step, heading to towards one goal: to have a data frame ready for merging with the google data set. As we have already analyzed the content of the raw data set, we have then later written down the exact data structure from both sides, which contain the exact information we want. To acheive that, the following was needed: group data, add and delete columns, filter and merge, etc.
 
-Following up, we will showcase our **YouTube DataCleaning and Preprocessing**:
-*  Combining Country-Specific Datasets
-    The initial data extraction have five separate country files. Our first critica step is to read and merge them into     one single data frame. In the meantime, the country code "JP"US"DE"FR"MX" were added to the merged table.The            resulting dataset contained 183,487 observations spanning November 2017-11-14 to 2018-06-14 across all five             countries.
-    
-*  Extracting and Preparing Keywords from Tags
-The tags column presented both a challenge and an opportunity. We found out that each video contained multiple tags separated by pipe characters.To solve the problem, we seperated then the keyword(tags) for each videos as one individual row, using syntax like:
+In summary, our primary objective was to create a unified dataset that captures daily trending patterns for our target keywords (iPhone, Tesla, and Rolex) across five countries.
+
+Following up, we will showcase our **YouTube DataCleaning and Preprocessing**: \* Combining Country-Specific Datasets The initial data extraction have five separate country files. Our first critica step is to read and merge them into one single data frame. In the meantime, the country code "JP"US"DE"FR"MX" were added to the merged table.The resulting dataset contained 183,487 observations spanning November 2017-11-14 to 2018-06-14 across all five countries.
+
+-   Extracting and Preparing Keywords from Tags The tags column presented both a challenge and an opportunity. We found out that each video contained multiple tags separated by pipe characters.To solve the problem, we seperated then the keyword(tags) for each videos as one individual row, using syntax like:
+
 ```{r}
 #| eval: false
 #### Filter for the three keywords and create a new 'keyword' column
@@ -64,30 +56,21 @@ relevant_videos <- tags_per_day %>%
     TRUE ~ "Other"
   ))
 ```
+
 Then why is it an opportunity? Actually after separating the desired Iphone, Tesla and Rolex tags, we could even explore what tags are around these products. New types of insights and graphs like word cloud could be made.
 
-*  Engagement Metric Calculation
-Since we now have possibility to group total_views of videos of each keyword, also for dislikes, likes and comments, we came across the idea of evaluating the engagement level of each keyword during a certain time span. 
+-   Engagement Metric Calculation Since we now have possibility to group total_views of videos of each keyword, also for dislikes, likes and comments, we came across the idea of evaluating the engagement level of each keyword during a certain time span.
 
 To do that, it is necessary to aggreagate the data and do the calculation of ratio between: total_likes and total_views, or total_comments and total_views. These ratios provide insights into audience engagement (engagement quality) independent of video popularity.This is valuable information for companies to know what kind of video can provide most engagement of customers, while allocating the least advertisement resources.
 
+-   Final Dataset Integration The final chapter of the data preparation phase is the creation of a single, comprehensive dataset, combining the youtube data structure and the google search data.
 
-
-* Final Dataset Integration
-The final chapter of the data preparation phase is the creation of a single, comprehensive dataset, combining the youtube data structure and the google search data.
-
-Merging Strategy: Perform a full_join to combine the processed YouTube data (including trending dates, video metrics, and extracted tags, calculated engagement ratios, keyword, country) with the Google Trends search interest data.  In case on a day, there is google trend data for a keyword, but no trending video in youtube data, the metrics will be value 0. And an extra column is added, marking if the day has trending video or not.This way, we can keep every row from google and youtube data withouth potentially losing data points from one side.
+Merging Strategy: Perform a full_join to combine the processed YouTube data (including trending dates, video metrics, and extracted tags, calculated engagement ratios, keyword, country) with the Google Trends search interest data. In case on a day, there is google trend data for a keyword, but no trending video in youtube data, the metrics will be value 0. And an extra column is added, marking if the day has trending video or not.This way, we can keep every row from google and youtube data withouth potentially losing data points from one side.
 
 Join Keys: The join should be performed on common identifiers such as keyword/tag and date.
 
 Resulting Dataset: the structure of the final merged data is
 
-[1] "trending_date"        "country"              "keyword"              "total_views"         
-[5] "total_likes"          "total_dislikes"       "total_comments"       "video_count"         
-[9] "like_dislike_ratio"   "comments_views_ratio" "likes_views_ratio"    "dislikes_views_ratio"
-[13] "hits"                 "youtube_status"   
-
-
-
-
-
+\[1\] "trending_date" "country" "keyword" "total_views"\
+\[5\] "total_likes" "total_dislikes" "total_comments" "video_count"\
+\[9\] "like_dislike_ratio" "comments_views_ratio" "likes_views_ratio" "dislikes_views_ratio" \[13\] "hits" "youtube_status"
