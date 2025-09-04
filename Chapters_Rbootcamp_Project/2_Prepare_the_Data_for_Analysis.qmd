@@ -6,7 +6,7 @@ editor:
 
 ## Data Description
 
-Before showing the data preparation process, it is important to understand the data, e.g., charactistics, timespan and quality of our raw data sources. Here in this section, we will provide a overview of the 2 datasets that we have chosen and extracted using a R package.
+Before showing the data preparation process, it is important to understand the data, e.g., characteristics, time span and quality of our raw data sources. Here in this section, we will provide a overview of the 2 datasets that we have chosen and extracted using a R package.
 
 ## YouTube Trending Video Dataset
 
@@ -22,7 +22,7 @@ First, for youtube trending video data, we have found a kaggle data project that
 
 ## Google Search Interest Dataset
 
-We obtained this data set by extracting google search data ourselves, instead of using ready-to-use data.
+We obtained this dataset by extracting google search data ourselves, instead of using ready-to-use data.
 
 -   **Source:** Google Trends, accessed via the `gtrendsR` R package.
 
@@ -37,7 +37,7 @@ We obtained this data set by extracting google search data ourselves, instead of
 
 ## Data Preparation and Cleaning
 
-The data preparation and cleaning was done in a exploratory way, step by step, heading to towards one goal: to have a data frame ready for merging with the google data set. As we have already analyzed the content of the raw data set, we have then later written down the exact data structure from both sides, which contain the exact information we want. To acheive that, the following was needed: group data, add and delete columns, filter and merge, etc.
+The data preparation and cleaning was done in a exploratory way, step by step, heading to towards one goal: to have a data frame ready for merging with the google dataset. As we have already analyzed the content of the raw dataset, we have then later written down the exact data structure from both sides, which contain the exact information we want. To acheive that, the following was needed: group data, add and delete columns, filter and merge, etc.
 
 In summary, our primary objective was to create a unified dataset that captures daily trending patterns for our target keywords (iPhone, Tesla, and Rolex) across five countries.
 
@@ -69,8 +69,8 @@ Since we now have possibility to group total_views of videos of each keyword, al
 To do that, it is necessary to aggregate the data and do the calculation of ratio between: total_likes and total_views, or total_comments and total_views. These ratios provide insights into audience engagement (engagement quality) independent of video popularity.This is valuable information for companies to know what kind of video can provide most engagement of customers, while allocating the least advertisement resources.
 
 
-* Final Data set Integration:
-The final chapter of the data preparation phase is the creation of a single, comprehensive data set, combining the youtube data structure and the google search data.
+* Final dataset Integration:
+The final chapter of the data preparation phase is the creation of a single, comprehensive dataset, combining the youtube data structure and the google search data.
 
 * Merging Strategy: 
 Perform a full_join to combine the processed YouTube data (including trending dates, video metrics, and extracted tags, calculated engagement ratios, keyword, country) with the Google Trends search interest data. In case on a day, there is google trend data for a keyword, but no trending video in youtube data, the metrics will be value 0. And an extra column is added, marking if the day has trending video or not.This way, we can keep every row from google and youtube data without potentially losing data points from one side.
@@ -78,7 +78,7 @@ Perform a full_join to combine the processed YouTube data (including trending da
 * Join Keys: The join should be performed on common identifiers such as keyword/tag and date.
 
 
-Resulting Data set: the structure of the final merged data is
+Resulting dataset: the structure of the final merged data is
 
 \[1\] "trending_date" "country" "keyword" "total_views"\
 \[5\] "total_likes" "total_dislikes" "total_comments" "video_count"\

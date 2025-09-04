@@ -254,7 +254,7 @@ combined_data_final <- combined_data_filled_na %>%
 ```
 
 ## Analysis and Visualisation
-This chapter presents the core of our analytical project. First, We will first explore the data sets, comparing the brands on both platforms' data, and have a big picture overview. Second, we dive into specific brands on google platform, discovering insights from different aspects. Third, to better understand the hidden patterns, we provide also model analysis, fitting linear regression model to the data. Forth, youtube platform specific analysis for brands was performed. And last but not least, by separating tags, we made ***WordClouds*** to visualise what keywords were most asscociated with the brands, to provide new perspective for product improvement and marketing.
+This chapter presents the core of our analytical project. First, We will first explore the datasets, comparing the brands on both platforms' data, and have a big picture overview. Second, we dive into specific brands on google platform, discovering insights from different aspects. Third, to better understand the hidden patterns, we provide also model analysis, fitting linear regression model to the data. Forth, youtube platform specific analysis for brands was performed. And last but not least, by separating tags, we made ***WordClouds*** to visualise what keywords were most asscociated with the brands, to provide new perspective for product improvement and marketing.
 ## The Big Picture - Comparing the Brands
 
 Google Search Data Comparison Graph 1: Overall Search Interest

@@ -4,7 +4,7 @@ project:
 book:
   title: "R Bootcamp Project"
   subtitle: "Brand and Product Strategy for Consumer Brands"
-  author: "Daniel Huber & Dongyuan Gao"
+  author: "**Daniel Huber & Dongyuan Gao**"
   date: "today"
   chapters:
     - index.qmd
@@ -21,7 +21,8 @@ format:
     page-layout: full
     css: style.css
     #title-block-style: none   # disables default bootstrap card，block automatically uses .title-box
-    title-block-style: default # using this to make all titles go left?
+    title-block-style: default # using this to make all titles go lef
+    t?
     title-block-banner: false # no banner background
   pdf:
     toc: true
@@ -35,7 +36,10 @@ format:
           {\thechapter.}
           {1em}
           {}
-    
+        % Reduce space before Table of Contents title
+        \usepackage[titles]{tocloft}
+        \setlength{\cftbeforetoctitleskip}{-3em}  % Adjust this value if blank space above table of content is too big
+        \renewcommand{\cfttoctitlefont}{\normalfont\Large\bfseries}
     geometry: top=2.5cm, bottom=1.5cm, left=2cm, right=2cm
     mainfont: Arial
 
