@@ -15,3 +15,5 @@ echo "*.pdf" >> .gitignore
 *_files/
 _book/
 /.quarto/
+# Ignore Quarto cache directories
+*_cache/
