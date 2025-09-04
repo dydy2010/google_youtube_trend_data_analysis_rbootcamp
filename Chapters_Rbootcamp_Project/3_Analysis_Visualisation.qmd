@@ -253,12 +253,15 @@ combined_data_final <- combined_data_filled_na %>%
 
 ```
 
+## Analysis and Visualisation
+This chapter presents the core of our analytical project. First, We will first explore the data sets, comparing the brands on both platforms' data, and have a big picture overview. Second, we dive into specific brands on google platform, discovering insights from different aspects. Third, to better understand the hidden patterns, we provide also model analysis, fitting linear regression model to the data. Forth, youtube platform specific analysis for brands was performed. And last but not least, by separating tags, we made ***WordClouds*** to visualise what keywords were most asscociated with the brands, to provide new perspective for product improvement and marketing.
 ## The Big Picture - Comparing the Brands
 
 Google Search Data Comparison Graph 1: Overall Search Interest
 Comparison v1(Line Chart)
 
 ```{r graph1 Google Comparison v1, fig.width=14, fig.height=6}
+#| echo: false
 #| output: true
 ## Graph 1: Overall Search Interest Comparison (Line Chart) v1
 ## maybe combining the data points on the same day to one data point, avg, same day
@@ -274,11 +277,12 @@ ggplot(data = combined_data_final, aes(x = trending_date, y = hits, color = keyw
   )
 
 ```
-
-<br> Graph 1: Overall Search Interest Comparison (Facet Chart) v2
+To visualise overall search interest on google for 3 brands, a graph with 3 brands search interest data was made. In version 1 all brands are in one graph, and following this later is v2 with 3 brands in 3 graphs. Both graphs show the same result, but are suitable for different reading preferences.
+Graph 1: Overall Search Interest Comparison (Facet Chart) v2
 
 ```{r graph1 Google Comparison v2 Facet, fig.width=14, fig.height=6}
-
+#| echo: false
+#| output: true
 ## Graph 1: Overall Search Interest Comparison (Facet Chart) v2
 library(ggplot2)
 
@@ -297,11 +301,30 @@ ggplot(data = combined_data_final, aes(x = trending_date, y = hits)) +
   facet_wrap(~ keyword, scales = "free_y", nrow=3)
 
 ```
+Interpretation of Google Search Interest Trends
 
-<br> Graph 2: Overall YouTube Views Comparison (Line Chart) v1
+Key observations include:
+
+* iPhone Dominates Search Interest:
+
+"iPhone" consistently maintains the highest search volume, with significant peaks (e.g., ~100 relative interest) likely corresponding to product launches or major announcements (e.g., iPhone X in 2017, iPhone XS in 2018). It suggests sustained consumer curiosity and media hype around Apple.
+
+* Tesla shows moderate but steady interest:
+
+"Tesla" exhibits lower but steady search interest, with spikes in between. This aligns with Tesla’s brand history, vehicle releases (e.g., Model 3 rollout, massive quality scandals), and Elon Musk’s public visibility, we will also research the possible events that happened around that time later.
+
+* Rolex has negligible search presence:
+
+The keyword "Rolex" shows near-zero search interest throughout the period. This indicates lower public interest compared to the other big brands.
+Maybe the brand doesn't need hype as a luxury watch brand, otherwise more marketing campaigns could be beneficial.
+
+
+
+Graph 2: Overall YouTube Views Comparison (Line Chart) v1
+Same as for google search interst, we did overrall comparison for 3 brands on youtube platform with 2 versions of graphs.
 
 ```{r graph2 v1, fig.width=10, fig.height=6}
-
+#| echo: false
 #| output: true
 ## Graph 2: Overall YouTube Views Comparison (Line Chart) v1 (no facet) 
 # library(ggplot2)
@@ -319,13 +342,13 @@ ggplot(data = combined_data_final, aes(x = trending_date, y = total_views)) +
   scale_y_continuous(labels = comma)     ## Apply comma formatting to y-axis (scales package)
 
 ```
-
-<br>
+This graps track the daily view counts for videos related to three keywords—iPhone, Roles, and Tesla, in 5 countries.
+It indicates a massive disparity in viewership between iPhone and the other two keywords.
 
 Graph 2: Overall YouTube Views Comparison v2 (Facet Version)
 
 ```{r graph2 v2, fig.width=14, fig.height=6}
-
+#| echo: false
 #| output: true
 ## Graph 2: Overall YouTube Views Comparison v2 (no Facet Version)
 ggplot(data = combined_data_final, aes(x = trending_date, y = total_views)) +
@@ -341,85 +364,29 @@ ggplot(data = combined_data_final, aes(x = trending_date, y = total_views)) +
   facet_wrap(~keyword, scales = "free_y", nrow=3) ## allow the y-axis of each plot to have own independent scale
 
 ```
+Interpretation of YouTube Daily Views Trends
+* iPhone: Viral and Event-Driven Engagement
 
-<br> Graph 3: Distribution of Views v1 Box Plot, doesnt work well with
-single data point per day somehow Compare the distribution of daily
-views for Tesla vs. iPhone vs. Rolex videos.
+The keyword "iPhone" shows an astronomical level of views, peaking at nearly 150 million daily views, which dwarfs the other terms. The trend is very volatile, showing a dramatic spike in early March 2018 followed by a sharp decline. 
 
-```{r graph3 v1}
+This peak is hypothetically due to a product launch or major announcement. After researching, the timing suggests that it was driven by the release of the iPhone X (announced Sept. 2017 and launched on 3.Nov. 2017) or more likely. This pattern could suggest that consumers search for youtube reviews, unboxings, tutorials, and software update related to new Apple products. And it lasted about one month.
 
-#| output: true
-ggplot(data = combined_data_final, aes(x = keyword, y = total_views)) +
-  geom_boxplot() +
-  labs(
-    title = "Distribution of Daily YouTube Views",
-    subtitle = "Comparing Engagement for iPhone, Tesla, and Rolex",
-    x = "Keyword",
-    y = "Daily Views"
-  ) +
-  scale_y_continuous(labels = scales::comma) ## Apply comma formatting to y-axis (scales package)
+* Tesla: Consistent Niche Interest
 
-```
+Trend: The keyword "Tesla" shows a stable trend, ranging from 1 million to 3 million daily views. It shows gentle fluctuations but no sharp, viral spikes like the iPhone.
 
-<br> Graph 3: Distribution of Engagement v2 Violin Plot, doesnt work
-well, due to single data point per day somehow Compare the distribution
-of daily views for iPhone vs. Rolex videos.
+The steadier trend indicates a noticeable presence on the platform, based on continuous engagement. However certain events could influence the temporary interest of the public. For example, on 17. Nov 2017, Tesla announced their semi truck project, the futuristic design was followed with huge media coverage, which possibly cause a spike of youtube views that lasted about 3 months. And in early 2018 there was huge discussions about Tesla falls short on Model 3 deliveries. In the same period, the stock price droped approx. 33%. This indicates that both launch events and negative coverage could boost Tesla's publicity on youtube.
 
-```{r graph3 v2}
 
-#| output: true
-ggplot(data = combined_data_final, aes(x = keyword, y = total_views)) +
-  geom_violin(aes(fill = keyword), alpha = 0.6) +
-  labs(
-    title = "Distribution of Daily YouTube Views",
-    subtitle = "Comparing Engagement for iPhone, Tesla, and Rolex",
-    x = "Keyword",
-    y = "Daily Views"
-  ) +
-  scale_y_continuous(labels = label_number(scale = 1e-6, suffix = "M")) #### Apply comma formatting to y-axis, no natural number(scales package)
 
-```
 
-<br> Graph 3: Distribution of Engagement v3 Ridge Plot ridge plot is a
-modern and visually compelling way to compare distributions. It is
-especially effective data that shows peaks and valleys Compare the
-distribution of daily views for iPhone vs. Rolex videos.
 
-```{r graph3 v3}
-#| output: true
-
-# install.packages("ggridges")
-# library(ggridges)
-
-ggplot(data = combined_data_final, aes(x = total_views, y = keyword, fill = keyword)) +
-  geom_density_ridges(alpha = 0.8) +
-  labs(
-    title = "Distribution of Daily YouTube Views",
-    subtitle = "Comparing Engagement for iPhone, Tesla, and Rolex",
-    x = "Daily Views",
-    y = "Keyword"
-  ) +
-  scale_x_continuous(labels = scales::comma) +
-  theme(
-    legend.position = "none",
-    ## Increase the aspect ratio, make the plot less squished
-    ## adjusts the height-to-width ratio. value less than 1 will make the plot wider
-    aspect.ratio = 0.5,
-    ## Left-align the titles for better readability
-    plot.title = element_text(hjust = 0),
-    plot.subtitle = element_text(hjust = 0)
-  )
-
-```
-
-<br>
-
-Graph 4: The iPhone Hype Cycle (Dual-Axis Chart) v1 210-day window
-around the iPhone X launch.
+Graph 4: The iPhone Hype Cycle (Dual-Axis Chart) v1 
+210-day window around the iPhone X launch.
 
 ```{r graph4 v1}
 #| output: true
-
+#| echo: false
 ## Graph 4: The iPhone Hype Cycle (Dual-Axis Chart) v1
 ## prepare data, define the iPhone X launch date.
 release_date <- as.Date("2017-11-03")
@@ -475,14 +442,14 @@ ggplot(iphone_hype_data) +
 
 ```
 
-<br>
 
-Graph 4: The iPhone Hype Cycle (Separate Chart) v2 210-day window around
+Graph 4: The iPhone Hype Cycle (Separate Chart) v2 
+210-day window around
 the iPhone X launch.
 
 ```{r graph4 v2}
 #| output: true
-
+#| echo: false
 ## Graph 4: The iPhone Hype Cycle (Seperate Chart) v2
 ## prepare data, define the iPhone X launch date.
 ## layout 1 row and 2 columns
