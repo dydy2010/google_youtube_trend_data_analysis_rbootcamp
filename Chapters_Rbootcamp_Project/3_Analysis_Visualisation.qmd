@@ -5,7 +5,7 @@ editor:
 ---
 
 ```{r}
-
+#| output: false
 ## Preparation of Youtube Data
 ## Getting data reday for merge, other titles tbd
 
@@ -38,7 +38,7 @@ USvideos <- read_csv("raw_data_from_kaggle/USvideos.csv")
 ```
 
 ```{r}
-
+#| output: false
 ## Add a 'country' column and standardize data types for each data frame
 DEvideos <- DEvideos %>%
   mutate(
@@ -79,7 +79,7 @@ all_videos <- bind_rows(DEvideos, FRvideos, JPvideos, MXvideos, USvideos)
 ```
 
 ```{r}
-
+#| output: false
 ## Convert the trending_date column to a proper date format
 all_videos <- all_videos %>%
   mutate(trending_date = as.Date(trending_date, format = "%y.%d.%m"))
@@ -96,7 +96,7 @@ latest_date
 ```
 
 ```{r}
-
+#| output: false
 ## Separate the tags into individual rows
 tags_per_day <- all_videos %>%
   separate_rows(tags, sep = "\\|")
@@ -138,7 +138,7 @@ most_searched_tags_by_country <- tags_per_day %>%
 ```
 
 ```{r}
-
+#| output: false
 ## Filter for the three keywords and create a new 'keyword' column
 relevant_videos <- tags_per_day %>%
   filter(grepl("iphone|tesla|rolex", tags, ignore.case = TRUE)) %>%
@@ -156,7 +156,7 @@ relevant_videos <- tags_per_day %>%
 ```
 
 ```{r}
-
+#| output: false
 ## Aggregate the data by date, country, and keyword
 aggregated_youtube_data <- relevant_videos %>%
   group_by(trending_date, country, keyword) %>%
@@ -175,7 +175,7 @@ aggregated_youtube_data <- relevant_videos %>%
 ```
 
 ```{r}
-
+#| output: false
 ## Calculate the engagement ratios
 aggregated_youtube_data_final <- aggregated_youtube_data %>%
   mutate(
@@ -208,7 +208,7 @@ aggregated_youtube_data_final <- aggregated_youtube_data %>%
 ```
 
 ```{r}
-
+#| output: false
 ## Calculate the Mean of Proportions and Ratios for each Keyword in each Country
 mean_ratios_by_country_keyword <- aggregated_youtube_data_final %>%
   group_by(country, keyword) %>%
@@ -226,7 +226,7 @@ mean_ratios_by_country_keyword <- aggregated_youtube_data_final %>%
 ```
 
 ```{r}
-
+#| output: false
 ## Ensure trending_date is Date type before joining
 aggregated_youtube_data_final <- aggregated_youtube_data_final %>%
   mutate(trending_date = as.Date(trending_date, format = "%y.%d.%m"))
@@ -259,7 +259,6 @@ Google Search Data Comparison Graph 1: Overall Search Interest
 Comparison v1(Line Chart)
 
 ```{r graph1 Google Comparison v1, fig.width=14, fig.height=6}
-
 #| output: true
 ## Graph 1: Overall Search Interest Comparison (Line Chart) v1
 ## maybe combining the data points on the same day to one data point, avg, same day
