@@ -35,12 +35,9 @@ format:
           {\thechapter.}
           {1em}
           {}
-        % Reduce space before Table of Contents title
-        \usepackage[titles]{tocloft}
-        \setlength{\cftbeforetoctitleskip}{-10em}  % Adjust this value if blank space above table of content is too big
-        \setlength{\cftaftertoctitleskip}{0em}
-        \renewcommand{\cfttoctitlefont}{\normalfont\Large\bfseries}
-    geometry: top=1cm, bottom=1.5cm, left=2cm, right=2cm
+        % ADD THIS LINE to control chapter spacing
+        \titlespacing*{\chapter}{0pt}{0pt}{15pt}
+    geometry: top=0.2cm, bottom=1.5cm, left=2cm, right=2cm
     mainfont: Arial
 
 execute:
