@@ -25,11 +25,12 @@ editor:
 ---
 
 ```{r}
-#### Preparation of Youtube Data (Dongyuan's part)
-#### Getting data reday for merge, other titles tbd
 
-#### install.packages("ggridges")
-#### install.packages("rnaturalearthdata")
+## Preparation of Youtube Data
+## Getting data reday for merge, other titles tbd
+
+# install.packages("ggridges")
+# install.packages("rnaturalearthdata")
 library(ggridges)
 library(tidyverse)
 library(dplyr)
@@ -37,10 +38,10 @@ library(ggplot2)
 library(scales)
 library(sf)
 library(rnaturalearth)
-#### Load Google Trends data here
+## Load Google Trends data here
 trends_long <- read_csv("trends_combined_long.csv")
-#### getwd()
-#### Load Youtube Trending Video data here
+# getwd()
+## Load Youtube Trending Video data here
 
 getwd()
 DEvideos <- read_csv("raw_data_from_kaggle/DEvideos.csv")
@@ -48,16 +49,17 @@ FRvideos <- read_csv("raw_data_from_kaggle/FRvideos.csv")
 JPvideos <- read_csv("raw_data_from_kaggle/JPvideos.csv")
 MXvideos <- read_csv("raw_data_from_kaggle/MXvideos.csv")
 USvideos <- read_csv("raw_data_from_kaggle/USvideos.csv")
-str(DEvideos)
-str(FRvideos)
-str(JPvideos)
-str(MXvideos)
-str(USvideos)
+# str(DEvideos)
+# str(FRvideos)
+# str(JPvideos)
+# str(MXvideos)
+# str(USvideos)
+
 ```
 
 ```{r}
 
-#### Add a 'country' column and standardize data types for each data frame
+## Add a 'country' column and standardize data types for each data frame
 DEvideos <- DEvideos %>%
   mutate(
     country = "DE",
@@ -88,23 +90,24 @@ USvideos <- USvideos %>%
     across(c(comments_disabled, ratings_disabled, video_error_or_removed), as.character)
   )
 
-#### Combine all data frames into a single one
+## Combine all data frames into a single one
 all_videos <- bind_rows(DEvideos, FRvideos, JPvideos, MXvideos, USvideos)
 
-#### Check the structure of the new, combined data frame
-str(all_videos)
+## Check the structure of the new, combined data frame
+# str(all_videos)
+
 ```
 
 ```{r}
 
-#### Convert the trending_date column to a proper date format
+## Convert the trending_date column to a proper date format
 all_videos <- all_videos %>%
   mutate(trending_date = as.Date(trending_date, format = "%y.%d.%m"))
 
-#### Check the structure again to confirm the change
+## Check the structure again to confirm the change
 str(all_videos$trending_date)
 
-#### Find the earliest and latest trending dates
+## Find the earliest and latest trending dates
 earliest_date <- min(all_videos$trending_date)
 latest_date <- max(all_videos$trending_date)
 earliest_date
@@ -114,38 +117,35 @@ latest_date
 
 ```{r}
 
-
-#### 1. Separate the tags into individual rows
-#### The separate_rows() function is perfect for this
+## Separate the tags into individual rows
 tags_per_day <- all_videos %>%
   separate_rows(tags, sep = "\\|")
 
-#### View(tags_per_day)
+## View(tags_per_day)
 str(tags_per_day)
 
-#### 2. Group by date and tag, then count occurrences
+## Group by date and tag, then count occurrences
 trending_tags <- tags_per_day %>%
   group_by(trending_date, tags) %>%
   count(sort = TRUE) %>%
   ungroup()
-#### View(trending_tags)
+## View(trending_tags)
 
-#### 3. View the top trending tags
-#### You can filter for a specific date or just look at the top overall
+## View the top trending tags
 head(trending_tags, 20)
 unique_tags_df <- trending_tags %>%
   distinct(tags)
-#### View(unique_tags_df)
+# View(unique_tags_df)
 
-#### the single most-searched tag across all countries and dates
+## the single most-searched tag across all countries and dates
 most_searched_tag <- tags_per_day %>%
   group_by(tags) %>%
   count(sort = TRUE) %>%
   ungroup()
 
-#### View(most_searched_tag)
+# View(most_searched_tag)
 
-#### Finding the Most Searched Tag for Each Country
+## Finding the Most Searched Tag for Each Country
 most_searched_tags_by_country <- tags_per_day %>%
   group_by(country, tags) %>%
   count(name = "total_appearances") %>%
@@ -153,13 +153,13 @@ most_searched_tags_by_country <- tags_per_day %>%
   ungroup() %>%
   arrange(country)
 
-#### View(most_searched_tags_by_country)
+# View(most_searched_tags_by_country)
 
 ```
 
 ```{r}
 
-#### Filter for the three keywords and create a new 'keyword' column
+## Filter for the three keywords and create a new 'keyword' column
 relevant_videos <- tags_per_day %>%
   filter(grepl("iphone|tesla|rolex", tags, ignore.case = TRUE)) %>%
   mutate(keyword = case_when(
@@ -169,15 +169,15 @@ relevant_videos <- tags_per_day %>%
     TRUE ~ "Other" #### This case should ideally not be triggered after filtering
   ))
 
-#### check the structure and a few rows
-str(relevant_videos)
-head(relevant_videos)
+## check the structure and a few rows
+# str(relevant_videos)
+# head(relevant_videos)
 
 ```
 
 ```{r}
 
-#### Aggregate the data by date, country, and keyword
+## Aggregate the data by date, country, and keyword
 aggregated_youtube_data <- relevant_videos %>%
   group_by(trending_date, country, keyword) %>%
   summarise(
@@ -189,13 +189,14 @@ aggregated_youtube_data <- relevant_videos %>%
   ) %>%
   ungroup()
 
-#### Check the new, aggregated dataframe
-#### View(aggregated_youtube_data)
+## Check the new, aggregated dataframe
+# View(aggregated_youtube_data)
+
 ```
 
 ```{r}
 
-#### Calculate the engagement ratios
+## Calculate the engagement ratios
 aggregated_youtube_data_final <- aggregated_youtube_data %>%
   mutate(
     #### ratios calculations
@@ -204,8 +205,8 @@ aggregated_youtube_data_final <- aggregated_youtube_data %>%
     likes_views_ratio = total_likes / total_views,
     dislikes_views_ratio = total_dislikes / total_views
   ) %>%
-  #### Select and rename columns for a clean final table
-  #### Select: choosing which columns to keep and in what order
+  ## Select and rename columns for a clean final table
+  ## Select: choosing which columns to keep and in what order
   select(
     trending_date, 
     country, 
@@ -221,13 +222,14 @@ aggregated_youtube_data_final <- aggregated_youtube_data %>%
     dislikes_views_ratio
   )
 
-#### View the final dataframe, ready for merging
-#### View(aggregated_youtube_data_final)
+## View the final dataframe, ready for merging
+# View(aggregated_youtube_data_final)
+
 ```
 
 ```{r}
 
-# Calculate the Mean of Proportions and Ratios for each Keyword in each Country
+## Calculate the Mean of Proportions and Ratios for each Keyword in each Country
 mean_ratios_by_country_keyword <- aggregated_youtube_data_final %>%
   group_by(country, keyword) %>%
   summarise(
@@ -238,35 +240,37 @@ mean_ratios_by_country_keyword <- aggregated_youtube_data_final %>%
     .groups = 'drop'
   )
 
-#### View(mean_ratios_by_country_keyword)
-#### colnames(aggregated_youtube_data_final)
+## View(mean_ratios_by_country_keyword)
+# colnames(aggregated_youtube_data_final)
+
 ```
 
 ```{r}
-# Ensure trending_date is Date type before joining
-# Use the same date format specification as before
+
+## Ensure trending_date is Date type before joining
 aggregated_youtube_data_final <- aggregated_youtube_data_final %>%
   mutate(trending_date = as.Date(trending_date, format = "%y.%d.%m"))
-#### Merging data (Youtube Trending Videos and Google Search)
-####  Perform the full join
+## Merging data (Youtube Trending Videos and Google Search)
+##  Perform the full join
 combined_data <- full_join(aggregated_youtube_data_final, trends_long, 
                            by = c("trending_date" = "date", "country", "keyword"))
 
-#### Because every day there is a google trend index, but not every day for each tag there is trendy videos
-#### Replace NA values with 0 for all columns except the keywords
-#### This handles the days with no trending videos
+## Because every day there is a google trend index, but not every day for each tag there is trendy videos
+## Replace NA values with 0 for all columns except the keywords
+## This handles the days with no trending videos
 combined_data_filled_na <- combined_data %>%
   mutate(across(-c(trending_date, country, keyword), ~replace_na(., 0)))
 
-#### Add the status column to indicate if a video was trending
+## Add the status column to indicate if a video was trending
 combined_data_final <- combined_data_filled_na %>%
   mutate(youtube_status = if_else(total_views == 0,
                                   "no trending video today for this keyword",
                                   "trending video(s) found"))
 
-#### Check your final merged dataset
-#### View(combined_data_final)
-colnames(combined_data_final)
+## Check your final merged dataset
+# View(combined_data_final)
+# colnames(combined_data_final)
+
 ```
 
 ## The Big Picture - Comparing the Brands
@@ -275,9 +279,10 @@ Google Search Data Comparison Graph 1: Overall Search Interest
 Comparison v1(Line Chart)
 
 ```{r graph1 Google Comparison v1, fig.width=14, fig.height=6}
+
 #| output: true
-#### Graph 1: Overall Search Interest Comparison (Line Chart) v1
-#### maybe combining the data points on the same day to one data point, avg, same day
+## Graph 1: Overall Search Interest Comparison (Line Chart) v1
+## maybe combining the data points on the same day to one data point, avg, same day
 library(ggplot2)
 
 ggplot(data = combined_data_final, aes(x = trending_date, y = hits, color = keyword)) +
@@ -288,12 +293,14 @@ ggplot(data = combined_data_final, aes(x = trending_date, y = hits, color = keyw
     y = "Relative Search Interest (0-100)",
     color = "Keyword"
   )
+
 ```
 
 <br> Graph 1: Overall Search Interest Comparison (Facet Chart) v2
 
 ```{r graph1 Google Comparison v2 Facet, fig.width=14, fig.height=6}
-### Graph 1: Overall Search Interest Comparison (Facet Chart) v2
+
+## Graph 1: Overall Search Interest Comparison (Facet Chart) v2
 library(ggplot2)
 
 ggplot(data = combined_data_final, aes(x = trending_date, y = hits)) +
@@ -309,17 +316,17 @@ ggplot(data = combined_data_final, aes(x = trending_date, y = hits)) +
     date_breaks = "1 month"      # show every month
   ) +
   facet_wrap(~ keyword, scales = "free_y", nrow=3)
+
 ```
 
-<br>
-
-Graph 2: Overall YouTube Views Comparison (Line Chart) v1
+<br> Graph 2: Overall YouTube Views Comparison (Line Chart) v1
 
 ```{r graph2 v1, fig.width=10, fig.height=6}
+
 #| output: true
-### Graph 2: Overall YouTube Views Comparison (Line Chart) v1 (no facet) 
-#### library(ggplot2)
-#### library(scales)
+## Graph 2: Overall YouTube Views Comparison (Line Chart) v1 (no facet) 
+# library(ggplot2)
+# library(scales)
 
 ggplot(data = combined_data_final, aes(x = trending_date, y = total_views)) +
   geom_line(aes(color = keyword)) +
@@ -329,8 +336,8 @@ ggplot(data = combined_data_final, aes(x = trending_date, y = total_views)) +
     y = "Total Daily Views",
     color = "Keyword"
   ) +
-  scale_x_date(date_labels = "%b %Y") +  #### Format dates
-  scale_y_continuous(labels = comma)   #### Apply comma formatting to y-axis, no natural number(scales package)
+  scale_x_date(date_labels = "%b %Y") +  ## Format dates
+  scale_y_continuous(labels = comma)     ## Apply comma formatting to y-axis (scales package)
 
 ```
 
@@ -339,8 +346,9 @@ ggplot(data = combined_data_final, aes(x = trending_date, y = total_views)) +
 Graph 2: Overall YouTube Views Comparison v2 (Facet Version)
 
 ```{r graph2 v2, fig.width=14, fig.height=6}
+
 #| output: true
-#### Graph 2: Overall YouTube Views Comparison v2 (no Facet Version)
+## Graph 2: Overall YouTube Views Comparison v2 (no Facet Version)
 ggplot(data = combined_data_final, aes(x = trending_date, y = total_views)) +
   geom_line(aes(color = keyword)) +
   labs(
@@ -349,9 +357,10 @@ ggplot(data = combined_data_final, aes(x = trending_date, y = total_views)) +
     y = "Total Daily Views",
     color = "Keyword"
   ) +
-  scale_x_date(date_labels = "%b %Y") +  #### Format dates
-  scale_y_continuous(labels = comma) +   #### Apply comma formatting to y-axis, no natural number(scales package)
-  facet_wrap(~keyword, scales = "free_y", nrow=3) #### allow the y-axis of each plot to have own independent scale
+  scale_x_date(date_labels = "%b %Y") +  ## Format dates
+  scale_y_continuous(labels = comma) +   ## Apply comma formatting to y-axis (scales package)
+  facet_wrap(~keyword, scales = "free_y", nrow=3) ## allow the y-axis of each plot to have own independent scale
+
 ```
 
 <br> Graph 3: Distribution of Views v1 Box Plot, doesnt work well with
@@ -359,6 +368,7 @@ single data point per day somehow Compare the distribution of daily
 views for Tesla vs. iPhone vs. Rolex videos.
 
 ```{r graph3 v1}
+
 #| output: true
 ggplot(data = combined_data_final, aes(x = keyword, y = total_views)) +
   geom_boxplot() +
@@ -368,7 +378,7 @@ ggplot(data = combined_data_final, aes(x = keyword, y = total_views)) +
     x = "Keyword",
     y = "Daily Views"
   ) +
-  scale_y_continuous(labels = scales::comma) #### Apply comma formatting to y-axis, no natural number(scales package)
+  scale_y_continuous(labels = scales::comma) ## Apply comma formatting to y-axis (scales package)
 
 ```
 
@@ -377,6 +387,7 @@ well, due to single data point per day somehow Compare the distribution
 of daily views for iPhone vs. Rolex videos.
 
 ```{r graph3 v2}
+
 #| output: true
 ggplot(data = combined_data_final, aes(x = keyword, y = total_views)) +
   geom_violin(aes(fill = keyword), alpha = 0.6) +
@@ -397,8 +408,9 @@ distribution of daily views for iPhone vs. Rolex videos.
 
 ```{r graph3 v3}
 #| output: true
-#### install.packages("ggridges")
-#### library(ggridges)
+
+# install.packages("ggridges")
+# library(ggridges)
 
 ggplot(data = combined_data_final, aes(x = total_views, y = keyword, fill = keyword)) +
   geom_density_ridges(alpha = 0.8) +
@@ -411,13 +423,14 @@ ggplot(data = combined_data_final, aes(x = total_views, y = keyword, fill = keyw
   scale_x_continuous(labels = scales::comma) +
   theme(
     legend.position = "none",
-    #### Increase the aspect ratio, make the plot less squished
-    #### adjusts the height-to-width ratio. value less than 1 will make the plot wider
+    ## Increase the aspect ratio, make the plot less squished
+    ## adjusts the height-to-width ratio. value less than 1 will make the plot wider
     aspect.ratio = 0.5,
-    #### Left-align the titles for better readability
+    ## Left-align the titles for better readability
     plot.title = element_text(hjust = 0),
     plot.subtitle = element_text(hjust = 0)
   )
+
 ```
 
 <br>
@@ -427,42 +440,43 @@ around the iPhone X launch.
 
 ```{r graph4 v1}
 #| output: true
-### Graph 4: The iPhone Hype Cycle (Dual-Axis Chart) v1
-#### prepare data, define the iPhone X launch date.
+
+## Graph 4: The iPhone Hype Cycle (Dual-Axis Chart) v1
+## prepare data, define the iPhone X launch date.
 release_date <- as.Date("2017-11-03")
 start_date <- release_date - days(30)
 end_date <- release_date + days(180)
 
-#### filter combined data to get only the iPhone data, 60-day window.
+## filter combined data to get only the iPhone data, 60-day window.
 iphone_hype_data <- combined_data_final %>%
   filter(keyword == "iPhone",
          trending_date >= start_date,
          trending_date <= end_date)
 
-#### Create scaling factor for hits, after, both views and hits are visible on the same plot.
-#### common method to create a dual axis in ggplot2.
+## Create scaling factor for hits, after, both views and hits are visible on the same plot.
+## common method to create a dual axis in ggplot2.
 scaling_factor <- max(iphone_hype_data$total_views, na.rm = TRUE) / max(iphone_hype_data$hits, na.rm = TRUE)
 
-#### plot with ggplot2
+## plot with ggplot2
 ggplot(iphone_hype_data) +
-  #### YouTube views for left y-axis, bar.
+  ## YouTube views for left y-axis, bar.
   geom_col(aes(x = trending_date, y = total_views), fill = "blue") +
   
-  #### Google search hits for right y-axis.
-  #### scale the hits to match the 'total_views'.
+  ## Google search hits for right y-axis.
+  ## scale the hits to match the 'total_views'.
   geom_smooth(aes(x = trending_date, y = hits * scaling_factor), color = "red", size = 1.2) +
   
-  #### Add the annotation line for the launch date.
+  ## Add the annotation line for the launch date.
   geom_vline(xintercept = release_date, linetype = "dashed", color = "gray", size = 1) +
   
-  #### labels and titles.
+  ## labels and titles.
   labs(
     title = "iPhone X Hype Cycle: Views vs. Search Interest",
     subtitle = paste("60-day window around launch on", format(release_date, "%B %d, %Y")),
     x = "Date"
   ) +
   
-  #### Configure the dual y-axis.
+  ## Configure the dual y-axis.
   scale_y_continuous(
     name = "Total Daily YouTube Views",
     #### Using label_number with scale and suffix to format the large nums
@@ -470,15 +484,16 @@ ggplot(iphone_hype_data) +
     sec.axis = sec_axis(~./scaling_factor, name = "Google Search Interest (0-100)")
   ) +
   
-  #### Theme settings.
+  ## Theme settings.
   theme(
     legend.position = "none",
-    #### Increase the aspect ratio, make the plot less squished
-    #### adjusts the height-to-width ratio. value less than 1 will make the plot wider
+    ## Increase the aspect ratio, make the plot less squished
+    ## adjusts the height-to-width ratio. value less than 1 will make the plot wider
     aspect.ratio = 0.5,
     plot.title = element_text(hjust = 0),
     plot.subtitle = element_text(hjust = 0)
   )
+
 ```
 
 <br>
@@ -488,67 +503,77 @@ the iPhone X launch.
 
 ```{r graph4 v2}
 #| output: true
-### Graph 4: The iPhone Hype Cycle (Seperate Chart) v2
-#### prepare data, define the iPhone X launch date.
-#### layout 1 row and 2 columns
+
+## Graph 4: The iPhone Hype Cycle (Seperate Chart) v2
+## prepare data, define the iPhone X launch date.
+## layout 1 row and 2 columns
 par(mfrow = c(1, 2))
 
-#### Plot the Google Trends data
+## Plot the Google Trends data
 plot_google <- ggplot(iphone_hype_data) +
   geom_smooth(aes(x = trending_date, y = hits), color = "red", size = 1.2, se = FALSE) + ### se=FALSE,standard error. geom_smooth() plots a line, default, it also adds a shaded area around. 
   geom_vline(xintercept = release_date, linetype = "dashed", color = "gray", size = 1) +
   labs(title = "Google Search Interest", x = "Date", y = "Relative Interest")
 
-#### Plot the YouTube Views data
+## Plot the YouTube Views data
 plot_youtube <- ggplot(iphone_hype_data) +
   geom_col(aes(x = trending_date, y = total_views), fill = "blue") +
   geom_vline(xintercept = release_date, linetype = "dashed", color = "gray", size = 1) +
   labs(title = "YouTube Daily Views", x = "Date", y = "Total Daily Views") +
   scale_y_continuous(labels = scales::comma) 
-# print needed with par(mfrow)
+## print needed with par(mfrow)
 print(plot_google)
 print(plot_youtube)
-#### good practice reset to default
+## good practice reset to default
 par(mfrow = c(1, 1))
 ```
 
 ## Google Search Trend Analysis
 
+### Loading and preparing the data
+
+Because downloading Google Trends data is unreliable (more on this later
+in our *chapter of choice* about `gtrendsR`), we are working here with
+data that has been downloaded previously and saved as `csv` files. All
+five country files must be prepared in the same way, for which we have
+written a **function**. With `rbind`, we can easily concatenate the
+pre-prepared data and use `pivot_longer` to create a second *long* data
+set we will need for certain visualisations. With these steps we are now
+prepared for the following analyses.
+
 ```{r echo=FALSE}
-#### Install/Load libraries
-### library(gtrendsR)  # Downloading was blocked after 3 downloads
+## Install/Load libraries
 library(tidyverse)
 library(lubridate)
 library(sf)
 library(rnaturalearth)
-library(gtrendsR)
+library(gtrendsR)  # Downloading was blocked after 3 downloads
 library(countrycode)
 
 ```
 
 ```{r prepare and merge data manually downloaded from Google Trends}
 
-#### Google Trends CSV-Dateien importieren und zusammenführen
-#### Funktion zum Einlesen und Aufbereiten der CSV-Dateien
+## import and join Google Trends csv datasets
 
+## Function to read and wrangle csv datasets
 process_trends_csv <- function(filepath, country_code) {
-  #### CSV einlesen und erste 2 Zeilen überspringen
+  ## read csv and skip first two rows
   data <- read.csv(filepath, skip = 2, stringsAsFactors = FALSE)
   
-  #### Spaltennamen einheitlich setzen
+  ## set uniform column names
   colnames(data) <- c("date", "iPhone", "Tesla", "Rolex")
 
-  #### <1 Werte in allen Trend-Spalten zu 0 ändern
+  ## set all <1 values in trend columns to 0
   trend_columns <- c("iPhone", "Tesla", "Rolex")
-
   data <- data %>%
     mutate(across(all_of(trend_columns),
                   ~ as.numeric(str_replace(., "<1", "0"))))
     
-  #### Datum konvertieren
+  ## convert date into date format
   data$date <- as.Date(data$date)
   
-  #### Country-Spalte hinzufügen
+  ## add column with country_code
   data$country <- country_code
   
   return(data)
@@ -558,25 +583,25 @@ process_trends_csv <- function(filepath, country_code) {
 
 ```{r Alle drei CSV-Dateien einlesen}
 
+## read all data
 trends_US <- process_trends_csv("./raw_data_from_google/multiTimeline_US.csv", "US")
 trends_MX <- process_trends_csv("./raw_data_from_google/multiTimeline_MX.csv", "MX")
 trends_DE <- process_trends_csv("./raw_data_from_google/multiTimeline_DE.csv", "DE")
 trends_FR <- process_trends_csv("./raw_data_from_google/multiTimeline_FR.csv", "FR")
 trends_JP <- process_trends_csv("./raw_data_from_google/multiTimeline_JP.csv", "JP")
 
-#### Alle Daten zusammenführen und nach Datum und Land sortieren
+## join all countries and sort by date and country
 trends_combined <- rbind(trends_US, trends_MX, trends_DE, trends_FR, trends_JP) %>%
   arrange(date, country)
 
-##### Investigate the data
-#### str(trends_combined)
-#### head(trends_combined)
-#### View(trends_combined)
-#### summary(trends_combined)
-#### table(trends_combined$country)
+## Investigate the data
+# str(trends_combined)
+# head(trends_combined)
+# View(trends_combined)
+# summary(trends_combined)
+# table(trends_combined$country)
 
-
-#### Daten in long format für Visualisierung
+## make data long for some visualisations
 trends_long <- trends_combined %>%
   pivot_longer(
     cols = c(`iPhone`, `Tesla`, `Rolex`),
@@ -584,21 +609,26 @@ trends_long <- trends_combined %>%
     values_to = "hits"
   )
 
-#### head(trends_long, 10)
-#### View(trends_long)
+# head(trends_long, 10)
+# View(trends_long)
 
 ```
 
 ```{r Speichern der kombinierten Daten}
 
-#### write.csv(trends_combined, "trends_combined_wide.csv", row.names = FALSE)
-#### write.csv(trends_long, "trends_combined_long.csv", row.names = FALSE)
+# write.csv(trends_combined, "trends_combined_wide.csv", row.names = FALSE)
+# write.csv(trends_long, "trends_combined_long.csv", row.names = FALSE)
 
 ```
 
+**Data inspection**: Besides `head()`, `View()`, `summary()` and
+`table()` we use a **faceted line chart** to check whether the data for
+all countries and for the three keywords iPhone, Rolex, and Tesla has
+been imported correctly.
+
 ```{r Facet line chart for all combinations of country & keyword}
 #| output: true
-#### Make the line graph with facets for all combinations
+## Make the line graph with facets for all combinations
 
 trends_long %>%
   ggplot(aes(x = date, y = hits)) +
@@ -617,16 +647,30 @@ trends_long %>%
 
 ```
 
-```{r Scatterplot Keyword 1 vs. Keyword 2 for all countries, echo=FALSE, message=FALSE}
-#| output: true
-#### Make the scatter plot with fitted lm line
-ggplot(trends_combined, aes(x = iPhone, y = Rolex)) +
+### Correlations between brands
+
+We examine if there is a correlation between **Google Searches for
+iPhone and Tesla**. Are days when iPhone searches are very prominent
+also days when Tesla searches account for a significant proportion? Or
+do searches for these two brands behave independently of each other?
+This question may be more relevant for other examples, such as two
+**brands in the same industry**. Or when a brand is looking for a
+partner for **joint marketing activities**. In such cases, it can be
+very helpful to know whether such correlations exist.
+
+Visually, it appears that Google searches for iPhone and Tesla are
+independent of each other. We believe this is an expected result.
+
+```{r Correlations in Google search between brands, echo=FALSE, message=FALSE}
+
+## Make the scatter plot with fitted lm line
+ggplot(trends_combined, aes(x = iPhone, y = Tesla)) +
   geom_point(alpha = 0.6, size = 2, color = "darkblue") +
   geom_smooth(method = 'lm', se = TRUE) +
   labs(
-    title = "Correlation between iPhone and Rolex in Google Trends searches",
-    x = "Tesla",
-    y = "iPhone",
+    title = "Correlation between iPhone and Tesla in Google Trends searches",
+    x = "iPhone",
+    y = "Tesla",
     caption = "Source: Google Trends. Each point represents a day from 2017-11-14 to 2018-06-14."
   ) +
   theme_minimal() +
@@ -637,16 +681,24 @@ ggplot(trends_combined, aes(x = iPhone, y = Rolex)) +
 
 ```
 
+### Seasonality of Google searches
+
+An important aspect of analyzing Google Trends data is **seasonality**.
+Are there periods when a particular brand is searched for more
+frequently? In the case of **Rolex**, for example, the annual
+**Baselworld** trade fair at the end of March or the **holiday season**
+at the end of the year could result in increased searches on Google.
+
 ```{r Rolex bar chart with seasonality of Google Trends}
 #| output: true
-#### Get and prepare the data
+## Get and prepare the data
 
-#### res <- gtrends(
-####   keyword = "Rolex",
-####   geo     = "",
-####   time    = "2018-01-01 2018-12-31")
-#### 
-#### write.csv(res$interest_over_time, "./raw_data_from_google/gtrends_Rolex_all_countries_year_2018.csv")
+# res <- gtrends(
+#   keyword = "Rolex",
+#   geo     = "",
+#   time    = "2018-01-01 2018-12-31")
+# 
+# write.csv(res$interest_over_time, "./raw_data_from_google/gtrends_Rolex_all_countries_year_2018.csv")
 
 google_Rolex_2018 <- read.csv("./raw_data_from_google/gtrends_Rolex_all_countries_year_2018.csv")
 
@@ -654,12 +706,12 @@ plot_data <- google_Rolex_2018 %>%
   select(date, hits) %>% 
   filter(date > "2018-01-01")
 
-#### Prepare month axis
-#### plot_data <- plot_data %>%
-####   mutate(month_abbr = factor(month(month, label = TRUE, abbr = TRUE),
-####                             levels = c("Nov", "Dez", "Jan", "Feb", "Mär", "Apr", "Mai", "Jun")))
+## Prepare month axis
+# plot_data <- plot_data %>%
+#   mutate(month_abbr = factor(month(month, label = TRUE, abbr = TRUE),
+#                             levels = c("Nov", "Dez", "Jan", "Feb", "Mär", "Apr", "Mai", "Jun")))
 
-#### Make the bar chart
+## Make the bar chart
 
 ggplot(plot_data, aes(x = date, y = hits)) +
   geom_col(fill = "darkblue") +
@@ -672,11 +724,19 @@ ggplot(plot_data, aes(x = date, y = hits)) +
   scale_y_continuous(limits = c(0, 100)) +
   theme_minimal() +
   theme(
-    axis.text.x = element_blank(),  #### Remove x-axis text labels
+    axis.text.x = element_blank(),  # Remove x-axis text labels
     axis.ticks.x = element_blank()   #### Remove x-axis ticks
   )
 
 ```
+
+The weekly bar chart actually shows these **two peaks**. The first few
+weeks of the year, possibly as a echo from the festive season, are
+relatively strong, before a first peak follows in **March** after a few
+weaker weeks. And in the penultimate week of the year, during the
+**holiday season**, the maximum is reached. Because no other brands
+relativize Rolex's values, Google Trend sets Rolex's maximum value at
+100.
 
 ## Model Analysis: fitting a linear regression model and visualize it
 
@@ -796,11 +856,11 @@ linear regression model:
 
 ```{r, message=FALSE}
 
-# Add fitted values & residuals
+## Add fitted values & residuals
 lm_data$fitted <- fitted(model)
 lm_data$residuals <- residuals(model)
 
-# Extract coefficients for regression line
+## Extract coefficients for regression line
 coef_intercept <- coef(model)[1]
 coef_slope <- coef(model)[2]
 
@@ -1052,11 +1112,8 @@ library(ragg)
 library(systemfonts)
 library(textshaping)
 
-# For RStudio >= 1.4, go to Tools > Global Options > General > Graphics and set
-# the Backend to AGG.
-
 # View(systemfonts::system_fonts())
-# Test Fonts. Use family name!
+## Test Fonts. Use family name!
 
 library(RColorBrewer)
 library(wordcloud2)
@@ -1071,23 +1128,23 @@ library(htmlwidgets)
 
 ```{r Prepare the Rolex data}
 
-# Use only videos that have Rolex in the title or in the tags
+## Use only videos that have Rolex in the title or in the tags
 rolex_df <- all_videos %>% 
   filter(
     str_detect(title, regex("rolex", ignore_case = TRUE)) |
     str_detect(tags, regex("rolex", ignore_case = TRUE))
   )
 
-# Aggregate by video_id (sum views, keep tags)
+## Aggregate by video_id (sum views, keep tags)
 rolex_df_aggregated <- rolex_df %>%
   group_by(video_id, tags) %>%
   summarise(total_views = sum(views, na.rm = TRUE), .groups = "drop")
 
-# Split tags by "|" separator (creates multiple rows per video)
+## Split tags by "|" separator (creates multiple rows per video)
 rolex_tags_split <- rolex_df_aggregated %>%
   separate_rows(tags, sep = "\\|")
 
-# Clean individual tags
+## Clean individual tags
 rolex_tags_cleaned <- rolex_tags_split %>%
   mutate(
     # Remove leading/trailing whitespace
@@ -1107,17 +1164,17 @@ rolex_tags_cleaned <- rolex_tags_split %>%
   # Keep only the cleaned tags column
   select(tag = tags_clean, total_views)
 
-# View results
+## View results
 # head(rolex_tags_cleaned)
 # cat("Total unique clean tags:", n_distinct(rolex_tags_cleaned$tag), "\n")
 
-# aggregate to have unique tags
+## aggregate to have unique tags
 rolex_tags_cleaned_unique <- rolex_tags_cleaned %>%
   group_by(tag) %>%
   summarise(total_views = sum(total_views, na.rm = TRUE)) %>%
   arrange(desc(total_views))
 
-# View results
+## View results
 # head(rolex_tags_cleaned_unique, 100)
 ```
 
@@ -1128,11 +1185,11 @@ close to the font Rolex uses.
 
 ```{r}
 #| output: true
-# Define luxurious colors that match to the Rolex brand.
+## Define luxurious colors that match to the Rolex brand.
 
 pal_rolex <- c("#228B22", "#0A1931", "#B09770", "#722F37", "#B36A5E", "#454545", "#006D77", "#4C3F91")
 
-# Create the Rolex wordcloud
+## Create the Rolex wordcloud
 
 wc_Rolex <- wordcloud2(rolex_tags_cleaned_unique %>% filter(total_views > 100000),
            size = 0.3, rotateRatio = 0,
@@ -1184,23 +1241,23 @@ to get it working, but it is definitely something we will try out the
 next time we do a wordcloud.
 
 ```{r Prepare the iPhone data}
-# Use only videos that have iphone in the title or in the tags
+## Use only videos that have iphone in the title or in the tags
 iphone_df <- all_videos %>% 
   filter(
     str_detect(title, regex("iphone", ignore_case = TRUE)) |
     str_detect(tags, regex("iphone", ignore_case = TRUE))
   )
 
-# Aggregate by video_id (sum views, keep tags)
+## Aggregate by video_id (sum views, keep tags)
 iphone_df_aggregated <- iphone_df %>%
   group_by(video_id, tags) %>%
   summarise(total_views = sum(views, na.rm = TRUE), .groups = "drop")
 
-# Split tags by "|" separator (creates multiple rows per video)
+## Split tags by "|" separator (creates multiple rows per video)
 iphone_tags_split <- iphone_df_aggregated %>%
   separate_rows(tags, sep = "\\|")
 
-# Clean individual tags
+## Clean individual tags
 iphone_tags_cleaned <- iphone_tags_split %>%
   mutate(
     # Remove leading/trailing whitespace
@@ -1210,27 +1267,27 @@ iphone_tags_cleaned <- iphone_tags_split %>%
     # Remove extra whitespace within tags
     tags_clean = str_squish(tags_clean)
   ) %>%
-  # Remove empty tags and stopwords
+  ## Remove empty tags and stopwords
   filter(
     tags_clean != "",
     !tags_clean %in% stopwords("en"),
     # Remove additional words you do not want to see in the cloud, namely 'iPhone'
     !tags_clean %in% c("video", "youtube", "content", "2017", "2018", "iphone", "iphone x")
   ) %>%
-  # Keep only the cleaned tags column
+  ## Keep only the cleaned tags column
   select(tag = tags_clean, total_views)
 
-# View results
+## View results
 # head(iphone_tags_cleaned)
 # cat("Total unique clean tags:", n_distinct(iphone_tags_cleaned$tag), "\n")
 
-# aggregate to have unique tags
+## aggregate to have unique tags
 iphone_tags_cleaned_unique <- iphone_tags_cleaned %>%
   group_by(tag) %>%
   summarise(total_views = sum(total_views, na.rm = TRUE)) %>%
   arrange(desc(total_views))
 
-# View results
+## View results
 # head(iphone_tags_cleaned_unique, 100)
 
 ```
@@ -1241,7 +1298,7 @@ iphone_tags_cleaned_unique <- iphone_tags_cleaned %>%
 
 pal_iphone <- c("#FF375F", "#32D74B", "#0A84FF", "#FF9F0A", "#BF5AF2", "#1D1D1F", "#E4E4E2")
 
-# iPhone wordcloud
+## iPhone wordcloud
 
 wc_iPhone <- wordcloud2(iphone_tags_cleaned_unique %>% filter(total_views > 5000000),
            size = 0.2, rotateRatio = 0,
