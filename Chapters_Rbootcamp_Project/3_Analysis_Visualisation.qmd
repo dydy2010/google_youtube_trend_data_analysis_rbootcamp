@@ -98,6 +98,7 @@ latest_date
 ```{r}
 #| include: false
 #| cache: true
+#| cache.lazy: false
 ## Separate the tags into individual rows
 tags_per_day <- all_videos %>%
   separate_rows(tags, sep = "\\|")
@@ -141,6 +142,7 @@ most_searched_tags_by_country <- tags_per_day %>%
 ```{r}
 #| include: false
 #| cache: true
+#| cache.lazy: false
 ## Filter for the three keywords and create a new 'keyword' column
 relevant_videos <- tags_per_day %>%
   filter(grepl("iphone|tesla|rolex", tags, ignore.case = TRUE)) %>%
