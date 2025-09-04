@@ -37,7 +37,11 @@ format:
           {1em}
           {}
         % ADD THIS LINE to control chapter spacing
+<<<<<<< HEAD
         \titlespacing*{\chapter}{0pt}{0pt}{15pt}
+=======
+        \titlespacing*{\chapter}{0pt}{0pt}{40pt}
+>>>>>>> 680744fbc294310b294361275a89e5d55e6b88e4
     geometry: top=0.2cm, bottom=1.5cm, left=2cm, right=2cm
     mainfont: Arial
 
