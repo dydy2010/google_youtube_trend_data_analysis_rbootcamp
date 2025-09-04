@@ -8,7 +8,7 @@ editor:
 
 Before showing the data preparation process, it is important to understand the data, e.g., charactistics, timespan and quality of our raw data sources. Here in this section, we will provide a overview of the 2 datasets that we have chosen and extracted using a R package.
 
-### YouTube Trending Video Dataset
+## YouTube Trending Video Dataset
 
 First, for youtube trending video data, we have found a kaggle data project that contains the data that we want: \* **Source:** [YouTube Trending Video Dataset on Kaggle](https://www.kaggle.com/datasets/datasnaek/youtube-new). "This dataset includes several months (and counting) of data on daily trending YouTube videos. Data is included for the US, GB, DE, CA, and FR regions (USA, Great Britain, Germany, Canada, and France, respectively), with up to 200 listed trending videos per day."
 
@@ -20,7 +20,7 @@ First, for youtube trending video data, we have found a kaggle data project that
 
 ![A screenshot of one of the raw data file](youtube.png){width="3000px,height=3000px"}
 
-### Google Search Interest Dataset
+## Google Search Interest Dataset
 
 We obtained this data set by extracting google search data ourselves, instead of using ready-to-use data.
 
@@ -58,20 +58,24 @@ relevant_videos <- tags_per_day %>%
   ))
 ```
 
-Then why is it an opportunity? Actually after separating the desired Iphone, Tesla and Rolex tags, we could even explore what tags are around these products. New types of insights and graphs like word cloud could be made.
+Then why is it an opportunity? Actually after separating the desired iphone, Tesla and Rolex tags, we could even explore what tags are around these products. New types of insights and graphs like word cloud could be made.
 
--   Engagement Metric Calculation Since we now have possibility to group total_views of videos of each keyword, also for dislikes, likes and comments, we came across the idea of evaluating the engagement level of each keyword during a certain time span.
+* Engagement Metric Calculation:
+Since we now have possibility to group total_views of videos of each keyword, also for dislikes, likes and comments, we came across the idea of evaluating the engagement level of each keyword during a certain time span.
 
-To do that, it is necessary to aggreagate the data and do the calculation of ratio between: total_likes and total_views, or total_comments and total_views. These ratios provide insights into audience engagement (engagement quality) independent of video popularity.This is valuable information for companies to know what kind of video can provide most engagement of customers, while allocating the least advertisement resources.
+To do that, it is necessary to aggregate the data and do the calculation of ratio between: total_likes and total_views, or total_comments and total_views. These ratios provide insights into audience engagement (engagement quality) independent of video popularity.This is valuable information for companies to know what kind of video can provide most engagement of customers, while allocating the least advertisement resources.
 
--   Final Dataset Integration The final chapter of the data preparation phase is the creation of a single, comprehensive dataset, combining the youtube data structure and the google search data.
+* Final Data set Integration:
+The final chapter of the data preparation phase is the creation of a single, comprehensive data set, combining the youtube data structure and the google search data.
 
-Merging Strategy: Perform a full_join to combine the processed YouTube data (including trending dates, video metrics, and extracted tags, calculated engagement ratios, keyword, country) with the Google Trends search interest data. In case on a day, there is google trend data for a keyword, but no trending video in youtube data, the metrics will be value 0. And an extra column is added, marking if the day has trending video or not.This way, we can keep every row from google and youtube data withouth potentially losing data points from one side.
+* Merging Strategy: 
+Perform a full_join to combine the processed YouTube data (including trending dates, video metrics, and extracted tags, calculated engagement ratios, keyword, country) with the Google Trends search interest data. In case on a day, there is google trend data for a keyword, but no trending video in youtube data, the metrics will be value 0. And an extra column is added, marking if the day has trending video or not.This way, we can keep every row from google and youtube data without potentially losing data points from one side.
 
 Join Keys: The join should be performed on common identifiers such as keyword/tag and date.
 
-Resulting Dataset: the structure of the final merged data is
+Resulting Data set: the structure of the final merged data is
 
 \[1\] "trending_date" "country" "keyword" "total_views"\
 \[5\] "total_likes" "total_dislikes" "total_comments" "video_count"\
-\[9\] "like_dislike_ratio" "comments_views_ratio" "likes_views_ratio" "dislikes_views_ratio" \[13\] "hits" "youtube_status"
+\[9\] "like_dislike_ratio" "comments_views_ratio" "likes_views_ratio" "dislikes_views_ratio" 
+\[13\] "hits" "youtube_status"
