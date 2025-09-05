@@ -8,7 +8,7 @@ editor:
 #| include: false
 ## Preparation of Youtube Data
 ## Getting data reday for merge, other titles tbd
-
+# install.packages("gridExtra")
 # install.packages("ggridges")
 # install.packages("rnaturalearthdata")
 library(ggridges)
@@ -18,6 +18,7 @@ library(ggplot2)
 library(scales)
 library(sf)
 library(rnaturalearth)
+library(gridExtra)
 ## Load Google Trends data here
 trends_long <- read_csv("trends_combined_long.csv")
 # getwd()
@@ -267,19 +268,23 @@ This chapter presents the core of our analytical project. First, We will first e
 ```{r graph1 Google Comparison v1, fig.width=14, fig.height=6}
 #| echo: false
 #| output: true
+library(ggplot2)
 ## Graph 1: Overall Search Interest Comparison (Line Chart) v1
 ## maybe combining the data points on the same day to one data point, avg, same day
-library(ggplot2)
+avg_data <- combined_data_final %>%
+  group_by(trending_date, keyword) %>%
+  summarise(avg_hits = mean(hits, na.rm = TRUE), 
+            total_hits= sum(hits,na.rm = TRUE), 
+                            .groups = 'drop')
 
-ggplot(data = combined_data_final, aes(x = trending_date, y = hits, color = keyword)) +
+ggplot(data = avg_data, aes(x = trending_date, y = avg_hits, color = keyword)) +
   geom_line() +
   labs(
-    title = "Google Search Interest Over Time",
+    title = "Google Search Interest Over Time (Average)",
     x = "Date",
-    y = "Relative Search Interest (0-100)",
+    y = "Average Relative Search Interest (0-100)",
     color = "Keyword"
   )
-
 ```
 To visualise overall search interest on google for 3 brands, a graph with 3 brands search interest data was made. In version 1 all brands are in one graph, and following this later is v2 with 3 brands in 3 graphs. Both graphs show the same result, but are suitable for different reading preferences.
 *Graph 1: Overall Search Interest Comparison (Facet Chart) v2*
@@ -290,12 +295,12 @@ To visualise overall search interest on google for 3 brands, a graph with 3 bran
 ## Graph 1: Overall Search Interest Comparison (Facet Chart) v2
 library(ggplot2)
 
-ggplot(data = combined_data_final, aes(x = trending_date, y = hits)) +
+ggplot(data = avg_data, aes(x = trending_date, y = avg_hits)) +
   geom_line(aes(color = keyword)) +
   labs(
-    title = "Google Search Interest Over Time by Keyword",
+    title = "Google Search Interest Over Time by Keyword (Average)",
     x = "Date",
-    y = "Relative Search Interest (0-100)",
+    y = "Average Relative Search Interest (0-100)",
     color = "Keyword"
   ) +
   scale_x_date(
@@ -303,7 +308,6 @@ ggplot(data = combined_data_final, aes(x = trending_date, y = hits)) +
     date_breaks = "1 month"      # show every month
   ) +
   facet_wrap(~ keyword, scales = "free_y", nrow=3)
-
 ```
 *Interpretation of Google Search Interest Trends*
 
@@ -352,7 +356,7 @@ It indicates a massive disparity in viewership between iPhone and the other two 
 
 *Graph 2: Overall YouTube Views Comparison v2 (Facet Version)*
 
-```{r graph2 v2, fig.width=14, fig.height=6}
+```{r graph2 v2, fig.width=14, fig.height=9}
 #| echo: false
 #| output: true
 ## Graph 2: Overall YouTube Views Comparison v2 (no Facet Version)
@@ -384,99 +388,35 @@ The steadier trend indicates a noticeable presence on the platform, based on con
 
 
 
-
-
 ### Graph 4: The iPhone Hype Cycle 
-*(Dual-Axis Chart) v1* 
+*Graph 4: The iPhone Hype Cycle (Separate Chart) v1*
 210-day window around the iPhone X launch.
 
-```{r graph4 v1}
-#| output: true
-#| echo: false
-## Graph 4: The iPhone Hype Cycle (Dual-Axis Chart) v1
-## prepare data, define the iPhone X launch date.
-release_date <- as.Date("2017-11-03")
-start_date <- release_date - days(30)
-end_date <- release_date + days(180)
-
-## filter combined data to get only the iPhone data, 60-day window.
-iphone_hype_data <- combined_data_final %>%
-  filter(keyword == "iPhone",
-         trending_date >= start_date,
-         trending_date <= end_date)
-
-## Create scaling factor for hits, after, both views and hits are visible on the same plot.
-## common method to create a dual axis in ggplot2.
-scaling_factor <- max(iphone_hype_data$total_views, na.rm = TRUE) / max(iphone_hype_data$hits, na.rm = TRUE)
-
-## plot with ggplot2
-ggplot(iphone_hype_data) +
-  ## YouTube views for left y-axis, bar.
-  geom_col(aes(x = trending_date, y = total_views), fill = "blue") +
-  
-  ## Google search hits for right y-axis.
-  ## scale the hits to match the 'total_views'.
-  geom_smooth(aes(x = trending_date, y = hits * scaling_factor), color = "red", size = 1.2) +
-  
-  ## Add the annotation line for the launch date.
-  geom_vline(xintercept = release_date, linetype = "dashed", color = "gray", size = 1) +
-  
-  ## labels and titles.
-  labs(
-    title = "iPhone X Hype Cycle: Views vs. Search Interest",
-    subtitle = paste("60-day window around launch on", format(release_date, "%B %d, %Y")),
-    x = "Date"
-  ) +
-  
-  ## Configure the dual y-axis.
-  scale_y_continuous(
-    name = "Total Daily YouTube Views",
-    #### Using label_number with scale and suffix to format the large nums
-    labels = scales::label_number(scale = 1e-6, suffix = "M"), 
-    sec.axis = sec_axis(~./scaling_factor, name = "Google Search Interest (0-100)")
-  ) +
-  
-  ## Theme settings.
-  theme(
-    legend.position = "none",
-    ## Increase the aspect ratio, make the plot less squished
-    ## adjusts the height-to-width ratio. value less than 1 will make the plot wider
-    aspect.ratio = 0.5,
-    plot.title = element_text(hjust = 0),
-    plot.subtitle = element_text(hjust = 0)
-  )
-
-```
-
-
-*Graph 4: The iPhone Hype Cycle (Separate Chart) v2*
-210-day window around the iPhone X launch.
-
-```{r graph4 v2}
+```{r graph4 v2, fig.width=8, fig.height=5}
 #| output: true
 #| echo: false
 ## Graph 4: The iPhone Hype Cycle (Seperate Chart) v2
 ## prepare data, define the iPhone X launch date.
-## layout 1 row and 2 columns
-par(mfrow = c(1, 2))
-
+## library(gridExtra)
 ## Plot the Google Trends data
-plot_google <- ggplot(iphone_hype_data) +
-  geom_smooth(aes(x = trending_date, y = hits), color = "red", size = 1.2, se = FALSE) + ### se=FALSE,standard error. geom_smooth() plots a line, default, it also adds a shaded area around. 
+plot_google <- ggplot(avg_data) +
+  geom_smooth(data = filter(avg_data, keyword == "iPhone"),
+              aes(x = trending_date, y = avg_hits), color = "red", size = 1.2, se = FALSE) + ### se=FALSE,standard error. geom_smooth() plots a line, default, it also adds a shaded area around. 
   geom_vline(xintercept = release_date, linetype = "dashed", color = "gray", size = 1) +
-  labs(title = "Google Search Interest", x = "Date", y = "Relative Interest")
+  labs(title = "Google Search Interest", x = "Date", y = "Average Relative Interest")
 
 ## Plot the YouTube Views data
 plot_youtube <- ggplot(iphone_hype_data) +
   geom_col(aes(x = trending_date, y = total_views), fill = "blue") +
   geom_vline(xintercept = release_date, linetype = "dashed", color = "gray", size = 1) +
   labs(title = "YouTube Daily Views", x = "Date", y = "Total Daily Views") +
-  scale_y_continuous(labels = scales::comma) 
-## print needed with par(mfrow)
-print(plot_google)
-print(plot_youtube)
+  ## scale_y_continuous(labels = scales::comma) ## format in num
+  scale_y_continuous(labels = scales::label_number(scale = 1/1e6, suffix = "M")) ## format in Ms
+
 ## good practice reset to default
 par(mfrow = c(1, 1))
+## Arrange plots using gridExtra, mfrow doesnt work for ggplot2?
+gridExtra::grid.arrange(plot_google, plot_youtube, ncol = 1)
 ```
 
 ## Google Search Trend Analysis
