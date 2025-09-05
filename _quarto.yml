@@ -39,7 +39,7 @@ format:
         % ADD THIS LINE to control chapter spacing
         \titlespacing*{\chapter}{0pt}{0pt}{15pt}
     
-    geometry: top=0.2cm, bottom=1.5cm, left=2cm, right=2cm
+    geometry: top=1cm, bottom=1.5cm, left=2cm, right=2cm
     mainfont: Arial
 
 execute:

@@ -4,6 +4,7 @@ editor:
     wrap: 72
 ---
 
+## Prepare the Data for Analysis
 ## Data Description
 
 Before showing the data preparation process, it is important to understand the data, e.g., characteristics, time span and quality of our raw data sources. Here in this section, we will provide a overview of the 2 datasets that we have chosen and extracted using a R package.

@@ -258,12 +258,12 @@ combined_data_final <- combined_data_filled_na %>%
 ```
 
 ## Analysis and Visualisation
-This chapter presents the core of our analytical project. First, We will first explore the datasets, comparing the brands on both platforms' data, and have a big picture overview. Second, we dive into specific brands on google platform, discovering insights from different aspects. Third, to better understand the hidden patterns, we provide also model analysis, fitting linear regression model to the data. Forth, youtube platform specific analysis for brands was performed. And last but not least, by separating tags, we made ***WordClouds*** to visualise what keywords were most asscociated with the brands, to provide new perspective for product improvement and marketing.
 ## The Big Picture - Comparing the Brands
+This chapter presents the core of our analytical project. First, We will first explore the datasets, comparing the brands on both platforms' data, and have a big picture overview. Second, we dive into specific brands on google platform, discovering insights from different aspects. Third, to better understand the hidden patterns, we provide also model analysis, fitting linear regression model to the data. Forth, youtube platform specific analysis for brands was performed. And last but not least, by separating tags, we made ***WordClouds*** to visualise what keywords were most asscociated with the brands, to provide new perspective for product improvement and marketing.
 
-Google Search Data Comparison Graph 1: Overall Search Interest
-Comparison v1(Line Chart)
 
+### Google Search Data Comparison Graph 1: Overall Search Interest Comparison 
+*v1(Line Chart)*
 ```{r graph1 Google Comparison v1, fig.width=14, fig.height=6}
 #| echo: false
 #| output: true
@@ -282,7 +282,7 @@ ggplot(data = combined_data_final, aes(x = trending_date, y = hits, color = keyw
 
 ```
 To visualise overall search interest on google for 3 brands, a graph with 3 brands search interest data was made. In version 1 all brands are in one graph, and following this later is v2 with 3 brands in 3 graphs. Both graphs show the same result, but are suitable for different reading preferences.
-Graph 1: Overall Search Interest Comparison (Facet Chart) v2
+*Graph 1: Overall Search Interest Comparison (Facet Chart) v2*
 
 ```{r graph1 Google Comparison v2 Facet, fig.width=14, fig.height=6}
 #| echo: false
@@ -305,7 +305,7 @@ ggplot(data = combined_data_final, aes(x = trending_date, y = hits)) +
   facet_wrap(~ keyword, scales = "free_y", nrow=3)
 
 ```
-Interpretation of Google Search Interest Trends
+*Interpretation of Google Search Interest Trends*
 
 Key observations include:
 
@@ -324,7 +324,8 @@ Maybe the brand doesn't need hype as a luxury watch brand, otherwise more market
 
 
 
-Graph 2: Overall YouTube Views Comparison (Line Chart) v1
+###Graph 2: Overall YouTube Views Comparison 
+*(Line Chart) v1*
 Same as for google search interst, we did overrall comparison for 3 brands on youtube platform with 2 versions of graphs.
 
 ```{r graph2 v1, fig.width=10, fig.height=6}
@@ -349,7 +350,7 @@ ggplot(data = combined_data_final, aes(x = trending_date, y = total_views)) +
 This graps track the daily view counts for videos related to three keywords—iPhone, Roles, and Tesla, in 5 countries.
 It indicates a massive disparity in viewership between iPhone and the other two keywords.
 
-Graph 2: Overall YouTube Views Comparison v2 (Facet Version)
+*Graph 2: Overall YouTube Views Comparison v2 (Facet Version)*
 
 ```{r graph2 v2, fig.width=14, fig.height=6}
 #| echo: false
@@ -368,7 +369,7 @@ ggplot(data = combined_data_final, aes(x = trending_date, y = total_views)) +
   facet_wrap(~keyword, scales = "free_y", nrow=3) ## allow the y-axis of each plot to have own independent scale
 
 ```
-Interpretation of YouTube Daily Views Trends
+*Interpretation of YouTube Daily Views Trends*
 * iPhone: Viral and Event-Driven Engagement
 
 The keyword "iPhone" shows an astronomical level of views, peaking at nearly 150 million daily views, which dwarfs the other terms. The trend is very volatile, showing a dramatic spike in early March 2018 followed by a sharp decline. 
@@ -385,7 +386,8 @@ The steadier trend indicates a noticeable presence on the platform, based on con
 
 
 
-Graph 4: The iPhone Hype Cycle (Dual-Axis Chart) v1 
+### Graph 4: The iPhone Hype Cycle 
+*(Dual-Axis Chart) v1* 
 210-day window around the iPhone X launch.
 
 ```{r graph4 v1}
@@ -447,9 +449,8 @@ ggplot(iphone_hype_data) +
 ```
 
 
-Graph 4: The iPhone Hype Cycle (Separate Chart) v2 
-210-day window around
-the iPhone X launch.
+*Graph 4: The iPhone Hype Cycle (Separate Chart) v2*
+210-day window around the iPhone X launch.
 
 ```{r graph4 v2}
 #| output: true
@@ -1146,14 +1147,14 @@ more than 100k views and set a specific palette that represents the
 corporate identity of Rolex. And we set the font to Garamond which is
 close to the font Rolex uses.
 
-```{r}
+```{r, fig.width=10, fig.height=6}
 #| output: true
 ## Define luxurious colors that match to the Rolex brand.
 
 pal_rolex <- c("#228B22", "#0A1931", "#B09770", "#722F37", "#B36A5E", "#454545", "#006D77", "#4C3F91")
 
 ## Create the Rolex wordcloud
-wordcloud2(rolex_tags_cleaned_unique %>% filter(total_views > 100000),
+wc_obj <- wordcloud2(rolex_tags_cleaned_unique %>% filter(total_views > 100000),
            size = 0.3, rotateRatio = 0,
            minRotation = -pi/2, maxRotation = -pi/2,
            fontFamily = 'Garamond',
@@ -1163,6 +1164,24 @@ wordcloud2(rolex_tags_cleaned_unique %>% filter(total_views > 100000),
            shape = 'circle', ellipticity = 0.5,
            # color = palKH2[factor(df2$Word)])
            color = rep_len(pal_rolex, nrow(rolex_tags_cleaned_unique)))
+
+# screenshot for pdf render, and code output for html
+if (knitr::is_pdf_output()) {
+  # --- This code runs ONLY when rendering to PDF ---
+  
+  # Save widget to a temporary file
+  saveWidget(wc_obj, "temp_wordcloud.html", selfcontained = FALSE)
+  # Take a screenshot and save as a PNG
+  webshot2::webshot("temp_wordcloud.html", "rolex_wordcloud.png", delay = 3, vwidth = 1000, vheight = 600)
+  
+  # Embed the static PNG image in the PDF
+  knitr::include_graphics("rolex_wordcloud.png")
+  
+} else {
+  # --- This code for ALL other formats (HTML) ---
+  # print the plot
+  wc_obj
+}
 
 ```
 
