@@ -1147,10 +1147,12 @@ more than 100k views and set a specific palette that represents the
 corporate identity of Rolex. And we set the font to Garamond which is
 close to the font Rolex uses.
 
-```{r, fig.width=10, fig.height=6}
+```{r}
 #| output: true
+#| out.width: "120%"   # PDF output width
+#| out.height: "600px" # PDF output height
 ## Define luxurious colors that match to the Rolex brand.
-
+library(knitr)
 pal_rolex <- c("#228B22", "#0A1931", "#B09770", "#722F37", "#B36A5E", "#454545", "#006D77", "#4C3F91")
 
 ## Create the Rolex wordcloud
@@ -1166,17 +1168,15 @@ wc_obj <- wordcloud2(rolex_tags_cleaned_unique %>% filter(total_views > 100000),
            color = rep_len(pal_rolex, nrow(rolex_tags_cleaned_unique)))
 
 # screenshot for pdf render, and code output for html
-if (knitr::is_pdf_output()) {
+if (knitr::is_latex_output()) {
   # --- This code runs ONLY when rendering to PDF ---
   
   # Save widget to a temporary file
   saveWidget(wc_obj, "temp_wordcloud.html", selfcontained = FALSE)
   # Take a screenshot and save as a PNG
   webshot2::webshot("temp_wordcloud.html", "rolex_wordcloud.png", delay = 3, vwidth = 1000, vheight = 600)
-  
-  # Embed the static PNG image in the PDF
+  # Embed PNG image in the PDF with specific size
   knitr::include_graphics("rolex_wordcloud.png")
-  
 } else {
   # --- This code for ALL other formats (HTML) ---
   # print the plot
