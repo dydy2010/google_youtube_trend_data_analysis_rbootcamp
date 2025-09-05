@@ -15,7 +15,8 @@ The goal is to demonstrate insights for hypothetical clients and to deepen our l
 # Our Story
 ## The Beginning of an Idea
 
-Today,both Youtube and Google are central media and information sources globally, and they are the epitome of online behavior research and big data insights extraction. Users on these platforms are highly engaged, that naturally provides consumer brands a great window to understand the behavior and likings of customers. Analyzing data from these platforms, allows the brands to provide appealing products that adhere to the needs of the market. It can not only be more profitable but also helps with efficiency by avoid producing unwanted products or advertisement campaigns.
+Today, both Youtube and Google are central media and information sources globally, and they are the epitome of online behavior research and big data insights extraction. Users on these platforms are highly engaged, that naturally provides consumer brands a great window to understand the behavior and likings of customers. Analyzing data from these platforms, allows the brands to provide appealing products that adhere to the needs of the market. It can not only be more profitable but also helps with efficiency by avoid producing unwanted products or advertisement campaigns.
+
 
 All the above have inspired us of providing a service to the hypothetical clients, to help them find, analyze data,
 and explore useful insights. To showcase our capabilities, we have chosen to analyze the Youtube and Google data from 2017 to 2018, for 3 hypothetical clients: Iphone, Tesla, and Rolex, and to have a example to present our service, how it works, what could the results be and how much value it could provide.
