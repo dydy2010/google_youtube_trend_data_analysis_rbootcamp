@@ -388,35 +388,82 @@ The steadier trend indicates a noticeable presence on the platform, based on con
 
 
 
-### Graph 4: The iPhone Hype Cycle 
-*Graph 4: The iPhone Hype Cycle (Separate Chart) v1*
+### Graph 3: The iPhone Hype Cycle 
+*Graph 3: The iPhone Hype Cycle v1(Google & Youtube separately)*
 210-day window around the iPhone X launch.
 
-```{r graph4 v2, fig.width=8, fig.height=5}
+```{r graph3 v1, fig.width=8, fig.height=5}
 #| output: true
 #| echo: false
 ## Graph 4: The iPhone Hype Cycle (Seperate Chart) v2
 ## prepare data, define the iPhone X launch date.
 ## library(gridExtra)
 ## Plot the Google Trends data
+a_line_date <- as.Date("2017-11-06")
 plot_google <- ggplot(avg_data) +
   geom_smooth(data = filter(avg_data, keyword == "iPhone"),
               aes(x = trending_date, y = avg_hits), color = "red", size = 1.2, se = FALSE) + ### se=FALSE,standard error. geom_smooth() plots a line, default, it also adds a shaded area around. 
-  geom_vline(xintercept = release_date, linetype = "dashed", color = "gray", size = 1) +
-  labs(title = "Google Search Interest", x = "Date", y = "Average Relative Interest")
+  geom_vline(xintercept = a_line_date, linetype = "dashed", color = "yellow", size = 1) +
+  annotate(
+    "text",
+    x = a_line_date,
+    y = 58, # vertical position
+    label = "iPhoneX Launch",
+    angle = 90, # rotates text vertically
+    vjust = -0.5 #text position to the line
+  )+
+  labs(title = "Google Search Interest", x = "Date", y = "Average Relative Interest") +
+  scale_x_date(date_breaks = "1 month", date_labels = "%b %Y") 
 
 ## Plot the YouTube Views data
 plot_youtube <- ggplot(iphone_hype_data) +
   geom_col(aes(x = trending_date, y = total_views), fill = "blue") +
-  geom_vline(xintercept = release_date, linetype = "dashed", color = "gray", size = 1) +
+  geom_vline(xintercept = a_line_date, linetype = "dashed", color = "yellow", size = 1) +
+  annotate(
+    "text",
+    x = a_line_date,
+    y = max(iphone_hype_data$total_views, na.rm = TRUE) * 0.5, # vertical position
+    label = "iPhoneX Launch",
+    angle = 90, # rotates text vertically
+    vjust = -0.5 #text position to the line
+  )+
   labs(title = "YouTube Daily Views", x = "Date", y = "Total Daily Views") +
   ## scale_y_continuous(labels = scales::comma) ## format in num
-  scale_y_continuous(labels = scales::label_number(scale = 1/1e6, suffix = "M")) ## format in Ms
+  scale_y_continuous(labels = scales::label_number(scale = 1/1e6, suffix = "M")) + ## format in Ms
+  scale_x_date(date_breaks = "1 month", date_labels = "%b %Y") 
 
 ## good practice reset to default
 par(mfrow = c(1, 1))
 ## Arrange plots using gridExtra, mfrow doesnt work for ggplot2?
 gridExtra::grid.arrange(plot_google, plot_youtube, ncol = 1)
+```
+
+*graph4 v1, fig.width=8, fig.height=5*
+```{r graph3 v2, fig.width=8, fig.height=5}
+#| output: true
+#| echo: false
+## Graph 4: The iPhone Hype Cycle (Scatterplot Version)
+## Prepare data for scatterplot
+# Filter for iPhone data only
+iphone_google_data <- avg_data %>%
+  filter(keyword == "iPhone") %>%
+  select(trending_date, google_hits = avg_hits)
+# Join with YouTube data
+scatter_data <- iphone_hype_data %>%
+  inner_join(iphone_google_data, by = "trending_date")
+
+# scatterplot
+ggplot(scatter_data, aes(x = total_views, y = google_hits)) +
+  geom_point(alpha = 0.6, size = 0.5) +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +  # Add trend line
+  labs(
+    title = "iPhone YouTube Views and Google Search Interest",
+    subtitle = "iPhone X Launch Period",
+    x = "YouTube Daily Views",
+    y = "Google Search Interest",
+    caption = "Data: Google Trends & YouTube"
+  ) +
+  scale_x_continuous(labels = scales::label_number(scale = 1/1e6, suffix = "M")) 
 ```
 
 ## Google Search Trend Analysis
