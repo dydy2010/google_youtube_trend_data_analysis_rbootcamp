@@ -189,7 +189,7 @@ world_trends <- world_sf %>%
 
 Additionally we specify a color coding from bright to dark blues.
 
-```{r, echo=TRUE, warning=FALSE}
+```{r, echo=TRUE, warning=FALSE, fig.width=8, fig.height=5}
 
 ## Produce map
 ggplot() +

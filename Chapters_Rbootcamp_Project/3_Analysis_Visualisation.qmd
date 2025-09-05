@@ -6,7 +6,8 @@ editor:
 
 ```{r}
 #| include: false
-## Preparation of Youtube Data
+## Analysis and Visualisation
+## preparation of youtube data
 ## Getting data reday for merge, other titles tbd
 # install.packages("gridExtra")
 # install.packages("ggridges")
@@ -374,6 +375,7 @@ ggplot(data = combined_data_final, aes(x = trending_date, y = total_views)) +
 
 ```
 *Interpretation of YouTube Daily Views Trends*
+
 * iPhone: Viral and Event-Driven Engagement
 
 The keyword "iPhone" shows an astronomical level of views, peaking at nearly 150 million daily views, which dwarfs the other terms. The trend is very volatile, showing a dramatic spike in early March 2018 followed by a sharp decline. 
@@ -391,7 +393,7 @@ The steadier trend indicates a noticeable presence on the platform, based on con
 ### Graph 3: The iPhone Hype Cycle 
 
 *Graph 3 v1: The iPhone Hype Cycle (Google & Youtube separately)*
-210-day window around the iPhone X launch.
+180-day window around the iPhone X launch.
 
 ```{r graph3 v1, fig.width=8, fig.height=5}
 #| output: true
@@ -449,8 +451,10 @@ par(mfrow = c(1, 1))
 gridExtra::grid.arrange(plot_google, plot_youtube, ncol = 1)
 ```
 
+### Graph 3: The iPhone Hype Cycle 
 
-*graph3 v2, fig.width=8, fig.height=5*
+*Graph 3 v2: The iPhone Hype Cycle (Google & Youtube separately)*
+180-day window around the iPhone X launch.
 ```{r graph3 v2, fig.width=8, fig.height=5}
 #| output: true
 #| echo: false
@@ -502,8 +506,7 @@ library(countrycode)
 
 ```
 
-```{r prepare and merge data manually downloaded from Google Trends}
-#| include: false
+```{r prepare and merge data manually downloaded from Google Trends, echo=FALSE}
 
 ## import and join Google Trends csv datasets
 
@@ -617,7 +620,7 @@ very helpful to know whether such correlations exist.
 Visually, it appears that Google searches for iPhone and Tesla are
 independent of each other. We believe this is an expected result.
 
-```{r Correlations in Google search between brands, echo=FALSE, message=FALSE}
+```{r Correlations in Google search between brands, echo=FALSE, message=FALSE, fig.width=8, fig.height=5}
 
 ## Make the scatter plot with fitted lm line
 ggplot(trends_combined, aes(x = iPhone, y = Tesla)) +
@@ -645,10 +648,8 @@ frequently? In the case of **Rolex**, for example, the annual
 **Baselworld** trade fair at the end of March or the **holiday season**
 at the end of the year could result in increased searches on Google.
 
-```{r Rolex bar chart with seasonality of Google Trends}
+```{r Rolex bar chart with seasonality of Google Trends, fig.width=8, fig.height=5, echo=FALSE}
 #| output: true
-#| include: false
-
 ## Get and prepare the data
 
 # res <- gtrends(
@@ -711,8 +712,8 @@ First we do a line graph comparing the Google Trends data for iPhone
 country by country. To get a nicer graph we aggregate the data from
 daily to weekly.
 
-```{r echo=FALSE, message=FALSE}
-
+```{r echo=FALSE, message=FALSE, fig.width=9, fig.height=5}
+#| output: true
 library(tidyverse)
 library(corrplot)
 # library(patchwork)
@@ -813,8 +814,7 @@ linear regression model:
 -   Observed vs. Fitted to check visually how good model accuracy and
     predictive power are.
 
-```{r, message=FALSE}
-#| include: false
+```{r, message=FALSE, echo=FALSE}
 #| output: true
 
 ## Add fitted values & residuals
@@ -901,7 +901,7 @@ effects in order to respond appropriately with marketing measures.
 
 Scatterplot Tesla Youtube-views vs. Youtube-likes
 
-```{r echo=FALSE, message=FALSE}
+```{r echo=FALSE, message=FALSE, fig.width=8, fig.height=5}
 #| output: true
 
 ## Prepare data
@@ -934,7 +934,8 @@ ggplot(plot_data, aes(x = total_views, y = engagement)) +
 Barchart Brand comparison of YouTube-Engagement (i.e. likes / views and
 dislikes / views)
 
-```{r echo=FALSE, message=FALSE}
+```{r echo=FALSE, message=FALSE, fig.width=8, fig.height=5}
+#| output: true
 
 ## Prepare data
 
@@ -993,7 +994,7 @@ ggplot(plot_long, aes(x = keyword, y = ratio, fill = metric)) +
 
 Longevity of selected YouTube-videos
 
-```{r echo=FALSE, message=FALSE}
+```{r echo=FALSE, message=FALSE, fig.width=8, fig.height=5}
 #| output: true
 ## Prepare data
 
@@ -1088,8 +1089,7 @@ library(htmlwidgets)
 
 ### Rolex wordcloud
 
-```{r Prepare the Rolex data}
-#| include: false
+```{r Prepare the Rolex data, echo=FALSE}
 
 ## Use only videos that have Rolex in the title or in the tags
 rolex_df <- all_videos %>% 
@@ -1173,7 +1173,7 @@ if (knitr::is_latex_output()) {
   # Save widget to a temporary file
   saveWidget(wc_obj, "temp_wordcloud.html", selfcontained = FALSE)
   # Take a screenshot and save as a PNG
-  webshot2::webshot("temp_wordcloud.html", "rolex_wordcloud.png", delay = 3, vwidth = 1000, vheight = 600)
+  webshot2::webshot("temp_wordcloud.html", "rolex_wordcloud.png", delay = 3, vwidth = 900, vheight = 400)
   # Embed PNG image in the PDF with specific size
   knitr::include_graphics("rolex_wordcloud.png")
 } else {
