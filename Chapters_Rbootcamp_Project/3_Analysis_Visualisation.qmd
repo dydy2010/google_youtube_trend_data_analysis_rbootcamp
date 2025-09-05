@@ -389,6 +389,7 @@ The steadier trend indicates a noticeable presence on the platform, based on con
 
 
 ### Graph 3: The iPhone Hype Cycle 
+
 *Graph 3 v1: The iPhone Hype Cycle (Google & Youtube separately)*
 210-day window around the iPhone X launch.
 
@@ -447,6 +448,7 @@ par(mfrow = c(1, 1))
 ## Arrange plots using gridExtra, mfrow doesnt work for ggplot2?
 gridExtra::grid.arrange(plot_google, plot_youtube, ncol = 1)
 ```
+
 
 *graph3 v2, fig.width=8, fig.height=5*
 ```{r graph3 v2, fig.width=8, fig.height=5}
