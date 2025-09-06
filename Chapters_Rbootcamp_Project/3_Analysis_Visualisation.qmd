@@ -391,7 +391,9 @@ The steadier trend indicates a noticeable presence on the platform, based on con
 
 
 ### Graph 3: The iPhone Hype Cycle 
+This part of the big picture is slightly scaled down to iPhone, we would like to have one graph that includes Youtube and Google data in the meantime, and focuses on one product pattern, e.g., the Hype Cycle around product event like the iPhone X lauch in Nov 2017. 
 
+To realize that, 2 versions of the graphs are constructed (180 days next to event). In v1, 2 sections of visualisation were drawn, for youtube and google data. The Y axis are the youtube and google engagement and the X axis are the time spans.
 *Graph 3 v1: The iPhone Hype Cycle (Google & Youtube separately)*
 180-day window around the iPhone X launch.
 
@@ -450,6 +452,22 @@ par(mfrow = c(1, 1))
 ## Arrange plots using gridExtra, mfrow doesnt work for ggplot2?
 gridExtra::grid.arrange(plot_google, plot_youtube, ncol = 1)
 ```
+*Interpretation of Google Search Interest Trends*
+* Google search interest hype lasted more than 3 months
+  From November to February. Even though data before Nov is missing, we could see that starting from           November,the search interest already had already risen and peaked. It indicates that the launch event news   had a great impact on iPhone Google search interest and the elevated interest lasted at least 3 months.
+  
+* Google search strategy for client
+  Apple can intensify Google platform advertisement allocation approx. 2 months before and 3 months after the   major product launch event, to maximize customer interest and exposure on Google.
+*Interpretation of Youtube Views Trends*
+* Peak views in December
+  Youtube trending videos about iPhone started to emerge around Mid November after the iPhone X launch.
+  And the total views of these videos have peaked in December with a daily total view reaching just over 175M   per day. After that there is a deep decline, until a small spike around March. The hype on Youtube will be   short lived and slightly scattered, only lasting about 1 months.
+
+* Youtube strategy for client
+  Apple can start to focus on allocating marketing resources on Youtube right after the launch event of a      major product, especially the first month after the event. Continuous marketing effort on Youtube after      that is optional.
+  
+  
+
 
 ### Graph 3: The iPhone Hype Cycle 
 
