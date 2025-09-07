@@ -468,12 +468,11 @@ gridExtra::grid.arrange(plot_google, plot_youtube, ncol = 1)
   Apple can start to focus on allocating marketing resources on Youtube right after the launch event of a      major product, especially the first month after the event. Continuous marketing effort on Youtube after      that is optional.
   
   
-
-
 ### Graph 3: The iPhone Hype Cycle 
-To discover more about the big picture, using iPhone as an example, we put Google search interest on y axis and Youtube views on x axis. The red line shows the correlation of Google interest and Youtube views. 
 *Graph 3 v2: The iPhone Hype Cycle (Scatterplot)*
 180-day window around the iPhone X launch.
+To discover more about the big picture, using iPhone as an example, we put Google search interest on y axis and Youtube views on x axis. The red line shows the correlation of Google interest and Youtube views. 
+
 ```{r graph3 v2, fig.width=8, fig.height=5}
 #| output: true
 #| echo: false
