@@ -393,7 +393,8 @@ The steadier trend indicates a noticeable presence on the platform, based on con
 ### Graph 3: The iPhone Hype Cycle 
 This part of the big picture is slightly scaled down to iPhone, we would like to have one graph that includes Youtube and Google data in the meantime, and focuses on one product pattern, e.g., the Hype Cycle around product event like the iPhone X lauch in Nov 2017. 
 
-To realize that, 2 versions of the graphs are constructed (180 days next to event). In v1, 2 sections of visualisation were drawn, for youtube and google data. The Y axis are the youtube and google engagement and the X axis are the time spans.
+To realize that, 2 versions of the graphs are constructed (180 days next to event). 
+In v1, 2 sections of visualisation were drawn, for youtube and google data. The Y axis are the youtube and google engagement and the X axis are the time spans.
 *Graph 3 v1: The iPhone Hype Cycle (Google & Youtube separately)*
 180-day window around the iPhone X launch.
 
@@ -470,15 +471,15 @@ gridExtra::grid.arrange(plot_google, plot_youtube, ncol = 1)
 
 
 ### Graph 3: The iPhone Hype Cycle 
-
-*Graph 3 v2: The iPhone Hype Cycle (Google & Youtube separately)*
+To discover more about the big picture, using iPhone as an example, we put Google search interest on y axis and Youtube views on x axis. The red line shows the correlation of Google interest and Youtube views. 
+*Graph 3 v2: The iPhone Hype Cycle (Scatterplot)*
 180-day window around the iPhone X launch.
 ```{r graph3 v2, fig.width=8, fig.height=5}
 #| output: true
 #| echo: false
 ## Graph 4: The iPhone Hype Cycle (Scatterplot Version)
 ## Prepare data for scatterplot
-# Filter for iPhone data only
+## Filter for iPhone data only
 iphone_google_data <- avg_data %>%
   filter(keyword == "iPhone") %>%
   select(trending_date, google_hits = avg_hits)
@@ -498,7 +499,21 @@ ggplot(scatter_data, aes(x = total_views, y = google_hits)) +
     caption = "Data: Google Trends & YouTube"
   ) +
   scale_x_continuous(labels = scales::label_number(scale = 1/1e6, suffix = "M")) 
+
+# Calculate correlation coefficient
+correlation <- cor(scatter_data$total_views, scatter_data$google_hits)  
+correlation_rounded <- round(correlation, 3)
+print(paste("The correlation coefficient is:", correlation_rounded))
 ```
+*Interpretation of Google Search Interest Trends and Youtube total views*
+The scatterplots reveals a dispersed data points, and the red line seems to show a slight correlation.
+However is it really correlated as our instinct tells us? The result is as shown `r correlation_rounded`. As we know, ±0.0 to ±0.3 equals very weak or no correlation.
+
+We can safely say, even though counter intuitive, while there is a slight tendency for YouTube views and Google searches to move together, the relationship is not strong or predictable. High volumes of YouTube views on a given day were very weakly associated with high levels of Google search interest.
+
+*Platform Insight for client*
+The above suggests user behavior on these two platforms was largely independent during the iPhone X launch period. It is beneficial for the client to work with the 2 platforms with independent approach and strategy, for better result.
+
 
 ## Google Search Trend Analysis
 
