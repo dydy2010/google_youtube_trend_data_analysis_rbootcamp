@@ -329,7 +329,7 @@ Maybe the brand doesn't need hype as a luxury watch brand, otherwise more market
 
 
 
-###Graph 2: Overall YouTube Views Comparison 
+### Graph 2: Overall YouTube Views Comparison 
 *(Line Chart) v1*
 Same as for google search interst, we did overrall comparison for 3 brands on youtube platform with 2 versions of graphs.
 
@@ -467,8 +467,6 @@ gridExtra::grid.arrange(plot_google, plot_youtube, ncol = 1)
 * Youtube strategy for client
   Apple can start to focus on allocating marketing resources on Youtube right after the launch event of a      major product, especially the first month after the event. Continuous marketing effort on Youtube after      that is optional.
   
-  
-### Graph 3: The iPhone Hype Cycle 
 *Graph 3 v2: The iPhone Hype Cycle (Scatterplot)*
 180-day window around the iPhone X launch.
 To discover more about the big picture, using iPhone as an example, we put Google search interest on y axis and Youtube views on x axis. The red line shows the correlation of Google interest and Youtube views. 
@@ -567,9 +565,7 @@ process_trends_csv <- function(filepath, country_code) {
 
 ```
 
-```{r Alle drei CSV-Dateien einlesen}
-
-#| include: false
+```{r Alle drei CSV-Dateien einlesen, echo=FALSE}
 
 ## read all data
 trends_US <- process_trends_csv("./raw_data_from_google/multiTimeline_US.csv", "US")
@@ -602,8 +598,7 @@ trends_long <- trends_combined %>%
 
 ```
 
-```{r Speichern der kombinierten Daten}
-#| include: false
+```{r Speichern der kombinierten Daten, echo =FALSE}
 
 # write.csv(trends_combined, "trends_combined_wide.csv", row.names = FALSE)
 # write.csv(trends_long, "trends_combined_long.csv", row.names = FALSE)

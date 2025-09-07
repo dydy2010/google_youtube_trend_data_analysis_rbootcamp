@@ -45,6 +45,3 @@ You can read them directly or generate and play around yourself. However, to gen
 *   **Chapter 5: Generative AI Usage and Guidelines:** Explanation of what kind of approach we use to apply Generative AI tools in our research, so that you can understand why it helps the research process and how it is implemented in a responsive way.
 
 *   **Chapter 6: Conclusion, Limitations, and Outlook:** Summarise of the key takeaways from our research, discussion of the limitations of the study, and potential improvement aspects for future projects.
-
----
-

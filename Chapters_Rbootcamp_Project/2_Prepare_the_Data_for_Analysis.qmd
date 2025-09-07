@@ -5,11 +5,11 @@ editor:
 ---
 
 ## Prepare the Data for Analysis
-## Data Description
+### Data Description
 
 Before showing the data preparation process, it is important to understand the data, e.g., characteristics, time span and quality of our raw data sources. Here in this section, we will provide a overview of the 2 datasets that we have chosen and extracted using a R package.
 
-## YouTube Trending Video Dataset
+### YouTube Trending Video Dataset
 
 First, for youtube trending video data, we have found a kaggle data project that contains the data that we want: \* **Source:** [YouTube Trending Video Dataset on Kaggle](https://www.kaggle.com/datasets/datasnaek/youtube-new). "This dataset includes several months (and counting) of data on daily trending YouTube videos. Data is included for the US, GB, DE, CA, and FR regions (USA, Great Britain, Germany, Canada, and France, respectively), with up to 200 listed trending videos per day."
 
@@ -21,7 +21,7 @@ First, for youtube trending video data, we have found a kaggle data project that
 
 ![A screenshot of one of the raw data file](youtube.png){width="3000px,height=3000px"}
 
-## Google Search Interest Dataset
+### Google Search Interest Dataset
 
 We obtained this dataset by extracting google search data ourselves, instead of using ready-to-use data.
 
