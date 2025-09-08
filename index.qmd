@@ -21,7 +21,6 @@ These factors have inspired us to provide a service to the hypothetical clients,
 
 
 ## How to Use This Book
-
 ### Navigating through the report
 
 You can interact with the report in two primary ways. For dynamic experience, we recommend viewing the **HTML** version. Simply open the **_book/index.html** file in your web browser after rendering. 
