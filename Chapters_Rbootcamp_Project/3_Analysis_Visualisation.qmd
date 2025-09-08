@@ -726,7 +726,7 @@ relativize Rolex's values, Google Trend sets Rolex's maximum value at
 
 ## Model Analysis: fitting a linear regression model and visualize it
 
-### Data visualization
+### Data visualization for 5 countries 
 
 We want to find out how Google Searches for 'iPhone' in different
 countries are related. Are days with many searches for iPhone in the US
