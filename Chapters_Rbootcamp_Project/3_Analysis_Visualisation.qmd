@@ -782,8 +782,8 @@ interest per country. As a first analysis we calculate all correlations
 and visualize them with `corrplot`. Especially the correlations between
 iPhone_DE and iPhone_US are close to 1 (0.93).
 
-```{r}
-#| include: false
+```{r echo=FALSE, message=FALSE}
+#| output: true
 
 ## Prepare data for the modelling
 lm_data <- trends_combined %>%
@@ -1096,7 +1096,7 @@ loaded here are not necessary for the wordcloud but allow to e.g. check
 the fonts that you can use (`systemfonts`) or to export the wordcloud
 image as pdf (`webshot2`and `htmlwidgets`).
 
-```{r echo=FALSE}
+```{r echo=FALSE, message=FALSE}
 
 library(ragg)
 library(systemfonts)
@@ -1299,7 +1299,8 @@ pal_iphone <- c("#FF375F", "#32D74B", "#0A84FF", "#FF9F0A", "#BF5AF2", "#1D1D1F"
 
 ## iPhone wordcloud
 
-wc_iPhone <- wordcloud2(iphone_tags_cleaned_unique %>% filter(total_views > 5000000),
+wc_iPhone <- wordcloud2(iphone_tags_cleaned_unique %>% filter(total_views > 10000000),
+           # figPath = "apple-512.png",
            size = 0.2, rotateRatio = 0,
            minRotation = -pi/2, maxRotation = -pi/2,
            fontFamily = 'Helvetica Neue LT Std',
