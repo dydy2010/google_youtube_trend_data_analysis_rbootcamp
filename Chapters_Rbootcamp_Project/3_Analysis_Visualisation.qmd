@@ -1379,7 +1379,7 @@ pal_iphone <- c("#FF375F", "#32D74B", "#0A84FF", "#FF9F0A", "#BF5AF2", "#1D1D1F"
 
 ## iPhone wordcloud
 
-wc_obj_2 <- wordcloud2(iphone_tags_cleaned_unique %>% filter(total_views > 30000000),
+wc_obj_2 <- wordcloud2(iphone_tags_cleaned_unique %>% filter(total_views > 50000000),
            # figPath = "apple-512.png",
            size = 0.2, rotateRatio = 0,
            minRotation = -pi/2, maxRotation = -pi/2,
@@ -1406,6 +1406,8 @@ if (knitr::is_latex_output()) {
   # print the plot
   wc_obj_2
 }
+
+wc_obj_2
 
 ```
 
