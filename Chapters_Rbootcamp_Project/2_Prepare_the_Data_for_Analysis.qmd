@@ -7,15 +7,15 @@ editor:
 ## Prepare the Data for Analysis
 ### Data Description
 
-Before showing the data preparation process, it is important to understand the data, e.g., characteristics, time span and quality of our raw data sources. Here in this section, we will provide a overview of the 2 datasets that we have chosen and extracted using a R package.
+Before explaining the data preparation process, it is important to first understand the data, including its characteristics, timeframe and quality. This section provides an overview of the 2 datasets extracted for this analysis using an R package.
 
 ### YouTube Trending Video Dataset
 
-First, for youtube trending video data, we have found a kaggle data project that contains the data that we want: \* **Source:** [YouTube Trending Video Dataset on Kaggle](https://www.kaggle.com/datasets/datasnaek/youtube-new). "This dataset includes several months (and counting) of data on daily trending YouTube videos. Data is included for the US, GB, DE, CA, and FR regions (USA, Great Britain, Germany, Canada, and France, respectively), with up to 200 listed trending videos per day."
+The first source of data is the Youtube Trending Video Dataset from Kaggle: \* **Source:** [YouTube Trending Video Dataset on Kaggle](https://www.kaggle.com/datasets/datasnaek/youtube-new). "This dataset includes several months (and counting) of data on daily trending YouTube videos. Data is included for the US, GB, DE, CA, and FR regions (USA, Great Britain, Germany, Canada, and France, respectively), with up to 200 listed trending videos per day."
 
 -   **Key Variables (Raw):** "Each region’s data is in a separate file. Data includes the video title, channel title, publish time, tags, views, likes and dislikes, description, and comment count."
 
--   **Data Volume:** The data spans from 2017-11-14 to 2018-06-14, so is our case study. As the author of the project claims, the original data was extracted using Youtube API. And we have chosen 5 countries' data: the US, Japan, Mexico, Germany and France. After combining the 5 countries' into one dataframe, there are 183487 rows and 17 columns. And after seperating the tags(keyword) of each videos into a single row, the data frame has 3002056 rows and 17 columns.
+-   **Data Volume:** The data spans the period from 2017-11-14 to 2018-06-14, which defines the timeframe for this case study. According to the source, the original data was extracted using Youtube API. Data of 5 countries' data are selected for our study: the US, Japan, Mexico, Germany and France. After combining the 5 countries' files into one dataframe, we got 183487 rows and 17 columns. Furthermore, after separating the multi-valued tags(keyword) for each videos into single rows, the dataframe has 3002056 rows and 17 columns.
 
 -   **Initial Observations/Challenges:** The first thing that we went to look into was the "tags" column, which are the topics/keywords that we plan to filter and analyze, however there are many tags in each row, which means we will need to seperate them using a delimeter later.
 
