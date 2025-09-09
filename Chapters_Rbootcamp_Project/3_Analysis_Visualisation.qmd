@@ -1185,7 +1185,6 @@ library(textshaping)
 
 library(RColorBrewer)
 library(wordcloud2)
-library(tidyverse)
 library(stopwords)
 library(webshot2)
 library(htmlwidgets)
@@ -1358,14 +1357,16 @@ iphone_tags_cleaned <- iphone_tags_split %>%
 # head(iphone_tags_cleaned)
 # cat("Total unique clean tags:", n_distinct(iphone_tags_cleaned$tag), "\n")
 
-## aggregate to have unique tags
+## filter out long tags and aggregate to have unique tags
 iphone_tags_cleaned_unique <- iphone_tags_cleaned %>%
+  filter(str_count(tag, "\\S+") < 3) %>%  # filter out tags with more then 2 words
+  filter(str_count(tag) < 30) %>% 
   group_by(tag) %>%
   summarise(total_views = sum(total_views, na.rm = TRUE)) %>%
   arrange(desc(total_views))
 
 ## View results
-# head(iphone_tags_cleaned_unique, 100)
+head(iphone_tags_cleaned_unique, 100)
 
 ```
 
@@ -1391,23 +1392,32 @@ wc_obj_2 <- wordcloud2(iphone_tags_cleaned_unique %>% filter(total_views > 50000
            # color = palKH2[factor(df2$Word)])
            color = rep_len(pal_iphone, nrow(iphone_tags_cleaned_unique)))
 
-# screenshot for pdf render, and code output for html
+## Screenshot for pdf render, and code output for html
 if (knitr::is_latex_output()) {
-  # --- This code runs ONLY when rendering to PDF ---
+  ## This code runs ONLY when rendering to PDF
   
-  # Save widget to a temporary file
+  ## Save widget to a temporary file
   saveWidget(wc_obj_2, "temp_wordcloud_2.html", selfcontained = FALSE)
-  # Take a screenshot and save as a PNG
+  ## Take a screenshot and save as a PNG
   webshot2::webshot("temp_wordcloud_2.html", "iPhone_wordcloud.png", delay = 3, vwidth = 900, vheight = 400)
-  # Embed PNG image in the PDF with specific size
+  ## Embed PNG image in the PDF with specific size
   knitr::include_graphics("iPhone_wordcloud.png")
 } else {
-  # --- This code for ALL other formats (HTML) ---
-  # print the plot
+  ## This code for ALL other formats (HTML)
   wc_obj_2
 }
 
-wc_obj_2
+## For interactive display (when running this code block) 
+## opens wordcloud in the browser
+if (interactive()) {
+  saveWidget(wc_obj_2, "temp_interactive.html", selfcontained = TRUE)
+  browseURL("temp_interactive.html")
+}
+
+## To save the wordcloud as a .png file.
+# saveWidget(wc_obj_2, "temp.html", selfcontained = FALSE)
+# webshot("temp.html", "iphone_wordcloud.png", 
+#         vwidth = 1200, vheight = 800)
 
 ```
 
