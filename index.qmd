@@ -15,9 +15,9 @@ The objective is to demonstrate insights for hypothetical clients and to deepen 
 # Our Story
 ## The Beginning of an Idea
 
-Today, both Youtube and Google are central media and information sources globally, and they are key platforms for online **behavior research** and big data **insights extraction**. Users on these platforms are highly engaged. This engagement provides consumer brands a valuable opportunity to understand the behavior and preferences of customers. Analyzing data from these platforms allows the brands to provide appealing products that adhere to the needs of the market. This approach can not only increase profitability but also improves with **efficiency** by avoid producing unwanted products or advertisement campaigns.
+Today, both Youtube and Google are central media and information sources globally, and they are key platforms for online **behavior research** and big data **insights extraction**. Users on these platforms are highly engaged. This engagement provides consumer brands an opportunity to understand the behavior and preferences of customers. Analyzing data from these platforms allows the brands to provide appealing products that adhere to the needs of the market. This approach can not only increase profitability but also improves **efficiency** by avoid producing unwanted products or advertisement campaigns.
 
-These factors have inspired us to provide a service to the hypothetical clients, to help them find, analyze data,and explore useful insights. To showcase our capabilities, we analyzed YouTube and Google data from 2017 to 2018 for three hypothetical clients: iPhone, Tesla, and Rolex. This analysis serves as an example to demonstrate our methodology, potential results, and the value our service for potential future clients.
+These factors have inspired us to create a service to the hypothetical clients, to help them find, analyze data, and explore insights. To showcase our capabilities, we analyzed YouTube and Google data from 2017 to 2018 for three hypothetical clients: iPhone, Tesla, and Rolex. This analysis serves as an example to demonstrate our methodology, potential results, and the value our service for future clients.
 
 
 ## How to Use This Book
@@ -27,7 +27,7 @@ You can interact with the report in two primary ways. For dynamic experience, we
 
 If you prefer a static document, the **PDF** version as **_book/R-Bootcamp-Project.pdf** can be also a good choice. 
 
-It is also possible to play around with the code and generate new reports yourself. However, to generate both formats, please ensure you have R, RStudio, and Quarto installed, then in your Rstudio terminal, execute the command: quarto render. This command will first render the book, then both versions will be available in the _book folder.
+Alternatively, you can play around with the code and generate new reports. However, please ensure you have R, RStudio, and Quarto installed, then in your Rstudio terminal, execute the command: quarto render. This command will first render the book, then both versions will be available in the _book folder.
  
 ### This report is organized into the following chapters: 
 
@@ -35,10 +35,10 @@ It is also possible to play around with the code and generate new reports yourse
 
 *   **Chapter 2: Preparing the Data for Analysis:** Details about the datasets, the process of data extraction, cleaning, and transformation.
 
-*   **Chapter 3: Analysis and Visualization:** Presentation of the core analytical findings, from broad descriptive statistics to in-depth correlation and trend analysis. Here you can understand the data with help of visualizations.
+*   **Chapter 3: Analysis and Visualization:** Presentation of the core findings, from broad descriptive statistics to in-depth correlation and trend analysis. Let's understand the data with visualizations.
 
-*   **Chapter 4: Chapter of Choice - The `gtrendsR` Package:** An exploration of the `gtrendsR` package, where the Google trend data was extracted. We will showcase its capabilities and technical aspects of project implementation.
+*   **Chapter 4: Chapter of Choice - The `gtrendsR` Package:** An exploration of the `gtrendsR` package, where the Google trend data was extracted. We will showcase its capabilities and technical implementation.
 
-*   **Chapter 5: Generative AI Usage and Guidelines:** Explanation of the approach that we use to apply Generative AI in our research, including why it helps the research process and how it is implemented in a responsive way.
+*   **Chapter 5: Generative AI Usage and Guidelines:** Explanation of the approach that we use to apply Generative AI in our research, including why it helps the research process and how it's implemented in a responsible way.
 
 *   **Chapter 6: Conclusion, Limitations, and Outlook:** A summary of the key takeaways from our research, a discussion of the limitations of the study, and potential improvement aspects for future projects.
