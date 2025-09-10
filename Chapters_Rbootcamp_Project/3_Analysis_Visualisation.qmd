@@ -693,8 +693,9 @@ trends_long %>%
 We examine if there is a correlation between **Google Searches for
 iPhone and Tesla**. Are days when iPhone searches are very prominent
 also days when Tesla searches account for a significant proportion? Or
-do searches for these two brands behave independently of each other?
-This question may be more relevant for other examples, such as two
+do searches for these two brands behave independently?  
+
+This question may be more relevant for other examples, such as when examining two
 **brands in the same industry**. Or when a brand is looking for a
 partner for **joint marketing activities**. In such cases, it can be
 very helpful to know whether such correlations exist.
@@ -772,8 +773,8 @@ ggplot(plot_data, aes(x = date, y = hits)) +
 ```
 
 The weekly bar chart actually shows these **two peaks**. The first few
-weeks of the year, possibly as a echo from the festive season, are
-relatively strong, before a first peak follows in **March** after a few
+weeks of the year, possibly as a echo from the festive season, show
+relatively strong search interest, followed by a first peak in **March** after a few
 weaker weeks. And in the penultimate week of the year, during the
 **holiday season**, the maximum is reached. Because no other brands
 relativize Rolex's values, Google Trend sets Rolex's maximum value at
@@ -785,13 +786,13 @@ relativize Rolex's values, Google Trend sets Rolex's maximum value at
 
 We want to find out how Google Searches for 'iPhone' in different
 countries are related. Are days with many searches for iPhone in the US
-also days with many searches in Germany? We would expect so as iPhone is
+also days with many searches in Germany? We would expect so, as iPhone is
 a global topic and news, e.g. the launch of a new iPhone version, swap
-across the globe in no time. But still, let's check if we can proof it
+across the globe in no time. But still, let's check if we can prove it
 with the data.
 
-First we do a line graph comparing the Google Trends data for iPhone
-country by country. To get a nicer graph we aggregate the data from
+First, we do a line graph comparing the Google Trends data for iPhone
+country by country. To get a nicer graph, we aggregate the data from
 daily to weekly.
 
 ```{r echo=FALSE, message=FALSE, fig.width=9, fig.height=5}
@@ -821,21 +822,21 @@ ggplot(data = trends_combined_week, aes(x = week, y = iPhone, color = country)) 
 
 ```
 
-As we can see the relative search interest in 'iPhone' is moving quite
-similar in all five countries. Now we want do check with a model how
-close two countries are related. We pick US and Germany as we are most
+As we can see, the relative search interest in 'iPhone' is moving quite
+similar across all five countries. We now want do check with a model how
+closely two countries are related. We pick US and Germany, as we are most
 interested in these countries. As they are also behaving very similar
-across time we expect a high correlation and a strong linear model
-explaining the interest in Germany with the interest in the US.
+over time, we expect a high correlation and a strong linear model
+explaining the interest in Germany together with the interest in the US.
 
 ### Prepare the data for modelling and checking all correlations
 
-As initial step we have to prepare the data. We use the daily data as we
+As initial step, we have to prepare the data. We used the daily data as we
 want to have data as rich as possible for modelling. For the linear
 regression model `lm()` we need separate columns for iPhone search
-interest per country. As a first analysis we calculate all correlations
-and visualize them with `corrplot`. Especially the correlations between
-iPhone_DE and iPhone_US are close to 1 (0.93).
+interest per country. As a first analysis, we calculate all correlations
+and visualize them with `corrplot`. In particular, the correlations between
+iPhone_DE and iPhone_US are very high, even close to 1 (0.93).
 
 ```{r echo=FALSE, message=FALSE}
 #| output: true
@@ -873,27 +874,27 @@ summary(model)
 As expected the linear regression model shows a strong relation between
 the Google search interest in iPhone between the US and Germany: The
 p-value of the model is close to 0 and therefore significant. The same
-is true for the iPhone_US estimate of 0.878. This means an increase of
+is true for the iPhone_US estimated coefficient of 0.878. This means an increase of
 interest by 1 in the US goes along with an increase of interest in
 Germany by 0.878.
 
 ### Visualize the linear regression and the quality of the model
 
-We do four visualizations for the model. First a scatter plot showing
+We create four visualizations for the model. First, a scatter plot showing
 all data points (i.e. days) with iPhone_US on the x and iPhone_DE on the
 y axis. We add a line for the perfect correlation (y = x) and the
-regression line calculated with the model. Therefore we extract
+regression line calculated with the model. Thereafter, we extract
 intercept and slope from the coefficients that we received when fitting
 the model.
 
-Then we do three standard graphs that are used to check the quality of a
+Next, we generate three standard graphs that are used to check the quality of a
 linear regression model:
 
--   Residuals vs. Fitted to check linearity and constant variance: Any
+-   **Residuals vs. Fitted** to check linearity and constant variance: Any
     clear pattern indicates an issue.
--   Q-Q-plot of Residuals to check the normal distribution of errors.
+-   **Q-Q-plot of Residuals** to check the normal distribution of errors.
     Points should follow the line.
--   Observed vs. Fitted to check visually how good model accuracy and
+-   **Observed vs. Fitted** to check visually how good model accuracy and
     predictive power are.
 
 ```{r, message=FALSE, echo=FALSE}
@@ -960,23 +961,23 @@ plot_4
 
 ```
 
-To keep the story short: There are no major issues with the model. It is
-explaining the Google search interest in Germany very well with the
-Google search interest in the US. Therefore the result of the analysis
+To summarize, there are no major issues with the model. It
+explains the Google search interest in Germany very well based on the
+US Google search interest. Therefore, the result of the analysis
 confirms our initial expectation.
 
 ### Conclusion for our clients
 
-For any brand it is important to know the level of interest (potential)
-clients show over time. Especially when a major event is planned a
+For any brand, it is important to know the level of interest (potential)
+clients show over time. In particular, when a major event is planned,
 monitoring of Google Search should be set up to understand how
-effectively the event triggered interest, how it developed afterwards
-and how the interest was in the markets/countries the brand is most
+effectively the event triggered interest, how the interest developed afterwards
+and how it was in the markets/countries that the brand is most
 interested in.
 
 In some countries, the event may have caused a sharp increase in
 interest that will last for a long time. While in other countries the
-effect may be rather short-lived. It is essential to be aware of such
+effect may be rather short-lived. It is essential for brands to be aware of such
 effects in order to respond appropriately with marketing measures.
 
 ## Youtube Videos Analysis
@@ -1109,46 +1110,45 @@ plot_data %>%
 
 ## WordCloud
 
-After all these analyses and visualizations of basically 'numbers' we
+After all these analyses and visualizations of essentially 'numbers', we
 should not forget that brands and branding are primarily about
 **content.** Here we have good news: YouTube and Google Searches are
-too! One should and can examine what the actual content of the videos
-watched in YouTube is, besides the fact that they are tagged with the
-keywords 'Rolex' or 'iPhone'. With a wordcloud we can give a very good
+too! One can and should examine what the actual content of the videos
+on Youtube, besides the fact that they are tagged with the
+keywords 'Rolex' or 'iPhone'. With a wordcloud, we can give a very good
 first impression of the content based on all tags that were given to the
-videos. We believe knowing what the content of the videos is, is as
-important as knowing how often they have been watched.
+videos. We believe that understanding what content of the videos is, is as
+important as knowing how often they have been watched.  
 
-First we do a wordcloud for **Rolex**. This means: We are counting all
-tags given to all Rolex videos. As a reminder: A Rolex video is a video
-that contains Rolex in the title or in the tags. Then we select the most
-frequent tags (besides Rolex) and arrange them in a form that usually is
-a kind of a flat circle. The most frequent tags/words are placed first
-in the center and with a larger font than the less frequent words that
-get a smaller font and are placed later where there is empty space to
-put them.
+First, we create a wordcloud for **Rolex**. This means: We are counting all
+tags given to all Rolex videos. As a reminder: A Rolex video is any video
+that contains "Rolex" in the title or in the tags. Then we select the most
+frequent tags (besides Rolex) and arrange them in a roughly circular layout. 
+The most frequent tags/words are placed first
+in the center and with a larger font, while less frequent words
+get a smaller font and are placed later in available space around them.
 
-The R package `wordcloud2` provides many parameters which allow to
-define a very specific look of the wordcloud. Without going to much into
+The R package `wordcloud2` provides many parameters which allow us to
+customize looks of the wordcloud. Without going to much into
 detail **the process has two steps**:
 
-1.  You have to prepare the words to be displayed in a **dataframe with
-    two columns**: the words and their counts. Regarding the words some
-    cleaning is needed like removing white spaces and stopwords (words
-    with no relevance for the wordcloud like 'and' etc. ). And when you
+1.  Prepare the words to be displayed in a **dataframe with
+    two columns**: the words and their counts. Regarding the words, some
+    cleaning is needed, like removing white spaces and stopwords (words
+    with no relevance for the wordcloud, e.g., 'and'). And when you
     see the first wordcloud you will most likely remove other words that
     you don't want to be shown or words that are just written
     differently that you want to combine.
-2.  Then you call the `wordcloud2()` function and define all **visual
-    parameters**. This step requires a trial and error approach to set
+2.  Call the `wordcloud2()` function and define all **visual
+    parameters**. This step requires a trial-and-error approach to set
     all size parameters correctly to get a nice wordcloud. The
-    documentation of the package is good, so you know which parameter
-    does what. But still you will be surprised how minor changes make
+    documentation of the package is good, so you know what each parameter
+    does. But still you will be surprised how minor changes make
     the wordcloud look good or rather useless.
 
-Now follows the preparation of the data. Short note: Some packages
-loaded here are not necessary for the wordcloud but allow to e.g. check
-the fonts that you can use (`systemfonts`) or to export the wordcloud
+Now comes the preparation of the data. A short note: some packages
+loaded here are not necessary for the wordcloud but they allow more functionalities, e.g. check
+available fonts (`systemfonts`) or to export the wordcloud
 image as pdf (`webshot2`and `htmlwidgets`).
 
 ```{r echo=FALSE, message=FALSE}
@@ -1272,19 +1272,20 @@ Bushido, Kollegah, Farid Bang, and Nimo are well-known German rappers,
 and they clearly like to show off their Rolex watches. We don't think
 the folks in charge of Rolex branding are too happy about this. We'd
 suggest they try to counteract the German videos. Of course, having the
-Rolex brand in hip-hop videos is a good thing in itself. But Rolex
-should try to make sure that YouTube videos show other Rolex values
-besides just “expensive.”
+Rolex brand in hip-hop videos is a good thing itself. But Rolex
+should consider highlighting YouTube videos that show other Rolex values
+besides just being “expensive.”
 
 ### iPhone wordcloud
 
 **As a second example**, to give an impression on how diverse wordclouds
-can become, we do a wordcloud for **iPhone** with the respective YouTube
+can become, we create a wordcloud for **iPhone** with the respective YouTube
 tags. We adjust the color palette to the colors Apple used for their
-iPhones in 2017/18 and we adjust the font to a type of Helvetica. Here
-we have to restrict the number of words to 500k. According to the
-package description it would be even possible to **define the form of
-the wordcloud based on a picture**. We could use the apple logo (a png
+iPhones in 2017/18 and select a type of Helvetica font. Here
+we have to restrict the number of words to 500k.   
+
+According to the package description it is even possible to **define the form of
+the wordcloud based on a picture**. For example, we could use the Apple logo (a png
 file with the logo in black on a white background) and `wordcloud2` will
 try to fill the space used by the Apple logo. So far we did not manage
 to get it working, but it is definitely something we will try out the
@@ -1398,8 +1399,8 @@ if (interactive()) {
 
 ```
 
-We think this word cloud is much more in line with what iPhone managers
-expect. iPhone YouTube videos are tagged with terms from the world of
+We believe this word cloud is much more in line with what iPhone managers
+would expect. iPhone YouTube videos are tagged with terms from the world of
 **smartphones** and the **gaming scene**. Apple itself also seems to
 have a strong influence: the terms “unbox therapy” and “unboxing”
 probably originate from videos by **influencers** who are paid by Apple
@@ -1407,8 +1408,8 @@ to unbox a new iPhone and share their first impressions with their
 followers. But it could be interesting to see how the word cloud
 develops thematically when no new iPhone is being launched.
 
-In **summary**, we can say that it is very worthwhile to use word clouds
-to get a feel for the content of videos. Major brands such as Apple and
+In **summary**, we believe that it is very worthwhile to use word clouds
+to get a impression of the videos' content. Major brands such as Apple and
 Rolex are already doing this, and there are undoubtedly more advanced
 content analysis tools than word clouds. But for **smaller brands** in
 particular, it could be a first step toward better understanding the
