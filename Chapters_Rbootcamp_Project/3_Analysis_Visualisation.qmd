@@ -275,7 +275,7 @@ perspective for product improvement and marketing.
 
 *v1(Line Chart)*
 
-```{r graph1 Google Comparison v1, fig.width=14, fig.height=6}
+```{r graph1 Google Comparison v1, fig.width=14, fig.height=8}
 #| echo: false
 #| output: true
 library(ggplot2)
@@ -305,7 +305,7 @@ preferences.
 
 **Graph 1: Overall Search Interest Comparison (Facet Chart)v2**
 
-```{r graph1 Google Comparison v2 Facet, fig.width=14, fig.height=6}
+```{r graph1 Google Comparison v2 Facet, fig.width=14, fig.height=8}
 #| echo: false
 #| output: true
 ## Graph 1: Overall Search Interest Comparison (Facet Chart) v2
@@ -358,7 +358,7 @@ brands. As a luxury watch brand, Rolex may not rely on hypes, otherwise, more ma
 As with Google search interest, we did overall
 comparison for 3 brands on Youtube platform with 2 versions of graphs.
 
-```{r graph2 v1, fig.width=10, fig.height=6}
+```{r graph2 v1, fig.width=14, fig.height=6}
 #| echo: false
 #| output: true
 ## Graph 2: Overall YouTube Views Comparison (Line Chart) v1 (no facet) 
@@ -731,7 +731,7 @@ frequently? In the case of **Rolex**, for example, the annual
 **Baselworld** trade fair at the end of March or the **holiday season**
 at the end of the year could result in increased searches on Google.
 
-```{r Rolex bar chart with seasonality of Google Trends, fig.width=8, fig.height=5, echo=FALSE}
+```{r Rolex bar chart with seasonality of Google Trends, fig.width=7, fig.height=4, echo=FALSE}
 #| output: true
 ## Get and prepare the data
 
