@@ -302,6 +302,7 @@ with search interest data of 3 brands was made. In version 1, all brands are sho
 in one graph, and following this, v2 presents 3 brands in 3 separate graphs.
 Both graphs show the same result, but are suitable for different reading
 preferences. 
+
 **Graph 1: Overall Search Interest Comparison (Facet Chart)v2**
 
 ```{r graph1 Google Comparison v2 Facet, fig.width=14, fig.height=6}
@@ -329,33 +330,33 @@ ggplot(data = avg_data, aes(x = trending_date, y = avg_hits)) +
 
 Key observations include:
 
--   iPhone Dominates Search Interest:
+**iPhone Dominates Search Interest:**
 
 "iPhone" consistently maintains the highest search volume, with
-significant peaks (e.g., \~100 relative interest) likely corresponding
+significant peaks (e.g., near 100 relative interest) likely corresponding
 to product launches or major announcements (e.g., iPhone X in 2017,
 iPhone XS in 2018). It suggests sustained consumer curiosity and media
 hype around Apple.
 
--   Tesla shows moderate but steady interest:
+**Tesla shows moderate but steady interest:**
 
-"Tesla" exhibits lower but steady search interest, with spikes in
-between. This aligns with Tesla’s brand history, vehicle releases (e.g.,
+"Tesla" exhibits lower but steady search interest, with occasional spikes. This aligns with Tesla’s brand history and vehicle releases (e.g.,
 Model 3 rollout, massive quality scandals), and Elon Musk’s public
-visibility, we will also research the possible events that happened
+visibility. We will also research the possible events that happened
 around that time later.
 
--   Rolex has negligible search presence:
+**Rolex has negligible search presence:**
 
 The keyword "Rolex" shows near-zero search interest throughout the
-period. This indicates lower public interest compared to the other big
-brands. Maybe the brand doesn't need hype as a luxury watch brand,
-otherwise more marketing campaigns could be beneficial.
+period. This indicates lower public interest compared to the other major
+brands. As a luxury watch brand, Rolex may not rely on hypes, otherwise, more marketing campaigns could be beneficial.
 
 ### Graph 2: Overall YouTube Views Comparison
 
-*(Line Chart) v1* Same as for google search interst, we did overrall
-comparison for 3 brands on youtube platform with 2 versions of graphs.
+**(Line Chart) v1**
+
+As with Google search interest, we did overall
+comparison for 3 brands on Youtube platform with 2 versions of graphs.
 
 ```{r graph2 v1, fig.width=10, fig.height=6}
 #| echo: false
@@ -377,12 +378,12 @@ ggplot(data = combined_data_final, aes(x = trending_date, y = total_views)) +
 
 ```
 
-This graps track the daily view counts for videos related to three
-keywords—iPhone, Roles, and Tesla, in 5 countries. It indicates a
+This graphs track the daily view counts for videos related to three
+keywords—iPhone, Roles, and Tesla, in 5 countries. The result indicates a
 massive disparity in viewership between iPhone and the other two
 keywords.
 
-*Graph 2: Overall YouTube Views Comparison v2 (Facet Version)*
+**Graph 2: Overall YouTube Views Comparison v2 (Facet Version)**
 
 ```{r graph2 v2, fig.width=14, fig.height=9}
 #| echo: false
@@ -402,51 +403,48 @@ ggplot(data = combined_data_final, aes(x = trending_date, y = total_views)) +
 
 ```
 
-*Interpretation of YouTube Daily Views Trends*
+**Interpretation of YouTube Daily Views Trends**
 
--   iPhone: Viral and Event-Driven Engagement
+**iPhone: Viral and Event-Driven Engagement**
 
 The keyword "iPhone" shows an astronomical level of views, peaking at
 nearly 150 million daily views, which dwarfs the other terms. The trend
-is very volatile, showing a dramatic spike in early March 2018 followed
+is very volatile, with a dramatic spike in early March 2018 followed
 by a sharp decline.
 
 This peak is hypothetically due to a product launch or major
 announcement. After researching, the timing suggests that it was driven
 by the release of the iPhone X (announced Sept. 2017 and launched on
 3.Nov. 2017) or more likely. This pattern could suggest that consumers
-search for youtube reviews, unboxings, tutorials, and software update
+search for Youtube reviews, unboxings, tutorials, and software update
 related to new Apple products. And it lasted about one month.
 
--   Tesla: Consistent Niche Interest
+**Tesla: Consistent Niche Interest**
 
 Trend: The keyword "Tesla" shows a stable trend, ranging from 1 million
 to 3 million daily views. It shows gentle fluctuations but no sharp,
 viral spikes like the iPhone.
 
-The steadier trend indicates a noticeable presence on the platform,
-based on continuous engagement. However certain events could influence
+The steadier trend indicates a noticeable and continuous presence on the platform. However, certain events could influence
 the temporary interest of the public. For example, on 17. Nov 2017,
-Tesla announced their semi truck project, the futuristic design was
-followed with huge media coverage, which possibly cause a spike of
-youtube views that lasted about 3 months. And in early 2018 there was
-huge discussions about Tesla falls short on Model 3 deliveries. In the
-same period, the stock price droped approx. 33%. This indicates that
+Tesla announced its semi truck project. The futuristic design was
+followed by huge media coverage, which possibly cause a spike in views that lasted about 3 months. And in early 2018 there were
+huge discussions about Tesla falling short on Model 3 deliveries. In the
+same period, the stock price dropped approx. 33%. This indicates that
 both launch events and negative coverage could boost Tesla's publicity
-on youtube.
+on Youtube.
 
 ### Graph 3: The iPhone Hype Cycle
 
-This part of the big picture is slightly scaled down to iPhone, we would
-like to have one graph that includes Youtube and Google data in the
-meantime, and focuses on one product pattern, e.g., the Hype Cycle
-around product event like the iPhone X lauch in Nov 2017.
+This section of the big picture, we would
+like to have one graph that includes Youtube and Google data, and in the meantime, focuses on one product pattern, e.g., the Hype Cycle around product event like the iPhone X launch in Nov 2017.
 
-To realize that, 2 versions of the graphs are constructed (180 days next
-to event). In v1, 2 sections of visualisation were drawn, for youtube
-and google data. The Y axis are the youtube and google engagement and
-the X axis are the time spans. *Graph 3 v1: The iPhone Hype Cycle
-(Google & Youtube separately)* 180-day window around the iPhone X
+To achieve this, 2 versions of the graphs are constructed, covering 180 days next to event. In v1, 2 sections of visualisation were drawn for youtube and Google data. The Y axis represent Youtube and Google engagement and
+the X axis represents the time spans. 
+
+**Graph 3 v1: The iPhone Hype Cycle (Google & Youtube separately)**
+
+180-day window around the iPhone X
 launch.
 
 ```{r graph3 v1, fig.width=8, fig.height=5}
@@ -505,37 +503,24 @@ par(mfrow = c(1, 1))
 gridExtra::grid.arrange(plot_google, plot_youtube, ncol = 1)
 ```
 
-*Interpretation of Google Search Interest Trends* \* Google search
-interest hype lasted more than 3 months From November to February. Even
-though data before Nov is missing, we could see that starting from
-November,the search interest already had already risen and peaked. It
-indicates that the launch event news had a great impact on iPhone Google
-search interest and the elevated interest lasted at least 3 months.
+**Interpretation of Google Search Interest Trends**
 
--   Google search strategy for client Apple can intensify Google
-    platform advertisement allocation approx. 2 months before and 3
-    months after the major product launch event, to maximize customer
-    interest and exposure on Google. *Interpretation of Youtube Views
-    Trends*
+Google search interest hype lasted more than 3 months, from November to February. Even though data before Nov is missing, we could see that starting from November,the search interest already had risen and peaked. It indicates that the launch event news had a great impact on iPhone Google search interest and the elevated interest lasted at least 3 months.
 
--   Peak views in December Youtube trending videos about iPhone started
-    to emerge around Mid November after the iPhone X launch. And the
-    total views of these videos have peaked in December with a daily
-    total view reaching just over 175M per day. After that there is a
-    deep decline, until a small spike around March. The hype on Youtube
-    will be short lived and slightly scattered, only lasting about 1
-    months.
+**Google search strategy for client**
 
--   Youtube strategy for client Apple can start to focus on allocating
-    marketing resources on Youtube right after the launch event of a
-    major product, especially the first month after the event.
-    Continuous marketing effort on Youtube after that is optional.
+Apple can intensify Google platform advertisement allocation approx. 2 months before and 3 months after the major product launch event, to maximize customer interest and exposure on Google. 
 
-*Graph 3 v2: The iPhone Hype Cycle (Scatterplot)* 180-day window around
-the iPhone X launch. To discover more about the big picture, using
-iPhone as an example, we put Google search interest on y axis and
-Youtube views on x axis. The red line shows the correlation of Google
-interest and Youtube views.
+**Interpretation of Youtube Views Trends**
+
+-   Peak views in December: Youtube trending videos about iPhone started to emerge around Mid-November after the iPhone X launch. And the total views of these videos have peaked in December, with a daily total view reaching just over 175M per day. After that there is a sharp decline, with a small spike around March. The hype on Youtube is short lived and slightly scattered, only lasting about 1 months.
+
+-   Youtube strategy for client: Apple can start to focus on allocating marketing resources on Youtube inmediately after the launch event of a major product, especially during the first month after the event. Continuous marketing effort on Youtube after that is optional.
+
+**Graph 3 v2: The iPhone Hype Cycle (Scatterplot)** 
+
+180-day window around the iPhone X launch. 
+To explore the big picture, using iPhone as an example, we plotted Google search interest on y axis and Youtube views on x axis. The red line represents the correlation of Google interest and Youtube views.
 
 ```{r graph3 v2, fig.width=8, fig.height=5}
 #| output: true
@@ -569,23 +554,18 @@ correlation_rounded <- round(correlation, 3)
 print(paste("The correlation coefficient is:", correlation_rounded))
 ```
 
-*Interpretation of Google Search Interest Trends and Youtube total
-views* The scatterplots reveals a dispersed data points, and the red
-line seems to show a slight correlation. However is it really correlated
-as our instinct tells us? The result is as shown
-`r correlation_rounded`. As we know, ±0.0 to ±0.3 equals very weak or no
-correlation.
+**Interpretation of Google Search Interest Trends and Youtube total views** 
 
-We can safely say, even though counter intuitive, while there is a
-slight tendency for YouTube views and Google searches to move together,
-the relationship is not strong or predictable. High volumes of YouTube
-views on a given day were very weakly associated with high levels of
-Google search interest.
+The scatterplots reveal dispersed data points, and the red
+line appears to show a slight correlation. However, is it really correlated as our intuition tells us? The result is as shown:
+`r correlation_rounded`. As we know, ±0.0 to ±0.3 equals very weak or no correlation.
 
-*Platform Insight for client* The above suggests user behavior on these
-two platforms was largely independent, at least during the iPhone X
-launch period. It is beneficial for the clients to work with the 2
-platforms with independent approach and strategy, for better result.
+We can safely say, even though counterintuitive, while there is a
+slight tendency for YouTube views and Google searches to move together, the relationship is not strong or predictable. High volumes of YouTube views on a given day were very weakly associated with high levels of Google search interest.
+
+**Platform Insight for client**
+
+The above suggests user behavior on these two platforms was largely independent, at least during the iPhone X launch period. It is beneficial for the clients to work with the 2 platforms with independent approach and strategy, for better result.
 
 ## Google Search Trend Analysis
 
@@ -593,10 +573,10 @@ platforms with independent approach and strategy, for better result.
 
 Because downloading Google Trends data is unreliable (more on this later
 in our *chapter of choice* about `gtrendsR`), we are working here with
-data that has been downloaded previously and saved as `csv` files. All
+data that was previously downloaded and saved as `csv` files. All
 five country files must be prepared in the same way, for which we have
 written a **function**. With `rbind`, we can easily concatenate the
-pre-prepared data and use `pivot_longer` to create a second *long* data
+pre-prepared data and use `pivot_longer` to create a second **long** data
 set we will need for certain visualisations. With these steps we are now
 prepared for the following analyses.
 
@@ -681,7 +661,7 @@ trends_long <- trends_combined %>%
 ```
 
 **Data inspection**: Besides `head()`, `View()`, `summary()` and
-`table()` we use a **faceted line chart** to check whether the data for
+`table()`, we used a **faceted line chart** to check whether the data for
 all countries and for the three keywords iPhone, Rolex, and Tesla has
 been imported correctly.
 
