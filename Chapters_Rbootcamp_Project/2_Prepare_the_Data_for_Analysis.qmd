@@ -5,7 +5,7 @@ editor:
 ---
 
 ## Prepare the Data for Analysis
-### Data Description
+## Data Description
 
 Before explaining the data preparation process, it is important to first understand the data, including its characteristics, timeframe and quality. This section provides an overview of the 2 datasets extracted for this analysis using an R package.
 
