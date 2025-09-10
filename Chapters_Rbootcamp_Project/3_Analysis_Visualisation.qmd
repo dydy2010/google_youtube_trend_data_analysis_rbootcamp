@@ -263,15 +263,12 @@ combined_data_final <- combined_data_filled_na %>%
 
 ## The Big Picture - Comparing the Brands
 
-This chapter presents the core of our analytical project. First, We will
-first explore the datasets, comparing the brands on both platforms'
-data, and have a big picture overview. Second, we dive into specific
-brands on google platform, discovering insights from different aspects.
-Third, to better understand the hidden patterns, we provide also model
-analysis, fitting linear regression model to the data. Forth, youtube
-platform specific analysis for brands was performed. And last but not
-least, by separating tags, we made ***WordClouds*** to visualise what
-keywords were most asscociated with the brands, to provide new
+This chapter presents the core of our analytical project. First, We explore the datasets, comparing the brands on both platforms and provide a big-picture overview. Second, we focus on individual
+brands on Google platform, uncovering insights from different perspectives.
+Third, we investigate hidden patterns through model
+analysis, applying a linear regression model to the data. Fourth, we performed a Youtube-specific analysis of brand performance. Last but not
+least, by separating tags, we made ***WordClouds*** to reveal what
+keywords were most associated with each brand, providing a new
 perspective for product improvement and marketing.
 
 ### Graph 1: Overall Google Search Interest Comparison
@@ -300,12 +297,12 @@ ggplot(data = avg_data, aes(x = trending_date, y = avg_hits, color = keyword)) +
   )
 ```
 
-To visualise overall search interest on google for 3 brands, a graph
-with 3 brands search interest data was made. In version 1 all brands are
-in one graph, and following this later is v2 with 3 brands in 3 graphs.
+To visualise overall search interest on Google for 3 brands, a graph
+with search interest data of 3 brands was made. In version 1, all brands are shown
+in one graph, and following this, v2 presents 3 brands in 3 separate graphs.
 Both graphs show the same result, but are suitable for different reading
-preferences. *Graph 1: Overall Search Interest Comparison (Facet Chart)
-v2*
+preferences. 
+**Graph 1: Overall Search Interest Comparison (Facet Chart)v2**
 
 ```{r graph1 Google Comparison v2 Facet, fig.width=14, fig.height=6}
 #| echo: false
