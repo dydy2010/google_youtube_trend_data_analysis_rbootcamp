@@ -15,11 +15,11 @@ public attention toward specific topics.
 
 ## Core Function
 
-The central function is: gtrends()
+The core function of the package is: gtrends(), which sends queries to the Google Trends API and returns the result.
 
 ## Main Parameters
 
-Some of the most relevant arguments we can specify in `gtrends()` are:
+Some of the most relevant arguments that we can specify in `gtrends()` are:
 
 -   **`keyword:`** One or more search terms (character vector).
 
@@ -57,37 +57,36 @@ most commonly used components are:
     Aggregated search interest at the country level.
 
 -   **`interest_by_region`**\
-    Regional breakdown (e.g., states, cities, DMA) depending on `geo`.
+    Regional breakdown (e.g., states, cities, DMA) depending on `geo` parameter.
 
 -   **`related_topics`**\
     Topics that are often searched together with the given keyword(s).
 
 ## Summary
 
-In summary, the package **gtrendsR** allows us to bring Google Trends
+In summary, the package **gtrendsR** is a powerful tool that allows us importing Google Trends
 data directly into R.\
-With it, we can:
+With **gtrendsR**, we can:
 
 -   Track search interest **over time**,
 -   Compare search intensity **across regions**, and
 -   Explore **related queries and topics** that frequently appear
     alongside our keywords.
 
-## Interpretation of the data
+## Interpretating Google Trend Data
 
-The **numbers from 0 to 100** on Google Trends represent **normalized,
+The **values from 0 to 100** on Google Trends represent **normalized,
 relative search interest**, not an absolute number of search queries.
 The value 100 indicates the peak popularity of a search term in a
 selected time period and region. **All other values are relative to this
-peak value**. A value of 0 means that there is insufficient data or that
-the search term has a very low search volume.
+peak value**. For example, a value of 0 means that there is insufficient data or that the search term has a very low search volume.
 
 How the numbers work:
 
 1.  **Normalization**: Google Trends normalizes the data on a scale from
     0 to 100 to represent search interest in relation to all search
     queries.
-2.  **Relative values**: The numbers are not absolute quantities, but
+2.  **Relative values**: The values are not absolute quantities, but
     show how often a term was searched for in comparison to its own
     peak.
 3.  The number 100: This represents the time or region when a search
@@ -119,8 +118,8 @@ library(countrycode)
 
 ### Load data
 
-Google is restricting the download of Google Trends data. Sometimes
-already after one download it is not possible to make another download.
+Google is restricting the download-limit of Google Trends data. Sometimes
+already after one download, it is not possible to make another download.
 As the behavior is - also based on comments of other users - very
 unpredictable, we saved successful downloads as RData objects and load
 the data whenever needed.
@@ -140,11 +139,12 @@ load("gtrends_Tesla_world.RData")
 
 ```
 
-### Prepare the data in the gtrends df 'interest_by_country'
+### Prepare the `interest_by_country` data in gtrends 
 
-We have to adjust some location iso-codes so they fit to the map data.
-And the main metric 'hits' has '\<1' which makes the column a character.
-We set \<1 and NA to 0 and the column to numeric.
+The `interest_by_country` dataframe, which contains geographic search data, required two steps before it could be used in analysis.  
+
+First, We have to adjust some location iso-codes so they fit to the map data.
+Second, the main metric 'hits' contains '\<1', which makes the column a character string. We replace \<1 and NA with 0 and set the column to numeric.
 
 ```{r, echo=TRUE, warning=FALSE}
 
