@@ -35,10 +35,10 @@ Alternatively, you can play around with the code and generate new reports. Howev
 
 *   **Chapter 2: Preparing the Data for Analysis:** Details about the datasets, the process of data extraction, cleaning, and transformation.
 
-*   **Chapter 3: Analysis and Visualization:** Presentation of the core findings, from broad descriptive statistics to in-depth correlation and trend analysis. Let's understand the data with visualizations.
+*   **Chapter 3: Analysis and Visualization:** Presentation of the **core-findings**, from broad descriptive statistics to in-depth correlation and trend analysis. Let's understand the data with visualizations.
 
-*   **Chapter 4: Chapter of Choice - The `gtrendsR` Package:** An exploration of the `gtrendsR` package, where the Google trend data was extracted. We will showcase its capabilities and technical implementation.
+*   **Chapter 4: Chapter of Choice - The `gtrendsR` Package:** An exploration of the `gtrendsR` package, where the Google trend data was extracted. We will showcase its capabilities and **technical implementation**.
 
-*   **Chapter 5: Generative AI Usage and Guidelines:** Explanation of the approach that we use to apply Generative AI in our research, including why it helps the research process and how it's implemented in a responsible way.
+*   **Chapter 5: Generative AI Usage and Guidelines:** Explanation of the approach that we use to apply Generative AI in our research, including why it helps the research process and how it's implemented in a **responsible** way.
 
 *   **Chapter 6: Conclusion, Limitations, and Outlook:** A summary of the key takeaways from our research, a discussion of the limitations of the study, and potential improvement aspects for future projects.
