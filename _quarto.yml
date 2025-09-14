@@ -24,17 +24,26 @@ format:
     toc: true
     number-sections: true
     documentclass: report 
-    classoption: 10pt # font size adjustment
+    classoption: 10pt # font size adjustment(all document content)
     include-in-header:
       text: |
+        \usepackage{tocloft}
+        % change font size of "Table of Contents" title
+        \renewcommand{\cfttoctitlefont}{\Large\bfseries}
+        % adjust space above the TOC title
+        \setlength{\cftbeforetoctitleskip}{-10pt} % Reduce space above
+        % adjust space below the TOC title
+        \setlength{\cftaftertoctitleskip}{0pt} % Space below
+        % Adjust chapter title size etc
         \usepackage{titlesec}
         \titleformat{\chapter}[block]
-          {\normalfont\Large\bfseries}
+          {\fontsize{20}{12}\selectfont\bfseries}
           {\thechapter.}
           {1em}
           {}
-        % ADD THIS LINE to control chapter spacing
+        % adjust chapter title spacing
         \titlespacing*{\chapter}{0pt}{0pt}{15pt}
+    
     
     geometry: top=1cm, bottom=1.5cm, left=2cm, right=2cm
     mainfont: Arial
