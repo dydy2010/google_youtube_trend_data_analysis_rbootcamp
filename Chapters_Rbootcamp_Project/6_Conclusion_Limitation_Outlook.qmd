@@ -8,20 +8,22 @@ editor:
 
 ## Conclusions
 
-### At the level of content
+### Key Takeaways for Brands
 
--   Our **proof of concept** showed potential customers how rich the
-    data on Google searches and YouTube videos is. It became clear that
+-   **Market Positioning**: Our **proof of concept** demonstrates the rich insights 
+    from Google and Youtube data for potential customers. It became clear that
     different brands play in very **different leagues**, regardless of
     their industry. Based on our analyses, we would describe the iPhone
-    as a global player, Tesla as an international player, and Rolex as a
-    niche player (although with a global/international reach).
--   By comparing YouTube and Google searches, we were able to show that
-    use of **YouTube** **videos is much less consistent over time than
-    Google searches**. Peaks such as the launch of the iPhone X fade
-    relatively quickly on YouTube, while they are less pronounced on
-    Google Search but have a much longer lasting effect.
--   We identified **correlations** between different brands and created
+    as a **global player**, Tesla as an **international player**, and Rolex as a
+    **niche player** (although with a luxurious/international reach).
+-   **Marketing Resource Allocation**: YouTube engagement around the iPhone has 
+    massive spikes after **product launches** but fading quickly, while Tesla maintains 
+    interest. Compared with Google, where search interest lasts several months, 
+    YouTube hype is generally short-lived. This suggests our clients to allocate 
+    **YouTube** marketing **immediately** after launches to catch **momentum**, 
+    while deploying **Google ads** over time to **maintain** popularity.
+-   **Predictive Insights & Seasonality:** We identified **correlations** 
+    between different brands and created
     a **linear model** that correlates search behavior in one country
     with behavior in another. Both approaches become even more important
     when examining brands in the same industry or the response to
@@ -30,25 +32,27 @@ editor:
     of Rolex. This insight is of **direct benefit** to brand managers,
     as it helps them better manage slumps or extend peaks through
     campaigns.
--   Using YouTube videos, we were able to show that brand managers
+-   **Importance of Engagement:** Using YouTube videos, we were able to show 
+    that brand managers
     should keep an eye on **user engagement**, both positive in the form
     of likes/views and negative in the form of dislikes/views, and
     compare it with that of their competitors.
--   Finally, the word clouds reminded us that despite all the numbers
+-   **Content & Brand Alignment: ** Finally, the word clouds reminded us that 
+    despite all the numbers
     and ratings, **content** should not be forgotten. The numbers for
     Rolex YouTube videos may look good. But is it also in the interest
     of brand managers if the primary focus is on showcasing German
     hip-hop artists?
 
-### At the school level
+### Key takeaways for R-Bootcamp Learning
 
-We implemented many different pieces of content that we learned in the R
-bootcamp in a project and also developed **new additional topics**. For
+We implemented many different concepts and practices that we learned in the R
+bootcamp and also explored **new additional topics**. For
 example, we learned how to access current Google search data and how to
 analyze the content of YouTube videos using wordclouds. By solving
-problems using the usual R tools, Google searches, and AI chat bots, we
-have now gained a certain **confidence** that we can master future
-challenges.
+problems using the usual R tools, Google searches, and AI chatbots, we
+have now built **confidence** that we can tackle future
+data science challenges.
 
 ## Limitations
 
@@ -56,30 +60,30 @@ Many limitations ultimately proved to be solvable problems that we were
 able to fix with a little data wrangling, for example. However, some
 aspects **fundamentally limited** our evaluations:
 
--   For YouTube, we worked with a Kaggle dataset **from 2017 to 2018**.
+-   **Outdated YouTube Data:** We worked with a Kaggle dataset **from 2017 to 2018**.
     This was sufficient for our purposes. In addition to this use case,
     which focuses on what can be gained from YouTube data, we would of
     course also like to investigate specific cases. To do this, access
     to current data is essential.
--   A second limitation arose when we attempted to track certain videos
-    over a longer period of time to see how long they remained
+-   **Changing Video IDs:** A second limitation arose when we attempted to track 
+    certain videos over a longer period of time to see how long they remained
     available. Apparently, the **cryptic video IDs change** from time to
     time, so we were unable to perform any meaningful analysis in this
     regard.
--   For Google Search, we worked with data that we were able to download
-    daily from Google Search Trends. One initial difficulty is that
+-   **Google Trends API Restrictions:** We worked with data that we were able to 
+    download daily from Google Search Trends. One initial difficulty is that
     **Google restricts downloads** in a rather unpredictable manner.
     This significantly limits the workflow, as all downloads must be
     cached locally for security reasons.
--   However, the bigger problem with Google Search is that **only
-    relative numbers** are available. It is not possible to obtain the
+-   **Relative Google Trends Data:** However, the bigger problem with Google Search 
+    is that **only relative numbers** are available. It is not possible to obtain the
     absolute number of searches per keyword. All values are calibrated
     by Google Search Trends to 0-100 for each search query. On the one
     hand, this means **a significant loss of information** and makes it
     **impossible to compare different search queries** with each other.
--   A final limiting factor was our somewhat **theoretical experimental
-    setup**. With a more concrete case, our analysis would have been
-    much more concise and the overall picture more coherent. The fact
+-   **Project Scope: ** A final limiting factor was our somewhat 
+    **theoretical experimental setup**. With a more concrete case, our analysis 
+    would have been much more concise and the overall picture more coherent. The fact
     that we had data from 2017/2018 and were working with such data for
     the first time prompted us to examine somewhat more general
     questions, which we considered appropriate. But let's imagine
@@ -92,19 +96,20 @@ aspects **fundamentally limited** our evaluations:
 The limitations mentioned above lead to the main points we would address
 next:
 
--   It is possible to **load current YouTube data**. However, this
-    requires a Google Cloud project and an API key. Even then, there are
+-   **Update to current data:** It is possible to **load current YouTube data**. 
+    However, this requires a Google Cloud project and an API key. Even then, there are
     certain limitations, but the data would definitely be more
     comprehensive than the data available to us in the `Kaggle` dataset.
-    In this context, we would also look at the `Tuber package` (CRAN),
+    In this context, we would look at the `Tuber package` (CRAN),
     which can be used to load data on specific videos. For example, if
     Rolex decides to make its own videos available on YouTube to
-    influence their brand image in its favor.
--   We would also try to find a way to obtain **uncalibrated Google
-    search data**. However, initial attempts are not promising; Google
-    is obviously making this impossible on purpose. The
-    `Google Ads Keyword Planner` could be a possibility, though.
--   One small problem concerns the word clouds. It would have been nice
-    to create the iPhone word cloud in the **format of the Apple logo**.
+    influence their brand image in its favor. 
+-   **Explore Google Search Metrics:** We would also try to find a way to obtain 
+    **uncalibrated Google search data**. While initial attempts were proven 
+    challenging as Google intentionally limit our access to this data, the
+    `Google Ads Keyword Planner` could be an alternative for future attempts.
+-   **Advanced Visualization:** A final area of improvement is regarding a 
+    small problem for the wordclouds. It would have been nice to create the 
+    iPhone word cloud in the **format of the Apple logo**.
     However, even after an intensive search, we were unable to do this.
     We will not give up and will make a few more attempts.
