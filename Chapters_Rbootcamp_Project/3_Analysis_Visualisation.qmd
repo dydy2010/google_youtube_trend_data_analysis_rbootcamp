@@ -1244,7 +1244,14 @@ wc_obj <- wordcloud2(rolex_tags_cleaned_unique %>% filter(total_views > 100000),
            shuffle = TRUE,
            shape = 'circle', ellipticity = 0.5,
            # color = palKH2[factor(df2$Word)])
-           color = rep_len(pal_rolex, nrow(rolex_tags_cleaned_unique)))
+           color = rep_len(pal_rolex, nrow(rolex_tags_cleaned_unique))) %>%
+  htmlwidgets::onRender("
+    function(el) {
+      el.style.width = '100%';
+      el.style.maxWidth = '700px'; // Constrains the maximum width
+      el.style.margin = '0 auto';  // Centers it
+    }
+  ")
 
 # screenshot for pdf render, and code output for html
 if (knitr::is_latex_output()) {
@@ -1253,7 +1260,7 @@ if (knitr::is_latex_output()) {
   # Save widget to a temporary file
   saveWidget(wc_obj, "temp_wordcloud.html", selfcontained = FALSE)
   # Take a screenshot and save as a PNG
-  webshot2::webshot("temp_wordcloud.html", "rolex_wordcloud.png", delay = 3, vwidth = 900, vheight = 400)
+  webshot2::webshot("temp_wordcloud.html", "rolex_wordcloud.png", delay = 3, vwidth = 700, vheight = 350)
   # Embed PNG image in the PDF with specific size
   knitr::include_graphics("rolex_wordcloud.png")
 } else {
@@ -1394,6 +1401,17 @@ if (interactive()) {
 # saveWidget(wc_obj_2, "temp.html", selfcontained = FALSE)
 # webshot("temp.html", "iphone_wordcloud.png", 
 #         vwidth = 1200, vheight = 800)
+
+```
+
+```{r}
+#| echo: false
+#| out.width: "100%"
+#| fig-align: "center"
+#| fig-cap: "iPhone wordcloud"
+#| cache: false
+
+knitr::include_graphics("iphone_wordcloud_trimmed.png")
 
 ```
 
