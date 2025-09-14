@@ -263,9 +263,14 @@ combined_data_final <- combined_data_filled_na %>%
 
 ## The Big Picture - Comparing the Brands
 
-This chapter presents the **core** of our analytical project. First, We explore the datasets, **comparing** the brands on both platforms and provide a **big-picture overview**. Second, we focus on individual
-brands on Google platform, uncovering insights from different perspectives.
-Third, we investigate hidden patterns through **model analysis**, applying a linear regression model to the data. Fourth, we performed a Youtube-specific analysis of brand performance. Last but not least, by separating tags, we made ***WordClouds*** to reveal what
+This chapter presents the **core** of our analytical project. First, We
+explore the datasets, **comparing** the brands on both platforms and
+provide a **big-picture overview**. Second, we focus on individual
+brands on Google platform, uncovering insights from different
+perspectives. Third, we investigate hidden patterns through **model
+analysis**, applying a linear regression model to the data. Fourth, we
+performed a Youtube-specific analysis of brand performance. Last but not
+least, by separating tags, we made ***WordClouds*** to reveal what
 keywords were most associated with each brand, providing a new
 perspective for **product improvement** and marketing.
 
@@ -296,10 +301,10 @@ ggplot(data = avg_data, aes(x = trending_date, y = avg_hits, color = keyword)) +
 ```
 
 To visualise **overall search interest** on Google for 3 brands, a graph
-with search interest data of 3 brands was made. In version 1, all brands are shown
-in one graph, and following this, v2 presents 3 brands in 3 separate graphs.
-Both graphs show the same result, but are suitable for different reading
-preferences. 
+with search interest data of 3 brands was made. In version 1, all brands
+are shown in one graph, and following this, v2 presents 3 brands in 3
+separate graphs. Both graphs show the same result, but are suitable for
+different reading preferences.
 
 **Graph 1: Overall Search Interest Comparison (Facet Chart)v2**
 
@@ -331,30 +336,32 @@ Key observations include:
 **iPhone Dominates Search Interest:**
 
 "iPhone" consistently maintains the highest search volume, with
-significant peaks (e.g., near 100 relative interest) likely corresponding
-to **product launches** or major announcements (e.g., iPhone X in 2017,
-iPhone XS in 2018). It suggests sustained consumer curiosity and media
-hype around Apple.
+significant peaks (e.g., near 100 relative interest) likely
+corresponding to **product launches** or major announcements (e.g.,
+iPhone X in 2017, iPhone XS in 2018). It suggests sustained consumer
+curiosity and media hype around Apple.
 
 **Tesla shows moderate but steady interest:**
 
-"Tesla" exhibits **lower but steady** search interest, with occasional spikes. This aligns with Tesla’s brand history and vehicle releases (e.g.,
-Model 3 rollout, massive quality scandals), and Elon Musk’s public
-visibility. We will also research the possible events that happened
-around that time later.
+"Tesla" exhibits **lower but steady** search interest, with occasional
+spikes. This aligns with Tesla’s brand history and vehicle releases
+(e.g., Model 3 rollout, massive quality scandals), and Elon Musk’s
+public visibility. We will also research the possible events that
+happened around that time later.
 
 **Rolex has negligible search presence:**
 
 The keyword "Rolex" shows near-zero search interest throughout the
-period. This indicates **lower public interest** compared to the other major
-brands. As a luxury watch brand, Rolex may not rely on hypes, otherwise, more marketing campaigns could be beneficial.
+period. This indicates **lower public interest** compared to the other
+major brands. As a luxury watch brand, Rolex may not rely on hypes,
+otherwise, more marketing campaigns could be beneficial.
 
 ### Graph 2: Overall YouTube Views Comparison
 
 **(Line Chart) v1**
 
-As with Google search interest, we did overall
-comparison for 3 brands on Youtube platform with 2 versions of graphs.
+As with Google search interest, we did overall comparison for 3 brands
+on Youtube platform with 2 versions of graphs.
 
 ```{r graph2 v1, fig.width=14, fig.height=6}
 #| echo: false
@@ -377,8 +384,8 @@ ggplot(data = combined_data_final, aes(x = trending_date, y = total_views)) +
 ```
 
 This graphs track the **daily view counts** for videos related to three
-keywords—iPhone, Roles, and Tesla, in 5 countries. The result indicates a
-massive disparity in viewership between iPhone and the other two
+keywords—iPhone, Roles, and Tesla, in 5 countries. The result indicates
+a massive disparity in viewership between iPhone and the other two
 keywords.
 
 **Graph 2: Overall YouTube Views Comparison v2 (Facet Version)**
@@ -405,10 +412,10 @@ ggplot(data = combined_data_final, aes(x = trending_date, y = total_views)) +
 
 **iPhone: Viral and Event-Driven Engagement**
 
-The keyword "iPhone" shows an **astronomical level of views**, peaking at
-nearly 150 million daily views, which dwarfs the other terms. The trend
-is very **volatile**, with a dramatic spike in early March 2018 followed
-by a sharp decline.
+The keyword "iPhone" shows an **astronomical level of views**, peaking
+at nearly 150 million daily views, which dwarfs the other terms. The
+trend is very **volatile**, with a dramatic spike in early March 2018
+followed by a sharp decline.
 
 This peak is hypothetically due to a **product launch** or major
 announcement. After researching, the timing suggests that it was driven
@@ -423,27 +430,31 @@ Trend: The keyword "Tesla" shows a stable trend, ranging from 1 million
 to 3 million daily views. It shows **gentle fluctuations** but no sharp,
 viral spikes like the iPhone.
 
-The steadier trend indicates a noticeable and continuous presence on the platform. However, certain events could influence
-the temporary interest of the public. For example, on 17. Nov 2017,
-Tesla announced its **semi truck** project. The futuristic design was
-followed by huge **media coverage**, which possibly cause a spike in views that lasted about 3 months. And in early 2018 there were
-huge discussions about Tesla falling short on Model 3 deliveries. In the
-same period, the stock price dropped approx. 33%. This indicates that
-both launch events and negative coverage could boost Tesla's publicity
-on Youtube.
+The steadier trend indicates a noticeable and continuous presence on the
+platform. However, certain events could influence the temporary interest
+of the public. For example, on 17. Nov 2017, Tesla announced its **semi
+truck** project. The futuristic design was followed by huge **media
+coverage**, which possibly cause a spike in views that lasted about 3
+months. And in early 2018 there were huge discussions about Tesla
+falling short on Model 3 deliveries. In the same period, the stock price
+dropped approx. 33%. This indicates that both launch events and negative
+coverage could boost Tesla's publicity on Youtube.
 
 ### Graph 3: The iPhone Hype Cycle
 
-This section of the big picture, we would
-like to have one graph that includes Youtube and Google data, and in the meantime, focuses on one product pattern, e.g., the Hype Cycle around product event like the iPhone X launch in Nov 2017.
+This section of the big picture, we would like to have one graph that
+includes Youtube and Google data, and in the meantime, focuses on one
+product pattern, e.g., the Hype Cycle around product event like the
+iPhone X launch in Nov 2017.
 
-To achieve this, 2 versions of the graphs are constructed, covering 180 days next to event. In v1, 2 sections of visualisation were drawn for youtube and Google data. The Y axis represent Youtube and Google engagement and
-the X axis represents the time spans. 
+To achieve this, 2 versions of the graphs are constructed, covering 180
+days next to event. In v1, 2 sections of visualisation were drawn for
+youtube and Google data. The Y axis represent Youtube and Google
+engagement and the X axis represents the time spans.
 
 **Graph 3 v1: The iPhone Hype Cycle (Google & Youtube separately)**
 
-180-day window around the iPhone X
-launch.
+180-day window around the iPhone X launch.
 
 ```{r graph3 v1, fig.width=8, fig.height=5}
 #| output: true
@@ -503,22 +514,40 @@ gridExtra::grid.arrange(plot_google, plot_youtube, ncol = 1)
 
 **Interpretation of Google Search Interest Trends**
 
-Google search interest hype lasted more than **3 months**, from November to February. Even though data before Nov is missing, we could see that starting from November,the search interest already had risen and peaked. It indicates that the launch event news had a great impact on iPhone Google search interest and the **elevated interest** lasted at least 3 months.
+Google search interest hype lasted more than **3 months**, from November
+to February. Even though data before Nov is missing, we could see that
+starting from November,the search interest already had risen and peaked.
+It indicates that the launch event news had a great impact on iPhone
+Google search interest and the **elevated interest** lasted at least 3
+months.
 
 **Google search strategy for client**
 
-Apple can intensify Google platform **advertisement allocation** approx. 2 months before and 3 months after the major product launch event, to maximize customer interest and exposure on Google. 
+Apple can intensify Google platform **advertisement allocation** approx.
+2 months before and 3 months after the major product launch event, to
+maximize customer interest and exposure on Google.
 
 **Interpretation of Youtube Views Trends**
 
--   Peak views in December: Youtube trending videos about iPhone started to emerge around Mid-November after the iPhone X launch. And the total views of these videos have peaked in December, with a daily total view reaching just over 175M per day. After that there is a sharp decline, with a small spike around March. The hype on Youtube is short lived and slightly scattered, only lasting about 1 months.
+-   Peak views in December: Youtube trending videos about iPhone started
+    to emerge around Mid-November after the iPhone X launch. And the
+    total views of these videos have peaked in December, with a daily
+    total view reaching just over 175M per day. After that there is a
+    sharp decline, with a small spike around March. The hype on Youtube
+    is short lived and slightly scattered, only lasting about 1 months.
 
--   Youtube strategy for client: Apple can start to focus on allocating marketing resources on Youtube **inmediately** after the launch event of a major product, especially during the first month after the event. Continuous marketing effort on Youtube after that is **optional**.
+-   Youtube strategy for client: Apple can start to focus on allocating
+    marketing resources on Youtube **inmediately** after the launch
+    event of a major product, especially during the first month after
+    the event. Continuous marketing effort on Youtube after that is
+    **optional**.
 
-**Graph 3 v2: The iPhone Hype Cycle (Scatterplot)** 
+**Graph 3 v2: The iPhone Hype Cycle (Scatterplot)**
 
-180-day window around the iPhone X launch. 
-To explore the big picture, using iPhone as an example, we plotted Google search interest on y axis and Youtube views on x axis. The red line represents the correlation of Google interest and Youtube views.
+180-day window around the iPhone X launch. To explore the big picture,
+using iPhone as an example, we plotted Google search interest on y axis
+and Youtube views on x axis. The red line represents the correlation of
+Google interest and Youtube views.
 
 ```{r graph3 v2, fig.width=8, fig.height=5}
 #| output: true
@@ -552,18 +581,27 @@ correlation_rounded <- round(correlation, 3)
 print(paste("The correlation coefficient is:", correlation_rounded))
 ```
 
-**Interpretation of Google Search Interest Trends and Youtube total views** 
+**Interpretation of Google Search Interest Trends and Youtube total
+views**
 
-The scatterplots reveal dispersed data points, and the red
-line appears to show a **slight correlation**. However, is it really correlated as our **intuition** tells us? The result is as shown:
-`r correlation_rounded`. As we know, ±0.0 to ±0.3 equals very weak or no correlation.
+The scatterplots reveal dispersed data points, and the red line appears
+to show a **slight correlation**. However, is it really correlated as
+our **intuition** tells us? The result is as shown:
+`r correlation_rounded`. As we know, ±0.0 to ±0.3 equals very weak or no
+correlation.
 
 We can safely say, even though **counterintuitive**, while there is a
-slight tendency for YouTube views and Google searches to move together, the relationship is **not strong** or predictable. High volumes of YouTube views on a given day were very weakly associated with high levels of Google search interest.
+slight tendency for YouTube views and Google searches to move together,
+the relationship is **not strong** or predictable. High volumes of
+YouTube views on a given day were very weakly associated with high
+levels of Google search interest.
 
 **Platform Insight for client**
 
-The above suggests **user behavior** on these two platforms was largely **independent**, at least during the iPhone X launch period. It is beneficial for the clients to work with the 2 platforms with **independent approach** and strategy, for better result.
+The above suggests **user behavior** on these two platforms was largely
+**independent**, at least during the iPhone X launch period. It is
+beneficial for the clients to work with the 2 platforms with
+**independent approach** and strategy, for better result.
 
 ## Google Search Trend Analysis
 
@@ -571,12 +609,12 @@ The above suggests **user behavior** on these two platforms was largely **indepe
 
 Because downloading Google Trends data is unreliable (more on this later
 in our *chapter of choice* about `gtrendsR`), we are working here with
-data that was previously downloaded and saved as `csv` files. All
-five country files must be prepared in the same way, for which we have
+data that was previously downloaded and saved as `csv` files. All five
+country files must be prepared in the same way, for which we have
 written a **function**. With `rbind`, we can easily concatenate the
-pre-prepared data and use `pivot_longer` to create a second **long** data
-set we will need for certain visualisations. With these steps we are now
-prepared for the following analyses.
+pre-prepared data and use `pivot_longer` to create a second **long**
+data set we will need for certain visualisations. With these steps we
+are now prepared for the following analyses.
 
 ```{r echo=FALSE}
 ## Install/Load libraries
@@ -659,9 +697,9 @@ trends_long <- trends_combined %>%
 ```
 
 **Data inspection**: Besides `head()`, `View()`, `summary()` and
-`table()`, we used a **faceted line chart** to check whether the data for
-all countries and for the three keywords iPhone, Rolex, and Tesla has
-been imported correctly.
+`table()`, we used a **faceted line chart** to check whether the data
+for all countries and for the three keywords iPhone, Rolex, and Tesla
+has been imported correctly.
 
 ```{r Facet line chart for all combinations of country & keyword}
 #| output: true
@@ -691,12 +729,12 @@ trends_long %>%
 We examine if there is a correlation between **Google Searches for
 iPhone and Tesla**. Are days when iPhone searches are very prominent
 also days when Tesla searches account for a significant proportion? Or
-do searches for these two brands behave independently?  
+do searches for these two brands behave independently?
 
-This question may be more relevant for other examples, such as when examining two
-**brands in the same industry**. Or when a brand is looking for a
-partner for **joint marketing activities**. In such cases, it can be
-very helpful to know whether such correlations exist.
+This question may be more relevant for other examples, such as when
+examining two **brands in the same industry**. Or when a brand is
+looking for a partner for **joint marketing activities**. In such cases,
+it can be very helpful to know whether such correlations exist.
 
 Visually, it appears that Google searches for iPhone and Tesla are
 independent of each other. We believe this is an expected result.
@@ -772,11 +810,11 @@ ggplot(plot_data, aes(x = date, y = hits)) +
 
 The weekly bar chart actually shows these **two peaks**. The first few
 weeks of the year, possibly as a echo from the festive season, show
-relatively strong search interest, followed by a first peak in **March** after a few
-weaker weeks. And in the penultimate week of the year, during the
-**holiday season**, the maximum is reached. Because no other brands
-relativize Rolex's values, Google Trend sets Rolex's maximum value at
-100.
+relatively strong search interest, followed by a first peak in **March**
+after a few weaker weeks. And in the penultimate week of the year,
+during the **holiday season**, the maximum is reached. Because no other
+brands relativize Rolex's values, Google Trend sets Rolex's maximum
+value at 100.
 
 ## Model Analysis: fitting a linear regression model and visualize it
 
@@ -784,10 +822,10 @@ relativize Rolex's values, Google Trend sets Rolex's maximum value at
 
 We want to find out how Google Searches for 'iPhone' in different
 countries are related. Are days with many searches for iPhone in the US
-also days with many searches in Germany? We would expect so, as iPhone is
-a global topic and news, e.g. the launch of a new iPhone version, swap
-across the globe in no time. But still, let's check if we can prove it
-with the data.
+also days with many searches in Germany? We would expect so, as iPhone
+is a global topic and news, e.g. the launch of a new iPhone version,
+swap across the globe in no time. But still, let's check if we can prove
+it with the data.
 
 First, we do a line graph comparing the Google Trends data for iPhone
 country by country. To get a nicer graph, we aggregate the data from
@@ -822,19 +860,20 @@ ggplot(data = trends_combined_week, aes(x = week, y = iPhone, color = country)) 
 
 As we can see, the relative search interest in 'iPhone' is moving quite
 similar across all five countries. We now want do check with a model how
-closely two countries are related. We pick US and Germany, as we are most
-interested in these countries. As they are also behaving very similar
-over time, we expect a high correlation and a strong linear model
-explaining the interest in Germany together with the interest in the US.
+closely two countries are related. We pick US and Germany, as we are
+most interested in these countries. As they are also behaving very
+similar over time, we expect a high correlation and a strong linear
+model explaining the interest in Germany together with the interest in
+the US.
 
 ### Prepare the data for modelling and checking all correlations
 
-As initial step, we have to prepare the data. We used the daily data as we
-want to have data as rich as possible for modelling. For the linear
+As initial step, we have to prepare the data. We used the daily data as
+we want to have data as rich as possible for modelling. For the linear
 regression model `lm()` we need separate columns for iPhone search
 interest per country. As a first analysis, we calculate all correlations
-and visualize them with `corrplot`. In particular, the correlations between
-iPhone_DE and iPhone_US are very high, even close to 1 (0.93).
+and visualize them with `corrplot`. In particular, the correlations
+between iPhone_DE and iPhone_US are very high, even close to 1 (0.93).
 
 ```{r echo=FALSE, message=FALSE}
 #| output: true
@@ -872,28 +911,28 @@ summary(model)
 As expected the linear regression model shows a strong relation between
 the Google search interest in iPhone between the US and Germany: The
 p-value of the model is close to 0 and therefore significant. The same
-is true for the iPhone_US estimated coefficient of 0.878. This means an increase of
-interest by 1 in the US goes along with an increase of interest in
-Germany by 0.878.
+is true for the iPhone_US estimated coefficient of 0.878. This means an
+increase of interest by 1 in the US goes along with an increase of
+interest in Germany by 0.878.
 
 ### Visualize the linear regression and the quality of the model
 
-We create four visualizations for the model. First, a scatter plot showing
-all data points (i.e. days) with iPhone_US on the x and iPhone_DE on the
-y axis. We add a line for the perfect correlation (y = x) and the
-regression line calculated with the model. Thereafter, we extract
-intercept and slope from the coefficients that we received when fitting
-the model.
+We create four visualizations for the model. First, a scatter plot
+showing all data points (i.e. days) with iPhone_US on the x and
+iPhone_DE on the y axis. We add a line for the perfect correlation (y =
+x) and the regression line calculated with the model. Thereafter, we
+extract intercept and slope from the coefficients that we received when
+fitting the model.
 
-Next, we generate three standard graphs that are used to check the quality of a
-linear regression model:
+Next, we generate three standard graphs that are used to check the
+quality of a linear regression model:
 
--   **Residuals vs. Fitted** to check linearity and constant variance: Any
-    clear pattern indicates an issue.
--   **Q-Q-plot of Residuals** to check the normal distribution of errors.
-    Points should follow the line.
--   **Observed vs. Fitted** to check visually how good model accuracy and
-    predictive power are.
+-   **Residuals vs. Fitted** to check linearity and constant variance:
+    Any clear pattern indicates an issue.
+-   **Q-Q-plot of Residuals** to check the normal distribution of
+    errors. Points should follow the line.
+-   **Observed vs. Fitted** to check visually how good model accuracy
+    and predictive power are.
 
 ```{r, message=FALSE, echo=FALSE}
 #| output: true
@@ -959,28 +998,40 @@ plot_4
 
 ```
 
-To summarize, there are no major issues with the model. It
-explains the Google search interest in Germany very well based on the
-US Google search interest. Therefore, the result of the analysis
-confirms our initial expectation.
+To summarize, there are no major issues with the model. It explains the
+Google search interest in Germany very well based on the US Google
+search interest. Therefore, the result of the analysis confirms our
+initial expectation.
 
 ### Conclusion for our clients
 
 For any brand, it is important to know the level of interest (potential)
 clients show over time. In particular, when a major event is planned,
 monitoring of Google Search should be set up to understand how
-effectively the event triggered interest, how the interest developed afterwards
-and how it was in the markets/countries that the brand is most
-interested in.
+effectively the event triggered interest, how the interest developed
+afterwards and how it was in the markets/countries that the brand is
+most interested in.
 
 In some countries, the event may have caused a sharp increase in
 interest that will last for a long time. While in other countries the
-effect may be rather short-lived. It is essential for brands to be aware of such
-effects in order to respond appropriately with marketing measures.
+effect may be rather short-lived. It is essential for brands to be aware
+of such effects in order to respond appropriately with marketing
+measures.
 
 ## Youtube Videos Analysis
 
-Scatterplot Tesla Youtube-views vs. Youtube-likes
+Now let's take a look at the YouTube data with **three graphs**.
+
+### Positive YouTube engagement
+
+An important indicator is user **engagement**, which is measured by the
+number of likes per view: if a video is rated with a like, this
+indicates user engagement. We look at the relationship between
+engagement and total views and find that as videos become more popular,
+the number of likes per view decreases. This is understandable: very
+popular videos are also watched by people who are less interested in the
+topic. Therefore, the **popularity of the video** must always be taken
+into account when interpreting engagement.
 
 ```{r echo=FALSE, message=FALSE, fig.width=8, fig.height=5}
 #| output: true
@@ -1012,8 +1063,20 @@ ggplot(plot_data, aes(x = total_views, y = engagement)) +
 
 ```
 
-Barchart Brand comparison of YouTube-Engagement (i.e. likes / views and
-dislikes / views)
+### Negative YouTube engagement
+
+Engagement also exists **in a negative sense**, as the number of
+dislikes per view. Next, we are interested in the ratio of positive
+engagement (likes per view) to negative engagement (dislikes per view)
+for the videos of the three brands. We can see that the videos of all
+three brands receive **far more likes than dislikes**. In relative
+terms, however, it is striking that Tesla videos receive three times
+fewer dislikes (0.001) than the iPhone and Rolex videos (0.003).
+
+For our **potential customers**, it is important to know the positive
+and negative engagement of the users of their videos, to track it over
+time, and to compare it with the videos of their competitors in order to
+be able to **estimate the corresponding brand effects**.
 
 ```{r echo=FALSE, message=FALSE, fig.width=8, fig.height=5}
 #| output: true
@@ -1029,21 +1092,6 @@ plot_data <- aggregated_youtube_data_final %>%
   mutate(like_ratio = total_likes / total_views,
          dislike_ratio = total_dislikes / total_views) %>% 
   mutate(keyword = factor(keyword, levels = c('iPhone', 'Tesla', 'Rolex')))
-
-## Make the column plot
-
-# ggplot(plot_data,aes(x = keyword, y = like_ratio)) +
-#   geom_col(fill = "darkblue") +
-#   geom_text(aes(label = sprintf("%.3f", like_ratio)),
-#             vjust = -0.5, size = 3.2) +
-#   scale_y_continuous(limits = c(0, 0.05)) +
-#   theme_minimal() +
-#   labs(
-#     title = "Brand comparison of YouTube video engagement",
-#     x = "Keywords",
-#     y = "Engagement (total likes / total views)",
-#     caption = "Source: Kaggle dataset Youtube (November 2017 to Juin 2018)"
-#   )
 
 ## Make a combined column plot for like- and dislike-ratio
 
@@ -1073,7 +1121,16 @@ ggplot(plot_long, aes(x = keyword, y = ratio, fill = metric)) +
 
 ```
 
-Longevity of selected YouTube-videos
+### Longevity of YouTube videos
+
+We have already seen that an event has significantly less resonance in
+YouTube usage than in Google searches. That's why we now want to look at
+the **longevity** of videos and have selected the **most-watched
+videos** of the three brands for this purpose. We are interested in how
+their use develops over time.
+
+The following graph shows an **unexpected problem**: the most-watched
+**videos disappear** from our data after a few days.
 
 ```{r echo=FALSE, message=FALSE, fig.width=8, fig.height=5}
 #| output: true
@@ -1095,59 +1152,78 @@ plot_data <- plot_data %>%
 ## Make the line graph
 
 plot_data %>%
-  ggplot(aes(x = trending_date, y = total_views, colour = keyword)) +
+  ggplot(aes(x = trending_date, y = total_views / 1000000, colour = keyword)) +
   geom_line(linewidth = .6) +
   labs(
     title = "YouTube most watched videos: Development over time",
-    y = "Relative importance on that day",
+    x = NULL,
+    y = "Total Views (in millions)",
     caption = "Source: Google Trends (2017-11-14 to 2018-06-14)"
   ) +
+  scale_y_continuous(labels = scales::number_format(accuracy = 1)) +
   theme_minimal()
 
 ```
+
+We have **two possible explanations**:
+
+-   Either the cryptic ID of a video, which we use to track the use of
+    videos over time, changes after just a few days. This could be due
+    to technical reasons how YouTube is setting these IDs.
+
+-   Or the data in the Kaggle dataset shows only a limited YouTube video
+    universe.
+
+In any case, it is completely **unrealistic** that a video that has been
+viewed millions of times would no longer be viewed from one day to the
+next.
+
+In any case, we have decided to **investigate this phenomenon** at a
+later stage, as we are convinced that the longevity of videos can be of
+great interest to our potential customers.
 
 ## WordCloud
 
 After all these analyses and visualizations of essentially 'numbers', we
 should not forget that brands and branding are primarily about
 **content.** Here we have good news: YouTube and Google Searches are
-too! One can and should examine what the actual content of the videos
-on Youtube, besides the fact that they are tagged with the
-keywords 'Rolex' or 'iPhone'. With a wordcloud, we can give a very good
-first impression of the content based on all tags that were given to the
-videos. We believe that understanding what content of the videos is, is as
-important as knowing how often they have been watched.  
+too! One can and should examine what the actual content of the videos on
+Youtube, besides the fact that they are tagged with the keywords 'Rolex'
+or 'iPhone'. With a wordcloud, we can give a very good first impression
+of the content based on all tags that were given to the videos. We
+believe that understanding what content of the videos is, is as
+important as knowing how often they have been watched.
 
-First, we create a wordcloud for **Rolex**. This means: We are counting all
-tags given to all Rolex videos. As a reminder: A Rolex video is any video
-that contains "Rolex" in the title or in the tags. Then we select the most
-frequent tags (besides Rolex) and arrange them in a roughly circular layout. 
-The most frequent tags/words are placed first
-in the center and with a larger font, while less frequent words
-get a smaller font and are placed later in available space around them.
+First, we create a wordcloud for **Rolex**. This means: We are counting
+all tags given to all Rolex videos. As a reminder: A Rolex video is any
+video that contains "Rolex" in the title or in the tags. Then we select
+the most frequent tags (besides Rolex) and arrange them in a roughly
+circular layout. The most frequent tags/words are placed first in the
+center and with a larger font, while less frequent words get a smaller
+font and are placed later in available space around them.
 
 The R package `wordcloud2` provides many parameters which allow us to
-customize looks of the wordcloud. Without going to much into
-detail **the process has two steps**:
+customize looks of the wordcloud. Without going to much into detail
+**the process has two steps**:
 
-1.  Prepare the words to be displayed in a **dataframe with
-    two columns**: the words and their counts. Regarding the words, some
+1.  Prepare the words to be displayed in a **dataframe with two
+    columns**: the words and their counts. Regarding the words, some
     cleaning is needed, like removing white spaces and stopwords (words
-    with no relevance for the wordcloud, e.g., 'and'). And when you
-    see the first wordcloud you will most likely remove other words that
-    you don't want to be shown or words that are just written
-    differently that you want to combine.
+    with no relevance for the wordcloud, e.g., 'and'). And when you see
+    the first wordcloud you will most likely remove other words that you
+    don't want to be shown or words that are just written differently
+    that you want to combine.
 2.  Call the `wordcloud2()` function and define all **visual
     parameters**. This step requires a trial-and-error approach to set
     all size parameters correctly to get a nice wordcloud. The
-    documentation of the package is good, so you know what each parameter
-    does. But still you will be surprised how minor changes make
-    the wordcloud look good or rather useless.
+    documentation of the package is good, so you know what each
+    parameter does. But still you will be surprised how minor changes
+    make the wordcloud look good or rather useless.
 
 Now comes the preparation of the data. A short note: some packages
-loaded here are not necessary for the wordcloud but they allow more functionalities, e.g. check
-available fonts (`systemfonts`) or to export the wordcloud
-image as pdf (`webshot2`and `htmlwidgets`).
+loaded here are not necessary for the wordcloud but they allow more
+functionalities, e.g. check available fonts (`systemfonts`) or to export
+the wordcloud image as pdf (`webshot2`and `htmlwidgets`).
 
 ```{r echo=FALSE, message=FALSE}
 
@@ -1277,24 +1353,24 @@ Bushido, Kollegah, Farid Bang, and Nimo are well-known German rappers,
 and they clearly like to show off their Rolex watches. We don't think
 the folks in charge of Rolex branding are too happy about this. We'd
 suggest they try to counteract the German videos. Of course, having the
-Rolex brand in hip-hop videos is a good thing itself. But Rolex
-should consider highlighting YouTube videos that show other Rolex values
+Rolex brand in hip-hop videos is a good thing itself. But Rolex should
+consider highlighting YouTube videos that show other Rolex values
 besides just being “expensive.”
 
 ### iPhone wordcloud
 
 **As a second example**, to give an impression on how diverse wordclouds
-can become, we create a wordcloud for **iPhone** with the respective YouTube
-tags. We adjust the color palette to the colors Apple used for their
-iPhones in 2017/18 and select a type of Helvetica font. Here
-we have to restrict the number of words to 500k.   
+can become, we create a wordcloud for **iPhone** with the respective
+YouTube tags. We adjust the color palette to the colors Apple used for
+their iPhones in 2017/18 and select a type of Helvetica font. Here we
+have to restrict the number of words to 500k.
 
-According to the package description it is even possible to **define the form of
-the wordcloud based on a picture**. For example, we could use the Apple logo (a png
-file with the logo in black on a white background) and `wordcloud2` will
-try to fill the space used by the Apple logo. So far we did not manage
-to get it working, but it is definitely something we will try out the
-next time we do a wordcloud.
+According to the package description it is even possible to **define the
+form of the wordcloud based on a picture**. For example, we could use
+the Apple logo (a png file with the logo in black on a white background)
+and `wordcloud2` will try to fill the space used by the Apple logo. So
+far we did not manage to get it working, but it is definitely something
+we will try out the next time we do a wordcloud.
 
 ```{r Prepare the iPhone data}
 #| include: false
@@ -1415,18 +1491,18 @@ knitr::include_graphics("iphone_wordcloud_trimmed.png")
 
 ```
 
-We believe this word cloud is much more in line with what iPhone managers
-would expect. iPhone YouTube videos are tagged with terms from the world of
-**smartphones** and the **gaming scene**. Apple itself also seems to
-have a strong influence: the terms “unbox therapy” and “unboxing”
-probably originate from videos by **influencers** who are paid by Apple
-to unbox a new iPhone and share their first impressions with their
-followers. But it could be interesting to see how the word cloud
-develops thematically when no new iPhone is being launched.
+We believe this word cloud is much more in line with what iPhone
+managers would expect. iPhone YouTube videos are tagged with terms from
+the world of **smartphones** and the **gaming scene**. Apple itself also
+seems to have a strong influence: the terms “unbox therapy” and
+“unboxing” probably originate from videos by **influencers** who are
+paid by Apple to unbox a new iPhone and share their first impressions
+with their followers. But it could be interesting to see how the word
+cloud develops thematically when no new iPhone is being launched.
 
 In **summary**, we believe that it is very worthwhile to use word clouds
-to get a impression of the videos' content. Major brands such as Apple and
-Rolex are already doing this, and there are undoubtedly more advanced
-content analysis tools than word clouds. But for **smaller brands** in
-particular, it could be a first step toward better understanding the
-image their brand projects on YouTube.
+to get a impression of the videos' content. Major brands such as Apple
+and Rolex are already doing this, and there are undoubtedly more
+advanced content analysis tools than word clouds. But for **smaller
+brands** in particular, it could be a first step toward better
+understanding the image their brand projects on YouTube.
