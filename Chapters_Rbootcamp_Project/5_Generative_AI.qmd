@@ -4,7 +4,7 @@ editor:
     wrap: 72
 ---
 
-# Generative AI Usage and Guidlines
+# Generative AI Usage and Guidelines
 In this project, Generative AI was used as a supplementary tool on top of the assisting material that were provided in R-Bootcamp, for example, help function in Rstudio, vignettes in CRAN. In addition, we already had some script and Quarto templates from previous projects. All these sources formed the basis of our work with Youtube and Google data. :\
 
 In order to improve efficiency but also enhance our learning, the deployment of Generative AI are guided by a clear set of guidelines and strategies:
