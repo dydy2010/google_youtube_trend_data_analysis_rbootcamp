@@ -297,7 +297,8 @@ ggplot(data = avg_data, aes(x = trending_date, y = avg_hits, color = keyword)) +
     title = "Google Search Interest Over Time (Average)",
     x = "Date",
     y = "Average Relative Search Interest (0-100)",
-    color = "Keyword"
+    color = "Keyword",
+    caption = "Source: Google Trends (2018-01-01 to 2018-12-31)"
   )
 ```
 
@@ -320,7 +321,8 @@ ggplot(data = avg_data, aes(x = trending_date, y = avg_hits)) +
     title = "Google Search Interest Over Time by Keyword (Average)",
     x = "Date",
     y = "Average Relative Search Interest (0-100)",
-    color = "Keyword"
+    color = "Keyword",
+        caption = "Source: Google Trends (2018-01-01 to 2018-12-31)"
   ) +
   scale_x_date(
     date_labels = "%Y-%m",       # format Year-Month
@@ -375,7 +377,9 @@ ggplot(data = combined_data_final, aes(x = trending_date, y = total_views)) +
     title = "YouTube Daily Views Over Time",
     x = "Date",
     y = "Total Daily Views",
-    color = "Keyword"
+    color = "Keyword",
+    caption = "Source: Kaggle – Trending YouTube Video Statistics (Mitchell J)\n2017-11-14 to 2018-06-14"
+
   ) +
   scale_x_date(date_labels = "%b %Y") +  ## Format dates
   scale_y_continuous(labels = comma)     ## Apply comma formatting to y-axis (scales package)
@@ -399,7 +403,9 @@ ggplot(data = combined_data_final, aes(x = trending_date, y = total_views)) +
     title = "YouTube Daily Views Over Time",
     x = "Date",
     y = "Total Daily Views",
-    color = "Keyword"
+    color = "Keyword",
+    caption = "Source: Kaggle – Trending YouTube Video Statistics (Mitchell J)\n2017-11-14 to 2018-06-14"
+
   ) +
   scale_x_date(date_labels = "%b %Y") +  ## Format dates
   scale_y_continuous(labels = comma) +   ## Apply comma formatting to y-axis (scales package)
@@ -500,7 +506,10 @@ plot_youtube <- ggplot(iphone_hype_data) +
     angle = 90, # rotates text vertically
     vjust = -0.5 #text position to the line
   )+
-  labs(title = "YouTube Daily Views", x = "Date", y = "Total Daily Views") +
+  labs(title = "YouTube Daily Views", x = "Date", y = "Total Daily Views",
+       caption = "Source: Kaggle – Trending YouTube Video Statistics (Mitchell J) &\n
+       Google Trends (2018-01-01 to 2018-12-31)"
+) +
   ## scale_y_continuous(labels = scales::comma) ## format in num
   scale_y_continuous(labels = scales::label_number(scale = 1/1e6, suffix = "M")) + ## format in Ms
   scale_x_date(date_breaks = "1 month", date_labels = "%b %Y") 
@@ -570,7 +579,8 @@ ggplot(scatter_data, aes(x = total_views, y = google_hits)) +
     subtitle = "iPhone X Launch Period",
     x = "YouTube Daily Views",
     y = "Google Search Interest",
-    caption = "Data: Google Trends & YouTube"
+    caption = "Source: Kaggle – Trending YouTube Video Statistics (Mitchell J) &\n
+    Google Trends (2018-01-01 to 2018-12-31)"
   ) +
   scale_x_continuous(labels = scales::label_number(scale = 1/1e6, suffix = "M")) 
 
@@ -850,7 +860,8 @@ ggplot(data = trends_combined_week, aes(x = week, y = iPhone, color = country)) 
     title = "Google Search Interest Over Time",
     x = "Date",
     y = "Relative Search Interest (0-100)",
-    color = "Country"
+    color = "Country",
+    caption = "Google Trends from 2017-11-14 to 2018-06-14"
   )
 
 ```
@@ -931,9 +942,13 @@ quality of a linear regression model:
 -   **Observed vs. Fitted** to check visually how good model accuracy
     and predictive power are.
 
-```{r, residuals QQ.. lm quality check, message=FALSE, echo=FALSE}
+```{r, residuals_QQ_lm_quality_check, message=FALSE, echo=FALSE, fig.width=14,fig.height=8}
 #| output: true
+#| fig.width: 14 
+#| fig.height: 8
 
+
+library(grid)
 ## Add fitted values & residuals
 lm_data$fitted <- fitted(model)
 lm_data$residuals <- residuals(model)
@@ -958,8 +973,7 @@ plot_1 <- ggplot(lm_data, aes(x = iPhone_US, y = iPhone_DE)) +
   labs(
     title = "Google searches Germany vs USA", ,
     x = "iPhone USA",
-    y = "iPhone Germany",
-    caption = "Source: Google Trends. Each point represents a day from 2017-11-14 to 2018-06-14.") +
+    y = "iPhone Germany")+
   theme(legend.position = "bottom")
 
 ## Residuals vs Fitted
@@ -982,13 +996,17 @@ plot_4 <- ggplot(lm_data, aes(fitted, iPhone_DE)) +
   geom_abline(intercept = 0, slope = 1, color = "red", linetype = "dashed") +
   labs(title = "Observed vs Fitted", x = "Fitted", y = "Observed") 
 
-## Arrange plots
-# (plot_1 | plot_2) / (plot_3 | plot_4)
-
-plot_1
-plot_2
-plot_3
-plot_4
+## Arrange plots in a 2x2 grid and add one caption alltogether
+grid.arrange(
+  plot_1, plot_2, plot_3, plot_4,
+  nrow = 2, ncol = 2,
+  bottom = textGrob(
+    "Source: Google Trends. Each point represents a day from 2017-11-14 to 2018-06-14.",
+    gp = gpar(fontsize = 16),
+    hjust = 0.7, 
+    x = 0.8 # center caption
+  )
+)
 
 ```
 
@@ -1108,7 +1126,8 @@ ggplot(plot_long, aes(x = keyword, y = ratio, fill = metric)) +
     x = "Keywords",
     y = "Engagement (likes/dislikes per views)",
     fill = "Metric",
-    caption = "Source: Kaggle dataset Youtube (Nov 2017 - Jun 2018)"
+    caption = "Source: Kaggle – Trending YouTube Video Statistics (Mitchell J) &\n
+    Google Trends from 2017-11-14 to 2018-06-14"
   )
 
 ```
@@ -1296,6 +1315,7 @@ close to the font Rolex uses.
 #| output: true
 #| out.width: "120%"   # PDF output width
 #| out.height: "600px" # PDF output height
+#| fig-cap: "Wordcloud Rolex"
 
 ## Define luxurious colors that match to the Rolex brand.
 library(knitr)
