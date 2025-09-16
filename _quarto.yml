@@ -13,6 +13,7 @@ book:
     - Chapters_Rbootcamp_Project/4_chapter_package_of_choice.qmd
     - Chapters_Rbootcamp_Project/5_Generative_AI.qmd
     - Chapters_Rbootcamp_Project/6_Conclusion_Limitation_Outlook.qmd
+  output-file: "Data_Driven_Brand_Product_Strategy_Gao_Huber"
 
 format:
   html:
