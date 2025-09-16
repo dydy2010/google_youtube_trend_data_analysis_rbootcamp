@@ -3,12 +3,9 @@ editor:
   markdown: 
     wrap: 72
 ---
-
-```{r load youtube raw data}
+```{r install loading libraries}
 #| include: false
 ## Analysis and Visualisation
-## preparation of youtube data
-## Getting data reday for merge, other titles tbd
 # install.packages("gridExtra")
 # install.packages("ggridges")
 # install.packages("rnaturalearthdata")
@@ -22,6 +19,82 @@ library(sf)
 library(rnaturalearth)
 library(gridExtra)
 library(here)
+```
+
+```{r prepare and merge data manually downloaded from Google Trends, echo=FALSE}
+
+## import and join Google Trends csv datasets
+## Function to read and wrangle csv datasets
+process_trends_csv <- function(filepath, country_code) {
+  ## read csv and skip first two rows
+  data <- read.csv(filepath, skip = 2, stringsAsFactors = FALSE)
+  
+  ## set uniform column names
+  colnames(data) <- c("date", "iPhone", "Tesla", "Rolex")
+
+  ## set all <1 values in trend columns to 0
+  trend_columns <- c("iPhone", "Tesla", "Rolex")
+  data <- data %>%
+    mutate(across(all_of(trend_columns),
+                  ~ as.numeric(str_replace(., "<1", "0"))))
+    
+  ## convert date into date format
+  data$date <- as.Date(data$date)
+  
+  ## add column with country_code
+  data$country <- country_code
+  
+  return(data)
+  }
+
+```
+
+```{r prepare google data, echo=FALSE}
+
+## read all data
+trends_US <- process_trends_csv(here("Chapters_Rbootcamp_Project", "raw_data_from_google", "multiTimeline_US.csv"), "US")
+trends_MX <- process_trends_csv(here("Chapters_Rbootcamp_Project", "raw_data_from_google", "multiTimeline_MX.csv"), "MX")
+trends_DE <- process_trends_csv(here("Chapters_Rbootcamp_Project", "raw_data_from_google", "multiTimeline_DE.csv"), "DE")
+trends_FR <- process_trends_csv(here("Chapters_Rbootcamp_Project", "raw_data_from_google", "multiTimeline_FR.csv"), "FR")
+trends_JP <- process_trends_csv(here("Chapters_Rbootcamp_Project", "raw_data_from_google", "multiTimeline_JP.csv"), "JP")
+
+## join all countries and sort by date and country
+trends_combined <- rbind(trends_US, trends_MX, trends_DE, trends_FR, trends_JP) %>%
+  arrange(date, country)
+
+## Investigate the data
+# str(trends_combined)
+# head(trends_combined)
+# View(trends_combined)
+# summary(trends_combined)
+# table(trends_combined$country)
+
+## make data long for some visualisations
+trends_long <- trends_combined %>%
+  pivot_longer(
+    cols = c(`iPhone`, `Tesla`, `Rolex`),
+    names_to = "keyword",
+    values_to = "hits"
+  )
+
+# head(trends_long, 10)
+# View(trends_long)
+
+```
+
+```{r Speichern der kombinierten Daten, echo =FALSE}
+# provide data for next chunk
+write_csv(trends_combined, here("Chapters_Rbootcamp_Project", "trends_combined_wide.csv"))
+write_csv(trends_long, here("Chapters_Rbootcamp_Project", "trends_combined_long.csv"))
+
+```
+
+
+```{r load youtube raw data}
+#| include: false
+## Analysis and Visualisation
+## preparation of youtube data
+## Getting data reday for merge, other titles tbd
 getwd()
 ## Load Google Trends data here
 trends_long <- read_csv(here("Chapters_Rbootcamp_Project","trends_combined_long.csv"))
@@ -731,8 +804,8 @@ library(countrycode)
 
 ```
 
-```{r prepare and merge data manually downloaded from Google Trends, echo=FALSE}
-
+```{r prepare and merge data manually downloaded from Google Trends2, echo=FALSE}
+#| eval: false ## this part is moved to beggning of the file, so that trends_combined_long is available when newly runned
 ## import and join Google Trends csv datasets
 
 ## Function to read and wrangle csv datasets
@@ -760,7 +833,8 @@ process_trends_csv <- function(filepath, country_code) {
 
 ```
 
-```{r Alle drei CSV-Dateien einlesen, echo=FALSE}
+```{r Alle drei CSV-Dateien einlesen2, echo=FALSE}
+#| eval: false ## this part is moved to beggning of the file, so that trends_combined_long is available when newly runned
 
 ## read all data
 trends_US <- process_trends_csv(here("Chapters_Rbootcamp_Project", "raw_data_from_google", "multiTimeline_US.csv"), "US")
@@ -793,8 +867,9 @@ trends_long <- trends_combined %>%
 
 ```
 
-```{r Speichern der kombinierten Daten, echo =FALSE}
-
+```{r Speichern der kombinierten Daten2, echo =FALSE}
+#| eval: false
+## this part is moved to beggning of the file, so that trends_combined_long is available when newly runned
 # write_csv(trends_combined, here("Chapters_Rbootcamp_Project", "trends_combined_wide.csv"))
 # write_csv(trends_long, here("Chapters_Rbootcamp_Project", "trends_combined_long.csv"))
 
@@ -897,7 +972,7 @@ plot_data <- google_Rolex_2018 %>%
 ggplot(plot_data, aes(x = date, y = hits)) +
   geom_col(fill = "darkblue") +
   labs(
-    title = "Rolex searches worldwide 2018 by week",
+    title = "Rolex Searches Worldwide 2018 by Week",
     x = "Weeks 2018",
     y = "Relative search interest (100 for month with most searches",
     caption = "Source: Google Trends (2018-01-01 to 2018-12-31)"
@@ -1064,7 +1139,7 @@ plot_1 <- ggplot(lm_data, aes(x = iPhone_US, y = iPhone_DE)) +
     values = c("Perfect Correlation (y = x)" = "red",
                "Regression Line" = "blue")) +
   labs(
-    title = "Google searches Germany vs USA", ,
+    title = "Google Searches Germany vs USA", ,
     x = "iPhone USA",
     y = "iPhone Germany")+
   theme(legend.position = "bottom")
@@ -1155,7 +1230,7 @@ ggplot(plot_data, aes(x = total_views, y = engagement)) +
   scale_x_continuous(labels = scales::number, expand = expansion(mult = c(0, 0.1))) +
   geom_smooth(method = 'lm', se = FALSE) +
   labs(
-    title = "Correlation between engagement with and views of Rolex YouTube videos",
+    title = "Correlation between Engagement and Views of Rolex Videos",
     x = "Total Views",
     y = "Engagement: Likes / Views",
     caption = "Source: Google Trends. Each point represents a day from 2017-11-14 to 2018-06-14."
@@ -1215,7 +1290,7 @@ ggplot(plot_long, aes(x = keyword, y = ratio, fill = metric)) +
   scale_fill_manual(values = c("like_ratio" = "darkblue",
                                "dislike_ratio" = "firebrick")) +
   labs(
-    title = "Brand comparison of YouTube video engagement",
+    title = "Brand Comparison of YouTube Video Engagement",
     x = "Keywords",
     y = "Engagement (likes/dislikes per views)",
     fill = "Metric",
@@ -1259,7 +1334,7 @@ plot_data %>%
   ggplot(aes(x = trending_date, y = total_views / 1000000, colour = keyword)) +
   geom_line(linewidth = .6) +
   labs(
-    title = "YouTube most watched videos: Development over time",
+    title = "YouTube most Watched Videos: Development over time",
     x = NULL,
     y = "Total Views (in millions)",
     caption = "Source: Google Trends (2017-11-14 to 2018-06-14)"
@@ -1429,8 +1504,9 @@ wc_obj <- wordcloud2(rolex_tags_cleaned_unique %>% filter(total_views > 100000),
            color = rep_len(pal_rolex, nrow(rolex_tags_cleaned_unique))) %>%
   htmlwidgets::onRender("
     function(el) {
-      el.style.width = '100%';
-      el.style.maxWidth = '700px'; // Constrains the maximum width
+      el.style.width = '80%';
+      el.style.maxWidth = '700px'; // limits the maximum width
+      el.style.height = '400px'; 
       el.style.margin = '0 auto';  // Centers it
     }
   ")

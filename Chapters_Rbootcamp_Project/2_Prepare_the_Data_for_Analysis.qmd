@@ -19,7 +19,7 @@ The first source of data is the **Youtube Trending Video Dataset** from Kaggle: 
 
 -   **Initial Observations/Challenges:** The first challenge that we looked into was the `tags` column, which are the **topics/keywords** that we plan to filter and analyze. However there are many **tags** in each row, which means we will need to separate the individual tags using a delimiter.
 
-![A screenshot of one of the raw data file](youtube.png){width="3000px,height=3000px"}
+![A screenshot of one of the raw data file](youtube.png){width="5000px,height=4000px"}
 
 ### Google Search Interest Dataset
 
