@@ -5,7 +5,7 @@ book:
   title: "Data-Driven Brand & Product Strategy"
   subtitle: "An R-Based Analysis of YouTube and Google Trends"
   author: "**Daniel Huber & Dongyuan Gao**"
-  date: "16/09/2025"
+  date: "09/16/2025"
   chapters:
     - index.qmd
     - Chapters_Rbootcamp_Project/2_Prepare_the_Data_for_Analysis.qmd
