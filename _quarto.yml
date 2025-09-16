@@ -21,10 +21,12 @@ format:
     theme: flatly
     page-layout: full
     css: style.css
+    fig-align: center # Center figures, titles
   pdf:
     toc: true
     number-sections: true
     documentclass: report 
+    fig-align: center
     classoption: 10pt # font size adjustment(all document content)
     include-in-header:
       text: |

@@ -885,6 +885,8 @@ between iPhone_DE and iPhone_US are very high, even close to 1 (0.93).
 
 ```{r plot lm, echo=FALSE, message=FALSE}
 #| output: true
+#| fig-cap: "Source: Google Trends (2017-11-14 to 2018-06-14)"
+#| cap-location: margin
 
 ## Prepare data for the modelling
 lm_data <- trends_combined %>%
@@ -898,7 +900,7 @@ correlation_matrix <- lm_data %>%
 
 ## Look at the correlations
 corrplot(correlation_matrix, method = "number", type = "upper",
-         tl.col = "black", tl.srt = 45, mar = c(1, 0, 1, 0))
+         tl.col = "black", tl.srt = 30, mar = c(1, 0, 1, 0), main = "iPhone Search Trends Correlation")
 
 ```
 
