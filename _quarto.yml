@@ -2,8 +2,8 @@ project:
   type: book
 
 book:
-  title: "R Bootcamp Project"
-  subtitle: "Brand and Product Strategy for Consumer Brands"
+  title: "Data-Driven Brand & Product Strategy"""
+  subtitle: "An R-Based Analysis of YouTube and Google Trends"
   author: "**Daniel Huber & Dongyuan Gao**"
   date: "today"
   chapters:
