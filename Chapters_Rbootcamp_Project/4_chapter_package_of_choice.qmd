@@ -125,7 +125,7 @@ unpredictable, we saved successful downloads as RData objects and load
 the data whenever needed.
 
 ```{r, echo=FALSE, warning=FALSE}
-
+library(here)
 ## Get global Google searches for Tesla with country codes (geo = "world")
 # res <- gtrends(
 #   keyword = "Tesla",
@@ -133,9 +133,9 @@ the data whenever needed.
 #   time    = "2017-11-14 2018-06-14"
 # )
 # 
-# save(res, file = "gtrends_Tesla_world.RData")
+# save(res, file = here::here("Chapters_Rbootcamp_Project","gtrends_Tesla_world.RData"))
 
-load("gtrends_Tesla_world.RData")
+load(here::here("Chapters_Rbootcamp_Project","gtrends_Tesla_world.RData"))
 
 ```
 
