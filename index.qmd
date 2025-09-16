@@ -4,7 +4,7 @@ editor:
     wrap: 72
 ---
 
-Welcome to our R Bootcamp Project.
+Welcome to our **HSLU R Bootcamp Project**.
 
 This project explores **Brand and Product Strategy for iPhone, Tesla and Rolex**.  
 
