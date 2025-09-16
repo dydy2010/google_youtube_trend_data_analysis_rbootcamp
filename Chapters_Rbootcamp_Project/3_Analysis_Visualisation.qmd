@@ -12,6 +12,7 @@ editor:
 # install.packages("gridExtra")
 # install.packages("ggridges")
 # install.packages("rnaturalearthdata")
+# install.packages("here")
 library(ggridges)
 library(tidyverse)
 library(dplyr)
@@ -20,17 +21,17 @@ library(scales)
 library(sf)
 library(rnaturalearth)
 library(gridExtra)
-## Load Google Trends data here
-trends_long <- read_csv("trends_combined_long.csv")
-# getwd()
-## Load Youtube Trending Video data here
-
+library(here)
 getwd()
-DEvideos <- read_csv("raw_data_from_kaggle/DEvideos.csv")
-FRvideos <- read_csv("raw_data_from_kaggle/FRvideos.csv")
-JPvideos <- read_csv("raw_data_from_kaggle/JPvideos.csv")
-MXvideos <- read_csv("raw_data_from_kaggle/MXvideos.csv")
-USvideos <- read_csv("raw_data_from_kaggle/USvideos.csv")
+## Load Google Trends data here
+trends_long <- read_csv(here("Chapters_Rbootcamp_Project","trends_combined_long.csv"))
+
+## Load Youtube Trending Video data here
+DEvideos <- read_csv(here("Chapters_Rbootcamp_Project", "raw_data_from_kaggle", "DEvideos.csv"))
+FRvideos <- read_csv(here("Chapters_Rbootcamp_Project", "raw_data_from_kaggle", "FRvideos.csv"))
+JPvideos <- read_csv(here("Chapters_Rbootcamp_Project", "raw_data_from_kaggle", "JPvideos.csv"))
+MXvideos <- read_csv(here("Chapters_Rbootcamp_Project", "raw_data_from_kaggle", "MXvideos.csv"))
+USvideos <- read_csv(here("Chapters_Rbootcamp_Project", "raw_data_from_kaggle", "USvideos.csv"))
 # str(DEvideos)
 # str(FRvideos)
 # str(JPvideos)
@@ -312,7 +313,6 @@ different reading preferences.
 #| echo: false
 #| output: true
 ## Graph 1: Overall Search Interest Comparison (Facet Chart) v2
-library(ggplot2)
 
 ggplot(data = avg_data, aes(x = trending_date, y = avg_hits)) +
   geom_line(aes(color = keyword)) +
@@ -367,7 +367,6 @@ on Youtube platform with 2 versions of graphs.
 #| echo: false
 #| output: true
 ## Graph 2: Overall YouTube Views Comparison (Line Chart) v1 (no facet) 
-# library(ggplot2)
 # library(scales)
 
 ggplot(data = combined_data_final, aes(x = trending_date, y = total_views)) +
@@ -659,11 +658,11 @@ process_trends_csv <- function(filepath, country_code) {
 ```{r Alle drei CSV-Dateien einlesen, echo=FALSE}
 
 ## read all data
-trends_US <- process_trends_csv("./raw_data_from_google/multiTimeline_US.csv", "US")
-trends_MX <- process_trends_csv("./raw_data_from_google/multiTimeline_MX.csv", "MX")
-trends_DE <- process_trends_csv("./raw_data_from_google/multiTimeline_DE.csv", "DE")
-trends_FR <- process_trends_csv("./raw_data_from_google/multiTimeline_FR.csv", "FR")
-trends_JP <- process_trends_csv("./raw_data_from_google/multiTimeline_JP.csv", "JP")
+trends_US <- process_trends_csv(here("Chapters_Rbootcamp_Project", "raw_data_from_google", "multiTimeline_US.csv"), "US")
+trends_MX <- process_trends_csv(here("Chapters_Rbootcamp_Project", "raw_data_from_google", "multiTimeline_MX.csv"), "MX")
+trends_DE <- process_trends_csv(here("Chapters_Rbootcamp_Project", "raw_data_from_google", "multiTimeline_DE.csv"), "DE")
+trends_FR <- process_trends_csv(here("Chapters_Rbootcamp_Project", "raw_data_from_google", "multiTimeline_FR.csv"), "FR")
+trends_JP <- process_trends_csv(here("Chapters_Rbootcamp_Project", "raw_data_from_google", "multiTimeline_JP.csv"), "JP")
 
 ## join all countries and sort by date and country
 trends_combined <- rbind(trends_US, trends_MX, trends_DE, trends_FR, trends_JP) %>%
@@ -691,8 +690,8 @@ trends_long <- trends_combined %>%
 
 ```{r Speichern der kombinierten Daten, echo =FALSE}
 
-# write.csv(trends_combined, "trends_combined_wide.csv", row.names = FALSE)
-# write.csv(trends_long, "trends_combined_long.csv", row.names = FALSE)
+# write_csv(trends_combined, here("Chapters_Rbootcamp_Project", "trends_combined_wide.csv"))
+# write_csv(trends_long, here("Chapters_Rbootcamp_Project", "trends_combined_long.csv"))
 
 ```
 
@@ -837,7 +836,7 @@ library(tidyverse)
 library(corrplot)
 # library(patchwork)
 
-trends_combined <- read.csv("trends_combined_wide.csv")
+trends_combined <- read.csv(here("Chapters_Rbootcamp_Project","trends_combined_wide.csv"))
 
 ## Prepare data for weekly line graph
 trends_combined_week <- trends_combined %>%
@@ -1487,7 +1486,7 @@ if (interactive()) {
 #| fig-cap: "iPhone wordcloud"
 #| cache: false
 
-knitr::include_graphics("iphone_wordcloud_trimmed.png")
+knitr::include_graphics(here("Chapters_Rbootcamp_Project","iphone_wordcloud_trimmed.png"))
 
 ```
 
