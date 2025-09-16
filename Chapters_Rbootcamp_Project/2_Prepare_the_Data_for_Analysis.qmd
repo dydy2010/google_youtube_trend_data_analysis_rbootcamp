@@ -49,6 +49,8 @@ Following up, we will showcase our **YouTube DataCleaning and Preprocessing**:
 
 ```{r showcase filter keyword}
 #| eval: false
+#| code-fold: true   # hide/unhide code chunk
+#| code-summary: "Show/Hide the code" 
 #### Filter for the three keywords and create a new 'keyword' column
 relevant_videos <- tags_per_day %>%
   filter(grepl("iphone|tesla|rolex", tags, ignore.case = TRUE)) %>%

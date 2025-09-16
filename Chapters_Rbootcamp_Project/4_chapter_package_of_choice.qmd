@@ -147,6 +147,8 @@ First, We have to adjust some location iso-codes so they fit to the map data.
 Second, the main metric 'hits' contains '\<1', which makes the column a character string. We replace \<1 and NA with 0 and set the column to numeric.
 
 ```{r interest_by_country preparation,  echo=TRUE, warning=FALSE}
+#| code-fold: true   # hide/unhide code chunk
+#| code-summary: "Show/Hide the code" 
 
 country_data_Tesla <- res$interest_by_country %>%
   mutate(
@@ -171,6 +173,8 @@ France with its overseas regions was a bit of an issue). Then the data
 is left joined with the prepared Google Trends data.
 
 ```{r get world map data, echo=TRUE, warning=FALSE}
+#| code-fold: true   # hide/unhide code chunk
+#| code-summary: "Show/Hide the code" 
 
 ## Get world map data
 world_sf <- ne_countries(scale = "medium", returnclass = "sf") %>% 
@@ -190,6 +194,8 @@ world_trends <- world_sf %>%
 Additionally we specify a color coding from bright to dark blues.
 
 ```{r plot produce map, echo=TRUE, warning=FALSE, fig.width=8, fig.height=5}
+#| code-fold: true   # hide/unhide code chunk
+#| code-summary: "Show/Hide the code" 
 
 ## Produce map
 ggplot() +

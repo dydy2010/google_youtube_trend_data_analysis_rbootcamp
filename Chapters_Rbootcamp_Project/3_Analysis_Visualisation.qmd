@@ -944,9 +944,6 @@ quality of a linear regression model:
 
 ```{r, residuals_QQ_lm_quality_check, message=FALSE, echo=FALSE, fig.width=14,fig.height=8}
 #| output: true
-#| fig.width: 14 
-#| fig.height: 8
-
 
 library(grid)
 ## Add fitted values & residuals
@@ -1316,6 +1313,8 @@ close to the font Rolex uses.
 #| out.width: "120%"   # PDF output width
 #| out.height: "600px" # PDF output height
 #| fig-cap: "Wordcloud Rolex"
+#| code-fold: true   # hide/unhide code chunk
+#| code-summary: "Show/Hide the code" 
 
 ## Define luxurious colors that match to the Rolex brand.
 library(knitr)
