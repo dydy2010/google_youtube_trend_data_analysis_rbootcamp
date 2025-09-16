@@ -40,6 +40,37 @@ USvideos <- read_csv(here("Chapters_Rbootcamp_Project", "raw_data_from_kaggle", 
 
 ```
 
+```{r custom theme and apply to all graphs}
+#| include: false
+library(ggplot2)
+
+uniform_theme <- function() {
+    theme(
+      axis.title.x = element_text(size = 14, face = "bold", hjust = 0.5),  # X-axis title  
+      axis.title.y = element_text(angle = 90, 
+                               hjust = 0.5,
+                               vjust = 0.5,  
+                               size = 12,    
+                               face = "bold"),# Y-axis title
+      # x Axis tick labels
+      axis.text.x = element_text(size = 12, face = "bold"), # X-axis text
+      # y-axis tick labels
+      axis.text.y = element_text(size = 12, face = "bold"), # y-axis text
+      
+      # Plot title
+      plot.title = element_text(size = 16, face = "bold", hjust = 0.5),
+     # Legend titles
+      legend.title = element_text(size = 12, face = "bold"),
+      
+      # Aligns title with plot panel, not entire figure
+      plot.title.position = "plot"
+    )
+}
+
+# Set theme for all
+theme_set(uniform_theme())
+```
+
 ```{r combine country youtube data into one df}
 #| include: false
 ## Add a 'country' column and standardize data types for each data frame
@@ -299,6 +330,25 @@ ggplot(data = avg_data, aes(x = trending_date, y = avg_hits, color = keyword)) +
     y = "Average Relative Search Interest (0-100)",
     color = "Keyword",
     caption = "Source: Google Trends (2018-01-01 to 2018-12-31)"
+  )+
+  scale_x_date(
+    date_labels = "%Y-%m",       # format Year-Month
+    date_breaks = "1 month"      # show every month
+  )+
+  theme(
+    # Make title larger
+    plot.title = element_text(size = 24, face = "bold"),
+    # axis titles
+    axis.title.x = element_text(size = 18, face = "bold"),
+    axis.title.y = element_text(size = 18, face = "bold"),
+    # axis labels
+    axis.text.x = element_text(size = 14),
+    axis.text.y = element_text(size = 14),
+    # caption larger
+    plot.caption = element_text(size = 14, hjust = 0.9),
+    # legend title and text larger
+    legend.title = element_text(size = 14),
+    legend.text = element_text(size = 12)
   )
 ```
 
@@ -327,7 +377,22 @@ ggplot(data = avg_data, aes(x = trending_date, y = avg_hits)) +
   scale_x_date(
     date_labels = "%Y-%m",       # format Year-Month
     date_breaks = "1 month"      # show every month
-  ) +
+  )+
+  theme(
+    # Make title larger
+    plot.title = element_text(size = 24, face = "bold"),
+    # axis titles
+    axis.title.x = element_text(size = 18, face = "bold"),
+    axis.title.y = element_text(size = 18, face = "bold"),
+    # axis labels
+    axis.text.x = element_text(size = 14),
+    axis.text.y = element_text(size = 14),
+    # caption larger
+    plot.caption = element_text(size = 14, hjust = 0.9),
+    # legend title and text larger
+    legend.title = element_text(size = 14),
+    legend.text = element_text(size = 12)
+  )+
   facet_wrap(~ keyword, scales = "free_y", nrow=3)
 ```
 
@@ -365,7 +430,7 @@ otherwise, more marketing campaigns could be beneficial.
 As with Google search interest, we did overall comparison for 3 brands
 on Youtube platform with 2 versions of graphs.
 
-```{r graph2 v1, fig.width=14, fig.height=6}
+```{r graph2 v1, fig.width=14, fig.height=8}
 #| echo: false
 #| output: true
 ## Graph 2: Overall YouTube Views Comparison (Line Chart) v1 (no facet) 
@@ -382,7 +447,22 @@ ggplot(data = combined_data_final, aes(x = trending_date, y = total_views)) +
 
   ) +
   scale_x_date(date_labels = "%b %Y") +  ## Format dates
-  scale_y_continuous(labels = comma)     ## Apply comma formatting to y-axis (scales package)
+  scale_y_continuous(labels = comma)+ ## Apply comma formatting to y-axis (scales package)
+  theme(
+    # Make title larger
+    plot.title = element_text(size = 24, face = "bold"),
+    # axis titles
+    axis.title.x = element_text(size = 18, face = "bold"),
+    axis.title.y = element_text(size = 18, face = "bold"),
+    # axis labels
+    axis.text.x = element_text(size = 14),
+    axis.text.y = element_text(size = 14),
+    # caption larger
+    plot.caption = element_text(size = 14, hjust = 0.9),
+    # legend title and text larger
+    legend.title = element_text(size = 14),
+    legend.text = element_text(size = 12)
+  )
 
 ```
 
@@ -409,7 +489,22 @@ ggplot(data = combined_data_final, aes(x = trending_date, y = total_views)) +
   ) +
   scale_x_date(date_labels = "%b %Y") +  ## Format dates
   scale_y_continuous(labels = comma) +   ## Apply comma formatting to y-axis (scales package)
-  facet_wrap(~keyword, scales = "free_y", nrow=3) ## allow the y-axis of each plot to have own independent scale
+  facet_wrap(~keyword, scales = "free_y", nrow=3)+ ## allow the y-axis of each plot to have own independent scale
+  theme(
+    # Make title larger
+    plot.title = element_text(size = 24, face = "bold"),
+    # axis titles
+    axis.title.x = element_text(size = 18, face = "bold"),
+    axis.title.y = element_text(size = 18, face = "bold"),
+    # axis labels
+    axis.text.x = element_text(size = 14),
+    axis.text.y = element_text(size = 14),
+    # caption larger
+    plot.caption = element_text(size = 14, hjust = 0.9),
+    # legend title and text larger
+    legend.title = element_text(size = 14),
+    legend.text = element_text(size = 12)
+  )
 
 ```
 
@@ -775,7 +870,7 @@ frequently? In the case of **Rolex**, for example, the annual
 **Baselworld** trade fair at the end of March or the **holiday season**
 at the end of the year could result in increased searches on Google.
 
-```{r Rolex bar chart with seasonality of Google Trends, fig.width=7, fig.height=4, echo=FALSE}
+```{r Rolex bar chart with seasonality of Google Trends, fig.width=8, fig.height=5, echo=FALSE}
 #| output: true
 ## Get and prepare the data
 
@@ -883,10 +978,9 @@ interest per country. As a first analysis, we calculate all correlations
 and visualize them with `corrplot`. In particular, the correlations
 between iPhone_DE and iPhone_US are very high, even close to 1 (0.93).
 
-```{r plot lm, echo=FALSE, message=FALSE}
+```{r plot lm, echo=FALSE, message=FALSE,fig.width=8, fig.height=5}
 #| output: true
 #| fig-cap: "Source: Google Trends (2017-11-14 to 2018-06-14)"
-#| cap-location: margin
 
 ## Prepare data for the modelling
 lm_data <- trends_combined %>%
@@ -900,7 +994,7 @@ correlation_matrix <- lm_data %>%
 
 ## Look at the correlations
 corrplot(correlation_matrix, method = "number", type = "upper",
-         tl.col = "black", tl.srt = 30, mar = c(1, 0, 1, 0), main = "iPhone Search Trends Correlation")
+         tl.col = "black", tl.srt = 20, mar = c(1, 0, 1, 0), main = "iPhone Search Trends Correlation")
 
 ```
 
@@ -944,7 +1038,7 @@ quality of a linear regression model:
 -   **Observed vs. Fitted** to check visually how good model accuracy
     and predictive power are.
 
-```{r, residuals_QQ_lm_quality_check, message=FALSE, echo=FALSE, fig.width=14,fig.height=8}
+```{r, residuals_QQ_lm_quality_check, message=FALSE, echo=FALSE, fig.width=14, fig.height=8}
 #| output: true
 
 library(grid)
