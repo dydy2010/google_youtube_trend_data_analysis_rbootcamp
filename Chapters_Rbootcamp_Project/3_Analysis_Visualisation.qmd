@@ -4,7 +4,7 @@ editor:
     wrap: 72
 ---
 
-```{r}
+```{r load youtube raw data}
 #| include: false
 ## Analysis and Visualisation
 ## preparation of youtube data
@@ -40,7 +40,7 @@ USvideos <- read_csv(here("Chapters_Rbootcamp_Project", "raw_data_from_kaggle", 
 
 ```
 
-```{r}
+```{r combine country youtube data into one df}
 #| include: false
 ## Add a 'country' column and standardize data types for each data frame
 DEvideos <- DEvideos %>%
@@ -81,7 +81,7 @@ all_videos <- bind_rows(DEvideos, FRvideos, JPvideos, MXvideos, USvideos)
 
 ```
 
-```{r}
+```{r cleaning and check str}
 #| include: false
 ## Convert the trending_date column to a proper date format
 all_videos <- all_videos %>%
@@ -98,7 +98,7 @@ latest_date
 
 ```
 
-```{r}
+```{r separate tags from youtube data}
 #| include: false
 #| cache: true
 #| cache.lazy: false
@@ -142,7 +142,7 @@ most_searched_tags_by_country <- tags_per_day %>%
 
 ```
 
-```{r}
+```{r prepare keyword for merge later}
 #| include: false
 #| cache: true
 #| cache.lazy: false
@@ -162,7 +162,7 @@ relevant_videos <- tags_per_day %>%
 
 ```
 
-```{r}
+```{r aggregate totals}
 #| include: false
 ## Aggregate the data by date, country, and keyword
 aggregated_youtube_data <- relevant_videos %>%
@@ -181,7 +181,7 @@ aggregated_youtube_data <- relevant_videos %>%
 
 ```
 
-```{r}
+```{r aggregate ratios}
 #| include: false
 ## Calculate the engagement ratios
 aggregated_youtube_data_final <- aggregated_youtube_data %>%
@@ -214,7 +214,7 @@ aggregated_youtube_data_final <- aggregated_youtube_data %>%
 
 ```
 
-```{r}
+```{r ratios mean}
 #| include: false
 ## Calculate the Mean of Proportions and Ratios for each Keyword in each Country
 mean_ratios_by_country_keyword <- aggregated_youtube_data_final %>%
@@ -232,7 +232,7 @@ mean_ratios_by_country_keyword <- aggregated_youtube_data_final %>%
 
 ```
 
-```{r}
+```{r merge data youtube and google}
 #| include: false
 ## Ensure trending_date is Date type before joining
 aggregated_youtube_data_final <- aggregated_youtube_data_final %>%
@@ -615,7 +615,7 @@ pre-prepared data and use `pivot_longer` to create a second **long**
 data set we will need for certain visualisations. With these steps we
 are now prepared for the following analyses.
 
-```{r echo=FALSE}
+```{r load libraries, echo=FALSE}
 ## Install/Load libraries
 library(tidyverse)
 library(lubridate)
@@ -830,7 +830,7 @@ First, we do a line graph comparing the Google Trends data for iPhone
 country by country. To get a nicer graph, we aggregate the data from
 daily to weekly.
 
-```{r echo=FALSE, message=FALSE, fig.width=9, fig.height=5}
+```{r prepare data for model analysis, echo=FALSE, message=FALSE, fig.width=9, fig.height=5}
 #| output: true
 library(tidyverse)
 library(corrplot)
@@ -874,7 +874,7 @@ interest per country. As a first analysis, we calculate all correlations
 and visualize them with `corrplot`. In particular, the correlations
 between iPhone_DE and iPhone_US are very high, even close to 1 (0.93).
 
-```{r echo=FALSE, message=FALSE}
+```{r plot lm, echo=FALSE, message=FALSE}
 #| output: true
 
 ## Prepare data for the modelling
@@ -899,7 +899,7 @@ With the data already prepared the fitting of a linear model is straight
 forward and with `summary()` we get all relevant information about the
 fit.
 
-```{r}
+```{r summary lm}
 
 ## Fit the linear regression model and show a summary
 model <- lm(iPhone_DE ~ iPhone_US, data = lm_data)
@@ -933,7 +933,7 @@ quality of a linear regression model:
 -   **Observed vs. Fitted** to check visually how good model accuracy
     and predictive power are.
 
-```{r, message=FALSE, echo=FALSE}
+```{r, residuals QQ.. lm quality check, message=FALSE, echo=FALSE}
 #| output: true
 
 ## Add fitted values & residuals
@@ -1032,7 +1032,7 @@ popular videos are also watched by people who are less interested in the
 topic. Therefore, the **popularity of the video** must always be taken
 into account when interpreting engagement.
 
-```{r echo=FALSE, message=FALSE, fig.width=8, fig.height=5}
+```{r plot youtube engagement, echo=FALSE, message=FALSE, fig.width=8, fig.height=5}
 #| output: true
 
 ## Prepare data
@@ -1077,7 +1077,7 @@ and negative engagement of the users of their videos, to track it over
 time, and to compare it with the videos of their competitors in order to
 be able to **estimate the corresponding brand effects**.
 
-```{r echo=FALSE, message=FALSE, fig.width=8, fig.height=5}
+```{r plot comment, echo=FALSE, message=FALSE, fig.width=8, fig.height=5}
 #| output: true
 
 ## Prepare data
@@ -1131,7 +1131,7 @@ their use develops over time.
 The following graph shows an **unexpected problem**: the most-watched
 **videos disappear** from our data after a few days.
 
-```{r echo=FALSE, message=FALSE, fig.width=8, fig.height=5}
+```{r longevity youtube videos, echo=FALSE, message=FALSE, fig.width=8, fig.height=5}
 #| output: true
 ## Prepare data
 
@@ -1224,7 +1224,7 @@ loaded here are not necessary for the wordcloud but they allow more
 functionalities, e.g. check available fonts (`systemfonts`) or to export
 the wordcloud image as pdf (`webshot2`and `htmlwidgets`).
 
-```{r echo=FALSE, message=FALSE}
+```{r library load 2, echo=FALSE, message=FALSE}
 
 library(ragg)
 library(systemfonts)
@@ -1300,7 +1300,7 @@ more than 100k views and set a specific palette that represents the
 corporate identity of Rolex. And we set the font to Garamond which is
 close to the font Rolex uses.
 
-```{r}
+```{r wordcloud1 plot}
 #| output: true
 #| out.width: "120%"   # PDF output width
 #| out.height: "600px" # PDF output height
@@ -1428,7 +1428,7 @@ head(iphone_tags_cleaned_unique, 100)
 
 ```
 
-```{r}
+```{r wordcloud2 plot}
 #| include: false
 #| output: true
 
@@ -1479,7 +1479,7 @@ if (interactive()) {
 
 ```
 
-```{r}
+```{r load png}
 #| echo: false
 #| out.width: "100%"
 #| fig-align: "center"

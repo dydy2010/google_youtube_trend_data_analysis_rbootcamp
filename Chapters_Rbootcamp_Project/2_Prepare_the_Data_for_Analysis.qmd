@@ -47,7 +47,7 @@ Following up, we will showcase our **YouTube DataCleaning and Preprocessing**:
 
 - **Extracting and Preparing Keywords**: The `tags` column presented both a challenge and an opportunity. We found out that each video contained multiple tags separated by pipe characters.To solve the problem, we separated then the keyword(tags) for each videos as one individual row, using syntax like:
 
-```{r}
+```{r showcase filter keyword}
 #| eval: false
 #### Filter for the three keywords and create a new 'keyword' column
 relevant_videos <- tags_per_day %>%
