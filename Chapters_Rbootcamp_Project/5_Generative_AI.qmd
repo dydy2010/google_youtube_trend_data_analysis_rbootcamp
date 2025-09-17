@@ -5,9 +5,9 @@ editor:
 ---
 
 # Generative AI Usage and Guidelines
-In this project, Generative AI was used as a supplementary tool on top of the assisting material that were provided in R-Bootcamp, for example, help function in Rstudio, vignettes in CRAN. In addition, we already had some script and Quarto templates from previous projects. All these sources formed the basis of our work with Youtube and Google data. :\
+In this project, Generative AI was used as a supplementary tool on top of the assisting material that was provided in R-Bootcamp, for example, help function in Rstudio, vignettes in CRAN. In addition, we already had some script and Quarto templates from previous projects. All these sources formed the basis of our work with YouTube and Google data. :\
 
-In order to improve efficiency but also enhance our learning, the deployment of Generative AI are guided by a clear set of guidelines and strategies:
+In order to improve efficiency but also enhance our learning, the deployment of Generative AI is guided by a clear set of guidelines and strategies:
 
 ## Guidelines for Responsible and Effective Usage of Gen-AI
 1. Human-in-the-loop verification: for all Gen-AI content suggested by AI were to be seen as drafts instead of final result. Text, code or sources that were provided by AI needed to be critically reviewed, tested.   
@@ -21,13 +21,13 @@ We used AI-based assistance systems in specific cases. These primarily served to
 
 1. Brainstorming: Gen AI was used for elaborations of initial ideas, structuring thoughts and coding solutions.  
 
-2. Debugging and optimization: Gen-AI is great tool for explaining error messages in understandable language. It is also suitable for optimizing non-functioning scripts that we had developed ourselves, which improves our project efficiency.  
+2. Debugging and optimization: Gen-AI is a great tool for explaining error messages in understandable language. It is also suitable for optimizing non-functioning scripts that we had developed ourselves, which improves our project efficiency.  
 
 3. Proofreading: Gen-AI is deployed in accelerating the proofreading process, especially in detecting grammar and typo mistakes.  
 
 4. Information acquisition: Gen-AI is used for search of information about methodologies and code documentations, similar to how Google was used for searches. However, human verification of correctness and credibility of sources are crucial for us, because AI as a new technology that can provide inconsistent and incorrect results.
 
-## Benefits and challenges in using Genrative AI tools
+## Benefits and challenges in using Generative AI tools
 1. The usage of Gen-AI provides various benefits. For instance, when encountering errors in complex ggplot2 visualizations, Gen-AI immensely accelerated the debugging process. It could provide root cause of the error in minutes, which would normally take us 20 mins to search for answer on Stack Overflow or documentations. Moreover, Gen-AI provides excellent live-tutoring experience for students, especially for complex personal learning questions, which accelerates the learning process. In summary, Gen-AI usage made it possible for us to spend more time on analytical tasks and less on routine coding obstacles.  
 
-2. The challenges of using Gen-AI is also critically discussed. As Gen-AI usage can seem so easy for providing answers, there is the temptation to blindly trust the result in coding or information sources. This is where the guideline of always “Human-in-the-loop” verification comes into place again. We recognise the importance of us taking full ownership in our project, not AI.
+2. The challenges of using Gen-AI is also critically discussed. As Gen-AI usage can seem so easy for providing answers, there is the temptation to blindly trust the result in coding or information sources. This is where the guideline of always “Human-in-the-loop” verification comes into place again. We recognize the importance of us taking full ownership in our project, not AI.

@@ -3,7 +3,7 @@ project:
 
 book:
   title: "Data-Driven Brand & Product Strategy"
-  subtitle: "An R-Based Analysis of YouTube and Google Trends"
+  subtitle: "An R-based Analysis of YouTube and Google Trends"
   author: "**Daniel Huber & Dongyuan Gao**"
   date: "09/16/2025"
   chapters:

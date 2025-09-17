@@ -3,6 +3,7 @@ editor:
   markdown: 
     wrap: 72
 ---
+
 ```{r install loading libraries}
 #| include: false
 ## Analysis and Visualisation
@@ -89,7 +90,6 @@ write_csv(trends_long, here("Chapters_Rbootcamp_Project", "trends_combined_long.
 
 ```
 
-
 ```{r load youtube raw data}
 #| include: false
 ## Analysis and Visualisation
@@ -115,7 +115,6 @@ USvideos <- read_csv(here("Chapters_Rbootcamp_Project", "raw_data_from_kaggle", 
 
 ```{r custom theme and apply to all graphs}
 #| include: false
-library(ggplot2)
 
 uniform_theme <- function() {
     theme(
@@ -374,14 +373,13 @@ provide a **big-picture overview**. Second, we focus on individual
 brands on Google platform, uncovering insights from different
 perspectives. Third, we investigate hidden patterns through **model
 analysis**, applying a linear regression model to the data. Fourth, we
-performed a Youtube-specific analysis of brand performance. Last but not
-least, by separating tags, we made ***WordClouds*** to reveal what
+performed a YouTube-specific analysis of brand performance. Last but not
+least, by separating tags, we made ***word clouds*** to reveal what
 keywords were most associated with each brand, providing a new
 perspective for **product improvement** and marketing.
 
 ### Graph 1: Overall Google Search Interest Comparison
 
-*v1(Line Chart)*
 
 ```{r graph1 Google Comparison v1, fig.width=14, fig.height=8}
 #| echo: false
@@ -402,7 +400,7 @@ ggplot(data = avg_data, aes(x = trending_date, y = avg_hits, color = keyword)) +
     x = "Date",
     y = "Average Relative Search Interest (0-100)",
     color = "Keyword",
-    caption = "Source: Google Trends (2018-01-01 to 2018-12-31)"
+    caption = "Source: Google Trends (2017-11-14 to 2018-06-14)"
   )+
   scale_x_date(
     date_labels = "%Y-%m",       # format Year-Month
@@ -445,7 +443,7 @@ ggplot(data = avg_data, aes(x = trending_date, y = avg_hits)) +
     x = "Date",
     y = "Average Relative Search Interest (0-100)",
     color = "Keyword",
-        caption = "Source: Google Trends (2018-01-01 to 2018-12-31)"
+        caption = "Source: Google Trends (2017-11-14 to 2018-06-14)"
   ) +
   scale_x_date(
     date_labels = "%Y-%m",       # format Year-Month
@@ -501,7 +499,7 @@ otherwise, more marketing campaigns could be beneficial.
 **(Line Chart) v1**
 
 As with Google search interest, we did overall comparison for 3 brands
-on Youtube platform with 2 versions of graphs.
+on YouTube platform with 2 versions of graphs.
 
 ```{r graph2 v1, fig.width=14, fig.height=8}
 #| echo: false
@@ -594,7 +592,7 @@ This peak is hypothetically due to a **product launch** or major
 announcement. After researching, the timing suggests that it was driven
 by the release of the **iPhone X** (announced Sept. 2017 and launched on
 3.Nov. 2017) or more likely. This pattern could suggest that consumers
-search for Youtube reviews, unboxings, tutorials, and software update
+search for YouTube reviews, unboxings, tutorials, and software update
 related to new Apple products. And it lasted about one month.
 
 **Tesla: Consistent Niche Interest**
@@ -611,27 +609,29 @@ coverage**, which possibly cause a spike in views that lasted about 3
 months. And in early 2018 there were huge discussions about Tesla
 falling short on Model 3 deliveries. In the same period, the stock price
 dropped approx. 33%. This indicates that both launch events and negative
-coverage could boost Tesla's publicity on Youtube.
+coverage could boost Tesla's publicity on YouTube.
 
 ### Graph 3: The iPhone Hype Cycle
 
 This section of the big picture, we would like to have one graph that
-includes Youtube and Google data, and in the meantime, focuses on one
+includes YouTube and Google data, and in the meantime, focuses on one
 product pattern, e.g., the Hype Cycle around product event like the
 iPhone X launch in Nov 2017.
 
 To achieve this, 2 versions of the graphs are constructed, covering 180
 days next to event. In v1, 2 sections of visualisation were drawn for
-youtube and Google data. The Y axis represent Youtube and Google
+YouTube and Google data. The Y axis represent YouTube and Google
 engagement and the X axis represents the time spans.
 
-**Graph 3 v1: The iPhone Hype Cycle (Google & Youtube separately)**
+**Graph 3 v1: The iPhone Hype Cycle (Google & YouTube separately)**
 
 180-day window around the iPhone X launch.
 
-```{r graph3 v1, fig.width=8, fig.height=5}
-#| output: true
+```{r graph3 v1, fig.height=5, fig.width=8}
 #| echo: false
+#| message: false
+#| output: true
+
 ## Graph 4: The iPhone Hype Cycle (Seperate Chart) v2
 ## prepare data, define the iPhone X launch date.
 ## library(gridExtra)
@@ -665,7 +665,7 @@ plot_google <- ggplot(avg_data) +
 ## Plot the YouTube Views data
 plot_youtube <- ggplot(iphone_hype_data) +
   geom_col(aes(x = trending_date, y = total_views), fill = "blue") +
-  geom_vline(xintercept = a_line_date, linetype = "dashed", color = "yellow", size = 1) +
+  geom_vline(xintercept = a_line_date, linetype = "dashed", color = "yellow", linewidth = 1) +
   annotate(
     "text",
     x = a_line_date,
@@ -686,6 +686,7 @@ plot_youtube <- ggplot(iphone_hype_data) +
 par(mfrow = c(1, 1))
 ## Arrange plots using gridExtra, mfrow doesnt work for ggplot2?
 gridExtra::grid.arrange(plot_google, plot_youtube, ncol = 1)
+
 ```
 
 **Interpretation of Google Search Interest Trends**
@@ -703,31 +704,33 @@ Apple can intensify Google platform **advertisement allocation** approx.
 2 months before and 3 months after the major product launch event, to
 maximize customer interest and exposure on Google.
 
-**Interpretation of Youtube Views Trends**
+**Interpretation of YouTube Views Trends**
 
--   Peak views in December: Youtube trending videos about iPhone started
+-   Peak views in December: YouTube trending videos about iPhone started
     to emerge around Mid-November after the iPhone X launch. And the
     total views of these videos have peaked in December, with a daily
     total view reaching just over 175M per day. After that there is a
-    sharp decline, with a small spike around March. The hype on Youtube
+    sharp decline, with a small spike around March. The hype on YouTube
     is short lived and slightly scattered, only lasting about 1 months.
 
--   Youtube strategy for client: Apple can start to focus on allocating
-    marketing resources on Youtube **inmediately** after the launch
+-   YouTube strategy for client: Apple can start to focus on allocating
+    marketing resources on YouTube **inmediately** after the launch
     event of a major product, especially during the first month after
-    the event. Continuous marketing effort on Youtube after that is
+    the event. Continuous marketing effort on YouTube after that is
     **optional**.
 
 **Graph 3 v2: The iPhone Hype Cycle (Scatterplot)**
 
 180-day window around the iPhone X launch. To explore the big picture,
 using iPhone as an example, we plotted Google search interest on y axis
-and Youtube views on x axis. The red line represents the correlation of
-Google interest and Youtube views.
+and YouTube views on x axis. The red line represents the correlation of
+Google interest and YouTube views.
 
 ```{r graph3 v2, fig.width=8, fig.height=5}
 #| output: true
 #| echo: false
+#| message: false
+
 ## Graph 4: The iPhone Hype Cycle (Scatterplot Version)
 ## Prepare data for scatterplot
 ## Filter for iPhone data only
@@ -756,16 +759,15 @@ ggplot(scatter_data, aes(x = total_views, y = google_hits)) +
 correlation <- cor(scatter_data$total_views, scatter_data$google_hits)  
 correlation_rounded <- round(correlation, 3)
 print(paste("The correlation coefficient is:", correlation_rounded))
+
 ```
 
-**Interpretation of Google Search Interest Trends and Youtube total
+**Interpretation of Google Search Interest Trends and YouTube total
 views**
 
 The scatterplots reveal dispersed data points, and the red line appears
 to show a **slight correlation**. However, is it really correlated as
-our **intuition** tells us? The result is as shown:
-`r correlation_rounded`. As we know, ±0.0 to ±0.3 equals very weak or no
-correlation.
+our **intuition** tells us? The result is `r correlation_rounded`. As we know, ±0.0 to ±0.3 equals very weak or no correlation.
 
 We can safely say, even though **counterintuitive**, while there is a
 slight tendency for YouTube views and Google searches to move together,
@@ -786,26 +788,21 @@ beneficial for the clients to work with the 2 platforms with
 
 Because downloading Google Trends data is unreliable (more on this later
 in our *chapter of choice* about `gtrendsR`), we are working here with
-data that was previously downloaded and saved as `csv` files. All five
-country files must be prepared in the same way, for which we have
-written a **function**. With `rbind`, we can easily concatenate the
-pre-prepared data and use `pivot_longer` to create a second **long**
-data set we will need for certain visualisations. With these steps we
-are now prepared for the following analyses.
+data that we previously have downloaded and saved as `csv` files. All five country files must be prepared in the same way, for which we have written a **function**. With `rbind`, we can easily concatenate the pre-prepared data and use `pivot_longer` to create a second **long** data set we will need for certain visualisations. With these steps we are now prepared for the following analyses.
 
 ```{r load libraries, echo=FALSE}
 ## Install/Load libraries
-library(tidyverse)
 library(lubridate)
-library(sf)
-library(rnaturalearth)
 library(gtrendsR)  # Downloading was blocked after 3 downloads
 library(countrycode)
 
 ```
 
 ```{r prepare and merge data manually downloaded from Google Trends2, echo=FALSE}
-#| eval: false ## this part is moved to beggning of the file, so that trends_combined_long is available when newly runned
+#| eval: false  
+
+## this part is moved to beginning of the file, so that trends_combined_long is
+## available when newly runned -->
 ## import and join Google Trends csv datasets
 
 ## Function to read and wrangle csv datasets
@@ -834,7 +831,10 @@ process_trends_csv <- function(filepath, country_code) {
 ```
 
 ```{r Alle drei CSV-Dateien einlesen2, echo=FALSE}
-#| eval: false ## this part is moved to beggning of the file, so that trends_combined_long is available when newly runned
+#| eval: false
+
+## this part is moved to beggning of the file, so that trends_combined_long is
+## available when newly runned
 
 ## read all data
 trends_US <- process_trends_csv(here("Chapters_Rbootcamp_Project", "raw_data_from_google", "multiTimeline_US.csv"), "US")
@@ -1198,7 +1198,7 @@ effect may be rather short-lived. It is essential for brands to be aware
 of such effects in order to respond appropriately with marketing
 measures.
 
-## Youtube Videos Analysis
+## YouTube Video Analysis
 
 Now let's take a look at the YouTube data with **three graphs**.
 
@@ -1366,7 +1366,7 @@ After all these analyses and visualizations of essentially 'numbers', we
 should not forget that brands and branding are primarily about
 **content.** Here we have good news: YouTube and Google Searches are
 too! One can and should examine what the actual content of the videos on
-Youtube, besides the fact that they are tagged with the keywords 'Rolex'
+YouTube, besides the fact that they are tagged with the keywords 'Rolex'
 or 'iPhone'. With a wordcloud, we can give a very good first impression
 of the content based on all tags that were given to the videos. We
 believe that understanding what content of the videos is, is as
@@ -1417,6 +1417,7 @@ library(wordcloud2)
 library(stopwords)
 library(webshot2)
 library(htmlwidgets)
+library(rsvg)
 
 ```
 
@@ -1479,59 +1480,51 @@ more than 100k views and set a specific palette that represents the
 corporate identity of Rolex. And we set the font to Garamond which is
 close to the font Rolex uses.
 
-```{r wordcloud1 plot}
+```{r wordcloud1}
 #| output: true
-#| out.width: "120%"   # PDF output width
-#| out.height: "600px" # PDF output height
-#| fig-cap: "Wordcloud Rolex"
+#| message: false
+#| fig-crop: false
 #| code-fold: true   # hide/unhide code chunk
 #| code-summary: "Show/Hide the code" 
 
-## Define luxurious colors that match to the Rolex brand.
-library(knitr)
+# Define luxurious colors that match the Rolex brand
 pal_rolex <- c("#228B22", "#0A1931", "#B09770", "#722F37", "#B36A5E", "#454545", "#006D77", "#4C3F91")
 
-## Create the Rolex wordcloud
-wc_obj <- wordcloud2(rolex_tags_cleaned_unique %>% filter(total_views > 100000),
-           size = 0.3, rotateRatio = 0,
-           minRotation = -pi/2, maxRotation = -pi/2,
-           fontFamily = 'Garamond',
-           fontWeight = 800,
-           gridSize = 4, 
-           shuffle = TRUE,
-           shape = 'circle', ellipticity = 0.5,
-           # color = palKH2[factor(df2$Word)])
-           color = rep_len(pal_rolex, nrow(rolex_tags_cleaned_unique))) %>%
-  htmlwidgets::onRender("
-    function(el) {
-      el.style.width = '80%';
-      el.style.maxWidth = '700px'; // limits the maximum width
-      el.style.height = '400px'; 
-      el.style.margin = '0 auto';  // Centers it
-    }
-  ")
+# Create the Rolex wordcloud
+wc_obj <- wordcloud2(
+  rolex_tags_cleaned_unique %>% filter(total_views > 100000),
+  size = 0.3, rotateRatio = 0,
+  minRotation = -pi/2, maxRotation = -pi/2,
+  fontFamily = 'Garamond',
+  fontWeight = 800,
+  gridSize = 4, shuffle = TRUE,
+  shape = 'circle', ellipticity = 0.5,
+  color = rep_len(pal_rolex, nrow(rolex_tags_cleaned_unique)))
 
-# screenshot for pdf render, and code output for html
+## Screenshot only for PDF render
 if (knitr::is_latex_output()) {
-  # --- This code runs ONLY when rendering to PDF ---
-  
-  # Save widget to a temporary file
-  saveWidget(wc_obj, "temp_wordcloud.html", selfcontained = FALSE)
-  # Take a screenshot and save as a PNG
-  webshot2::webshot("temp_wordcloud.html", "rolex_wordcloud.png", delay = 3, vwidth = 700, vheight = 350)
-  # Embed PNG image in the PDF with specific size
+  html_file <- "temp_wordcloud_rolex.html"
+  htmlwidgets::saveWidget(wc_obj, html_file, selfcontained = TRUE)
+
+  webshot2::webshot(
+    html_file,
+    "rolex_wordcloud.png",
+    delay = 3,
+    vwidth = 700,
+    vheight = 500
+  )
+
   knitr::include_graphics("rolex_wordcloud.png")
 } else {
-  # --- This code for ALL other formats (HTML) ---
-  # print the plot
   wc_obj
 }
 
 ```
 
-The resulting word cloud is brilliant: it shows that the most-watched
+
+The resulting word cloud is surprising, to say the least: it shows that the most-watched
 YouTube videos are heavily influenced by the **German hip-hop** scene!
-Bushido, Kollegah, Farid Bang, and Nimo are well-known German rappers,
+Bushido, Kollegah, and Nimo are well-known German rappers,
 and they clearly like to show off their Rolex watches. We don't think
 the folks in charge of Rolex branding are too happy about this. We'd
 suggest they try to counteract the German videos. Of course, having the
@@ -1554,7 +1547,7 @@ and `wordcloud2` will try to fill the space used by the Apple logo. So
 far we did not manage to get it working, but it is definitely something
 we will try out the next time we do a wordcloud.
 
-```{r Prepare the iPhone data}
+```{r Prepare iPhone data}
 #| include: false
 #| output: true
 
@@ -1611,16 +1604,18 @@ head(iphone_tags_cleaned_unique, 100)
 
 ```
 
-```{r wordcloud2 plot}
-#| include: false
+```{r wordcloud2}
 #| output: true
+#| message: false
+#| fig-crop: false
+#| code-fold: true   # hide/unhide code chunk
+#| code-summary: "Show/Hide the code" 
 
 ## Define colors that match to Apple and specifically to the iPhone X launched 2017/2018.
 
 pal_iphone <- c("#FF375F", "#32D74B", "#0A84FF", "#FF9F0A", "#BF5AF2", "#1D1D1F", "#E4E4E2")
 
 ## iPhone wordcloud
-
 wc_obj_2 <- wordcloud2(iphone_tags_cleaned_unique %>% filter(total_views > 50000000),
            # figPath = "apple-512.png",
            size = 0.2, rotateRatio = 0,
@@ -1633,45 +1628,26 @@ wc_obj_2 <- wordcloud2(iphone_tags_cleaned_unique %>% filter(total_views > 50000
            # color = palKH2[factor(df2$Word)])
            color = rep_len(pal_iphone, nrow(iphone_tags_cleaned_unique)))
 
-## Screenshot for pdf render, and code output for html
+## Screenshot only for PDF render
 if (knitr::is_latex_output()) {
-  ## This code runs ONLY when rendering to PDF
-  
-  ## Save widget to a temporary file
-  saveWidget(wc_obj_2, "temp_wordcloud_2.html", selfcontained = FALSE)
-  ## Take a screenshot and save as a PNG
-  webshot2::webshot("temp_wordcloud_2.html", "iPhone_wordcloud.png", delay = 3, vwidth = 900, vheight = 400)
-  ## Embed PNG image in the PDF with specific size
+  html_file <- "temp_wordcloud_iPhone.html"
+  htmlwidgets::saveWidget(wc_obj_2, html_file, selfcontained = TRUE)
+
+  webshot2::webshot(
+    html_file,
+    "iPhone_wordcloud.png",
+    delay = 3,
+    vwidth = 700,
+    vheight = 500
+  )
+
   knitr::include_graphics("iPhone_wordcloud.png")
 } else {
-  ## This code for ALL other formats (HTML)
   wc_obj_2
 }
 
-## For interactive display (when running this code block) 
-## opens wordcloud in the browser
-if (interactive()) {
-  saveWidget(wc_obj_2, "temp_interactive.html", selfcontained = TRUE)
-  browseURL("temp_interactive.html")
-}
-
-## To save the wordcloud as a .png file.
-# saveWidget(wc_obj_2, "temp.html", selfcontained = FALSE)
-# webshot("temp.html", "iphone_wordcloud.png", 
-#         vwidth = 1200, vheight = 800)
-
 ```
 
-```{r load png}
-#| echo: false
-#| out.width: "100%"
-#| fig-align: "center"
-#| fig-cap: "iPhone wordcloud"
-#| cache: false
-
-knitr::include_graphics(here("Chapters_Rbootcamp_Project","iphone_wordcloud_trimmed.png"))
-
-```
 
 We believe this word cloud is much more in line with what iPhone
 managers would expect. iPhone YouTube videos are tagged with terms from

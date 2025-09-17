@@ -8,16 +8,16 @@ Welcome to our **HSLU R Bootcamp Project**.
 
 This project explores **Brand and Product Strategy for iPhone, Tesla and Rolex**.  
 
-By analyzing **Youtube** Trending Video and **Google** Trend data, we have conducted data analysis, visualization, and modeling analysis in R. 
+By analyzing **YouTube** Trending Video and **Google** Trend data, we have conducted data analysis, visualization, and modeling analysis in R. 
 
 The objective is to demonstrate insights for hypothetical clients and to deepen our learning in R, as part of our bootcamp learning journey.  
 
 # Our Story
 ## The Beginning of an Idea
 
-Today, both Youtube and Google are central media and information sources globally, and they are key platforms for online **behavior research** and big data **insights extraction**. Users on these platforms are highly engaged. This engagement provides consumer brands an opportunity to understand the behavior and preferences of customers. Analyzing data from these platforms allows the brands to provide appealing products that adhere to the needs of the market. This approach can not only increase profitability but also improves **efficiency** by avoid producing unwanted products or advertisement campaigns.
+Today, both YouTube and Google are central media and information sources globally, and they are key platforms for online **behavior research** and big data **insights generation**. Users on these platforms are highly engaged. This engagement provides consumer brands an opportunity to understand the behavior and preferences of customers. Analyzing data from these platforms allows the brands to provide appealing products that adhere to the needs of the market. This approach can not only increase **profitability** but also improves **efficiency** by avoiding unwanted products or advertisement campaigns.
 
-These factors have inspired us to create a service to the hypothetical clients, to help them find, analyze data, and explore insights. To showcase our capabilities, we analyzed YouTube and Google data from 2017 to 2018 for three hypothetical clients: iPhone, Tesla, and Rolex. This analysis serves as an example to demonstrate our methodology, potential results, and the value our service for future clients.
+These factors have inspired us to create a service to our hypothetical clients, to help them analyze data and explore insights. To showcase our capabilities, we analyzed YouTube and Google data from 2017 to 2018 for three hypothetical clients: iPhone, Tesla, and Rolex. This analysis serves as an example to demonstrate our methodology, potential results, and the value our service for future clients.
 
 
 ## How to Use This Book
@@ -33,11 +33,11 @@ Alternatively, you can play around with the code and generate new reports. Howev
 
 *   **Chapter 1: Our Story:** You are right here, reading about how the idea was generated and how you should navigate through our project in chapters.
 
-*   **Chapter 2: Preparing the Data for Analysis:** Details about the datasets, the process of data extraction, cleaning, and transformation.
+*   **Chapter 2: Prepare the Data for Analysis:** Details about the datasets, the process of data extraction, cleaning, and transformation.
 
 *   **Chapter 3: Analysis and Visualization:** Presentation of the **core-findings**, from broad descriptive statistics to in-depth correlation and trend analysis. Let's understand the data with visualizations.
 
-*   **Chapter 4: Chapter of Choice - The `gtrendsR` Package:** An exploration of the `gtrendsR` package, where the Google trend data was extracted. We will showcase its capabilities and **technical implementation**.
+*   **Chapter 4: Chapter of Choice - The R Package `gtrendsR`:** An exploration of the `gtrendsR` package, where Google trend data is extracted. We will showcase its capabilities and **technical implementation**.
 
 *   **Chapter 5: Generative AI Usage and Guidelines:** Explanation of the approach that we use to apply Generative AI in our research, including why it helps the research process and how it's implemented in a **responsible** way.
 

@@ -191,9 +191,9 @@ world_trends <- world_sf %>%
 
 ### Producing the world map with geom_sf
 
-Additionally we specify a color coding from bright to dark blues.
+Additionally we specify a color coding from bright to dark blues.The map shows the highest interest in Norway, where electric cars appear to enjoy significant tax advantages. 
 
-```{r plot produce map, echo=TRUE, warning=FALSE, fig.width=8, fig.height=5}
+```{r plot produce map, echo=FALSE, warning=FALSE, fig.width=8, fig.height=5}
 #| code-fold: true   # hide/unhide code chunk
 #| code-summary: "Show/Hide the code" 
 
