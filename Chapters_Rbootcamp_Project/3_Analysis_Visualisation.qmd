@@ -1482,6 +1482,8 @@ close to the font Rolex uses.
 
 ```{r wordcloud1}
 #| output: true
+#| out-width: "100%"
+#| fig-align: "center"
 #| message: false
 #| fig-crop: false
 #| code-fold: true   # hide/unhide code chunk
@@ -1606,6 +1608,8 @@ head(iphone_tags_cleaned_unique, 100)
 
 ```{r wordcloud2}
 #| output: true
+#| out-width: "100%"
+#| fig-align: "center"
 #| message: false
 #| fig-crop: false
 #| code-fold: true   # hide/unhide code chunk
