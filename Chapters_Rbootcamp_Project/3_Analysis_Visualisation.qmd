@@ -11,6 +11,8 @@ editor:
 # install.packages("ggridges")
 # install.packages("rnaturalearthdata")
 # install.packages("here")
+# install.packages("rsvg")
+# install.packages("corrplot")
 library(ggridges)
 library(tidyverse)
 library(dplyr)
