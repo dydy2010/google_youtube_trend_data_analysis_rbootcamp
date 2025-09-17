@@ -21,26 +21,29 @@ format:
     theme: flatly
     page-layout: full
     css: style.css
-    fig-align: center # Center figures, titles
+    fig-align: center
   pdf:
     toc: true
     number-sections: true
-    documentclass: report 
+    documentclass: scrreprt   # KOMA-Script
+    classoption: 10pt
     fig-align: center
-    classoption: 10pt # font size adjustment(all document content)
     include-in-header:
       text: |
         \usepackage{tocloft}
-        % change font size of "Table of Contents" title
         \renewcommand{\cfttoctitlefont}{\Large\bfseries}
-        % adjust space above the TOC title
-        \setlength{\cftbeforetoctitleskip}{-10pt} % Reduce space above
-        % adjust space below the TOC title
-        \setlength{\cftaftertoctitleskip}{0pt} % Space below
-    geometry: top=1cm, bottom=1.5cm, left=2cm, right=2cm
+        \setlength{\cftbeforetoctitleskip}{-10pt}
+        \setlength{\cftaftertoctitleskip}{0pt}
+        % Kapitelabstände anpassen
+        \RedeclareSectionCommand[
+          beforeskip=10pt,   % Abstand vor Kapitel (Standard ~50pt → jetzt viel kleiner)
+          afterskip=10pt     % Abstand nach Kapitel (etwas kleiner als Standard ~20pt)
+        ]{chapter}
+    geometry: top=0.7cm, bottom=1.0cm, left=2cm, right=2cm
     mainfont: Arial
 
 execute:
   echo: true
   warning: false
   message: false
+

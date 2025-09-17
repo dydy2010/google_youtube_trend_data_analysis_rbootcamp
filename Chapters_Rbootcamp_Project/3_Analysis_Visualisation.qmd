@@ -1490,7 +1490,8 @@ close to the font Rolex uses.
 #| code-summary: "Show/Hide the code" 
 
 # Define luxurious colors that match the Rolex brand
-pal_rolex <- c("#228B22", "#0A1931", "#B09770", "#722F37", "#B36A5E", "#454545", "#006D77", "#4C3F91")
+pal_rolex <- c("#228B22", "#0A1931", "#B09770", "#722F37", "#B36A5E",
+               "#454545", "#006D77", "#4C3F91")
 
 # Create the Rolex wordcloud
 wc_obj <- wordcloud2(
@@ -1616,7 +1617,8 @@ head(iphone_tags_cleaned_unique, 100)
 
 ## Define colors that match to Apple and specifically to the iPhone X launched 2017/2018.
 
-pal_iphone <- c("#FF375F", "#32D74B", "#0A84FF", "#FF9F0A", "#BF5AF2", "#1D1D1F", "#E4E4E2")
+pal_iphone <- c("#FF375F", "#32D74B", "#0A84FF", "#FF9F0A", "#BF5AF2",
+                "#1D1D1F", "#E4E4E2")
 
 ## iPhone wordcloud
 wc_obj_2 <- wordcloud2(iphone_tags_cleaned_unique %>% filter(total_views > 50000000),
