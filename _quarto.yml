@@ -37,17 +37,6 @@ format:
         \setlength{\cftbeforetoctitleskip}{-10pt} % Reduce space above
         % adjust space below the TOC title
         \setlength{\cftaftertoctitleskip}{0pt} % Space below
-        % Adjust chapter title size etc
-        \usepackage{titlesec}
-        \titleformat{\chapter}[block]
-          {\fontsize{20}{12}\selectfont\bfseries}
-          {\thechapter.}
-          {1em}
-          {}
-        % adjust chapter title spacing
-        \titlespacing*{\chapter}{0pt}{0pt}{15pt}
-    
-    
     geometry: top=1cm, bottom=1.5cm, left=2cm, right=2cm
     mainfont: Arial
 
