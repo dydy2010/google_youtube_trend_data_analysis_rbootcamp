@@ -1612,8 +1612,7 @@ head(iphone_tags_cleaned_unique, 100)
 #| fig-align: "center"
 #| message: false
 #| fig-crop: false
-#| code-fold: true   # hide/unhide code chunk
-#| code-summary: "Show/Hide the code" 
+#| echo: false
 
 ## Define colors that match to Apple and specifically to the iPhone X launched 2017/2018.
 
