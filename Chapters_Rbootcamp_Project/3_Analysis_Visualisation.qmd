@@ -1537,7 +1537,7 @@ Rolex brand in hip-hop videos is a good thing itself. But Rolex should
 consider highlighting YouTube videos that show other Rolex values
 besides just being “expensive.”
 
-### iPhone wordcloud
+### iPhone wordcloud 
 
 **As a second example**, to give an impression on how diverse wordclouds
 can become, we create a wordcloud for **iPhone** with the respective
@@ -1550,7 +1550,7 @@ form of the wordcloud based on a picture**. For example, we could use
 the Apple logo (a png file with the logo in black on a white background)
 and `wordcloud2` will try to fill the space used by the Apple logo. So
 far we did not manage to get it working, but it is definitely something
-we will try out the next time we do a wordcloud.
+we will try out the next time we do a wordcloud. **In case that this graph doesn't render in browser, please kindly check our README chapter: outliers.**
 
 ```{r Prepare iPhone data}
 #| include: false
