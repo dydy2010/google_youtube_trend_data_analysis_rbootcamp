@@ -12,7 +12,6 @@ echo "*.pdf" >> .gitignore
 *.rdb
 *.html
 *.pdf
-*.png
 *_files/
 _book/
 /.quarto/
