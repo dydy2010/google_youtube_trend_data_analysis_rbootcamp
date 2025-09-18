@@ -25,7 +25,7 @@ These factors have inspired us to create a service to our hypothetical clients, 
 
 You can interact with the report in two primary ways. For dynamic experience, we recommend viewing the **HTML** version. Simply open the **_book/index.html** file in your web browser after rendering. 
 
-If you prefer a static document, the **PDF** version as **_book/R-Bootcamp-Project.pdf** can be also a good choice. 
+If you prefer a static document, the **PDF** version as **_book/Data_Driven_Brand_Product_Strategy_Gao_Huber.pdf** can be also a good choice. 
 
 Alternatively, you can play around with the code and generate new reports. However, please ensure you have R, RStudio, and Quarto installed, then in your Rstudio terminal, execute the command: quarto render. This command will first render the book, then both versions will be available in the _book folder.
  
