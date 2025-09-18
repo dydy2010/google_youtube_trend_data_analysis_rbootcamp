@@ -82,7 +82,7 @@ Requires **R**, **RStudio**, and **Quarto**. Main R packages (grouped):
 
 In case the second **wordcloud (iPhone) doesn't render correctly** on your browser, please kindly refer to our PDF file.
 
-We discovered that this graph couldn't render in some environments.\
+We discovered that this graph in HTML file couldn't render in some environments.\
 It is caused by CORS (Cross-Origin Resource Sharing) policy violations (shown in browser console)\
 since it opens the HTML file directly from the local file system.
 
