@@ -78,16 +78,17 @@ Requires **R**, **RStudio**, and **Quarto**. Main R packages (grouped):
 -   **PDF Report:** `_book/Data_Driven_Brand_Product_Strategy_Gao_Huber.pdf`
 
 ------------------------------------------------------------------------
-**Outliers**
+## Outliers
 
-In case the second **wordcloud (iPhone) doesn't render correctly**
-on your browser, please kindly reference to our PDF file.
+In case the second **wordcloud (iPhone) doesn't render correctly** on your browser, please kindly refer to our PDF file.
 
-We have found out that on in some environment, this graph couldn't render.
-The reason is CORS (Cross-Origin Resource Sharing) policy violations (shown in browser console)
-since it is opened the HTML file directly from local file system.
+We discovered that this graph in HTML file couldn't render in some environments.\
+It is caused by CORS (Cross-Origin Resource Sharing) policy violations (shown in browser console)\
+since it opens the HTML file directly from the local file system.
 
-This is a technical challenge that we need to investigate further.
+*This is a technical challenge that we need to investigate further.*
+*Thank you for your understanding.*
+
 ------------------------------------------------------------------------
 
 ## Outputs
