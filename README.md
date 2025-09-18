@@ -2,8 +2,8 @@
 
 ### HSLU R Bootcamp Project (September 2025)
 
-## Abstract:\
-- R-based analysis of **YouTube Trending Videos** and **Google Trends** (2017–2018) for **iPhone**, **Tesla**, and **Rolex**. We demonstrate a concise workflow from data extraction and cleaning to visualization, modeling, and reporting in a Quarto Book (HTML & PDF), showcasing how platform data can inform brand and product strategy.
+## Abstract
+R-based analysis of **YouTube Trending Videos** and **Google Trends** (2017–2018) for **iPhone**, **Tesla**, and **Rolex**. We demonstrate a concise workflow from data extraction and cleaning to visualization, modeling, and reporting in a Quarto Book (HTML & PDF), showcasing how platform data can inform brand and product strategy.
 
 ------------------------------------------------------------------------
 
