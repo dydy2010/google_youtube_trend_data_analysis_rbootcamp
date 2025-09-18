@@ -516,7 +516,7 @@ ggplot(data = combined_data_final, aes(x = trending_date, y = total_views)) +
     x = "Date",
     y = "Total Daily Views",
     color = "Keyword",
-    caption = "Source: Kaggle – Trending YouTube Video Statistics (Mitchell J)\n2017-11-14 to 2018-06-14"
+    caption = "Source: Kaggle - Trending YouTube Video Statistics (Mitchell J)\n2017-11-14 to 2018-06-14"
 
   ) +
   scale_x_date(date_labels = "%b %Y") +  ## Format dates
@@ -557,7 +557,7 @@ ggplot(data = combined_data_final, aes(x = trending_date, y = total_views)) +
     x = "Date",
     y = "Total Daily Views",
     color = "Keyword",
-    caption = "Source: Kaggle – Trending YouTube Video Statistics (Mitchell J)\n2017-11-14 to 2018-06-14"
+    caption = "Source: Kaggle - Trending YouTube Video Statistics (Mitchell J)\n2017-11-14 to 2018-06-14"
 
   ) +
   scale_x_date(date_labels = "%b %Y") +  ## Format dates
@@ -677,7 +677,7 @@ plot_youtube <- ggplot(iphone_hype_data) +
     vjust = -0.5 #text position to the line
   )+
   labs(title = "YouTube Daily Views", x = "Date", y = "Total Daily Views",
-       caption = "Source: Kaggle – Trending YouTube Video Statistics (Mitchell J) &\n
+       caption = "Source: Kaggle - Trending YouTube Video Statistics (Mitchell J) &\n
        Google Trends (2018-01-01 to 2018-12-31)"
 ) +
   ## scale_y_continuous(labels = scales::comma) ## format in num
@@ -752,7 +752,7 @@ ggplot(scatter_data, aes(x = total_views, y = google_hits)) +
     subtitle = "iPhone X Launch Period",
     x = "YouTube Daily Views",
     y = "Google Search Interest",
-    caption = "Source: Kaggle – Trending YouTube Video Statistics (Mitchell J) &\n
+    caption = "Source: Kaggle - Trending YouTube Video Statistics (Mitchell J) &\n
     Google Trends (2018-01-01 to 2018-12-31)"
   ) +
   scale_x_continuous(labels = scales::label_number(scale = 1/1e6, suffix = "M")) 
@@ -1296,7 +1296,7 @@ ggplot(plot_long, aes(x = keyword, y = ratio, fill = metric)) +
     x = "Keywords",
     y = "Engagement (likes/dislikes per views)",
     fill = "Metric",
-    caption = "Source: Kaggle – Trending YouTube Video Statistics (Mitchell J) &\n
+    caption = "Source: Kaggle - Trending YouTube Video Statistics (Mitchell J) &\n
     Google Trends from 2017-11-14 to 2018-06-14"
   )
 
