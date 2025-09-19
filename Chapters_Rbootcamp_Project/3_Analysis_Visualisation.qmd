@@ -619,7 +619,7 @@ iphone_hype_data <- combined_data_final %>%
 a_line_date <- as.Date("2017-11-06")
 plot_google <- ggplot(avg_data) +
   geom_smooth(data = filter(avg_data, keyword == "iPhone"),
-              aes(x = trending_date, y = avg_hits), color = "red", size = 1.2, se = FALSE) + ### se=FALSE,standard error. geom_smooth() plots a line, default, it also adds a shaded area around. 
+              aes(x = trending_date, y = avg_hits), color = "red", linewidth = 1.2, se = FALSE) + ### se=FALSE,standard error. geom_smooth() plots a line, default, it also adds a shaded area around. 
   geom_vline(xintercept = a_line_date, linetype = "dashed", color = "yellow", size = 1) +
   annotate(
     "text",
