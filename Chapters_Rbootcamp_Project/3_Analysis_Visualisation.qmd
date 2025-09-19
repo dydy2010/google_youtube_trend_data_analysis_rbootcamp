@@ -13,6 +13,7 @@ editor:
 # install.packages("here")
 # install.packages("rsvg")
 # install.packages("corrplot")
+# install.packages("magick")
 library(ggridges)
 library(tidyverse)
 library(dplyr)
@@ -1524,7 +1525,6 @@ the Apple logo (a png file with the logo in black on a white background)
 and `wordcloud2` will try to fill the space used by the Apple logo. So
 far we did not manage to get it working, but it is definitely something
 we will try out the next time we do a wordcloud.
-
 ```{r Prepare iPhone data}
 #| include: false
 #| output: true
@@ -1581,7 +1581,6 @@ iphone_tags_cleaned_unique <- iphone_tags_cleaned %>%
 head(iphone_tags_cleaned_unique, 100)
 
 ```
-
 ```{r wordcloud2}
 #| include: false
 #| out-width: "100%"
@@ -1613,25 +1612,27 @@ webshot2::webshot(
   html_file,
   "iPhone_wordcloud.png",
   delay = 3,  # Give time for rendering
-  vwidth = 700,
-  vheight = 500
+  vwidth = 750,
+  vheight = 600
 )
 
 ```
-
 ```{r wordcloud2_show}
 #| output: true
 #| out-width: "100%"
 #| fig-align: "center"
 #| echo: false
 
+# trim the png
+
+library(magick)
+img <- image_read("iPhone_wordcloud.png")
+img_cropped <- image_crop(img, "559x420+90+0") # trim edges
+image_write(img_cropped, "iPhone_wordcloud_trimmed.png")
 # Include the PNG in output
-knitr::include_graphics("iPhone_wordcloud.png")
+knitr::include_graphics("iPhone_wordcloud_trimmed.png")
 
 ```
-
-
-
 
 We believe this word cloud is much more in line with what iPhone
 managers would expect. iPhone YouTube videos are tagged with terms from
