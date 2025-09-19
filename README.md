@@ -68,7 +68,7 @@ Requires **R**, **RStudio**, and **Quarto**. Main R packages (grouped):
 -   **Mapping & geodata:** `sf`, `rnaturalearth`, `countrycode`\
 -   **Google Trends:** `gtrendsR` *(note: rate/usage often limited after a few downloads)*\
 -   **Utilities:** `here`, `grid`, `stopwords`\
--   **Rendering/output:** `ragg`, `systemfonts`, `textshaping`, `webshot2`, `htmlwidgets`, `rsvg`
+-   **Rendering/output:** `ragg`, `systemfonts`, `textshaping`, `webshot2`, `htmlwidgets`, `rsvg`, `magick`
 
 ------------------------------------------------------------------------
 
