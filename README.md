@@ -78,18 +78,6 @@ Requires **R**, **RStudio**, and **Quarto**. Main R packages (grouped):
 -   **PDF Report:** `_book/Data_Driven_Brand_Product_Strategy_Gao_Huber.pdf`
 
 ------------------------------------------------------------------------
-## Outliers
-
-In case the second **wordcloud (iPhone) doesn't render correctly** on your browser, please kindly refer to our PDF file.
-
-We discovered that this graph in HTML file couldn't render in some environments.\
-It is caused by CORS (Cross-Origin Resource Sharing) policy violations (shown in browser console)\
-since it opens the HTML file directly from the local file system.
-
-*This is a technical challenge that we need to investigate further.*
-*Thank you for your understanding.*
-
-------------------------------------------------------------------------
 
 ## Outputs
 ## Authors & Contact

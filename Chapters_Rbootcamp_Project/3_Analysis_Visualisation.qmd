@@ -1523,9 +1523,7 @@ form of the wordcloud based on a picture**. For example, we could use
 the Apple logo (a png file with the logo in black on a white background)
 and `wordcloud2` will try to fill the space used by the Apple logo. So
 far we did not manage to get it working, but it is definitely something
-we will try out the next time we do a wordcloud. **In case that this
-graph doesn't render in browser, please kindly check our README chapter:
-outliers.**
+we will try out the next time we do a wordcloud.
 
 ```{r Prepare iPhone data}
 #| include: false
@@ -1585,7 +1583,7 @@ head(iphone_tags_cleaned_unique, 100)
 ```
 
 ```{r wordcloud2}
-#| output: true
+#| include: false
 #| out-width: "100%"
 #| fig-align: "center"
 #| message: false
@@ -1593,41 +1591,47 @@ head(iphone_tags_cleaned_unique, 100)
 #| echo: false
 
 ## Define colors that match to Apple and specifically to the iPhone X launched 2017/2018.
-
 pal_iphone <- c("#FF375F", "#32D74B", "#0A84FF", "#FF9F0A", "#BF5AF2",
                 "#1D1D1F", "#E4E4E2")
 
 ## iPhone wordcloud
 wc_obj_2 <- wordcloud2(iphone_tags_cleaned_unique %>% filter(total_views > 50000000),
-           # figPath = "apple-512.png",
            size = 0.2, rotateRatio = 0,
            minRotation = -pi/2, maxRotation = -pi/2,
            fontWeight = 800,
            gridSize = 4, 
            shuffle = TRUE,
            shape = 'circle', ellipticity = 0.5,
-           # color = palKH2[factor(df2$Word)])
            color = rep_len(pal_iphone, nrow(iphone_tags_cleaned_unique)))
 
-## Screenshot only for PDF render
-if (knitr::is_latex_output()) {
-  html_file <- "temp_wordcloud_iPhone.html"
-  htmlwidgets::saveWidget(wc_obj_2, html_file, selfcontained = TRUE)
+# First save as HTML widget
+html_file <- "temp_wordcloud_iPhone.html"
+htmlwidgets::saveWidget(wc_obj_2, html_file, selfcontained = TRUE)
 
-  webshot2::webshot(
-    html_file,
-    "iPhone_wordcloud.png",
-    delay = 3,
-    vwidth = 700,
-    vheight = 500
-  )
-
-  knitr::include_graphics("iPhone_wordcloud.png")
-} else {
-  wc_obj_2
-}
+# and take screenshot of the HTML file
+webshot2::webshot(
+  html_file,
+  "iPhone_wordcloud.png",
+  delay = 3,  # Give time for rendering
+  vwidth = 700,
+  vheight = 500
+)
 
 ```
+
+```{r wordcloud2_show}
+#| output: true
+#| out-width: "100%"
+#| fig-align: "center"
+#| echo: false
+
+# Include the PNG in output
+knitr::include_graphics("iPhone_wordcloud.png")
+
+```
+
+
+
 
 We believe this word cloud is much more in line with what iPhone
 managers would expect. iPhone YouTube videos are tagged with terms from
