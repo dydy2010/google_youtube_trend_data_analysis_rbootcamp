@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.24">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>3&nbsp; Analysis and Visualisation – Data-Driven Brand &amp; Product Strategy</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../Chapters_Rbootcamp_Project/4_chapter_package_of_choice.html" rel="next">
+<link href="../Chapters_Rbootcamp_Project/2_Prepare_the_Data_for_Analysis.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-22e83d4e5eff2a99ccc45532742ac980.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<link href="../site_libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet">
+<script src="../site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<link href="../site_libs/wordcloud2-0.0.1/wordcloud.css" rel="stylesheet">
+<script src="../site_libs/wordcloud2-0.0.1/wordcloud2-all.js"></script>
+<script src="../site_libs/wordcloud2-0.0.1/hover.js"></script>
+<script src="../site_libs/wordcloud2-binding-0.2.1/wordcloud2.js"></script>
+
+
+<link rel="stylesheet" href="../style.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../Chapters_Rbootcamp_Project/3_Analysis_Visualisation.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Analysis and Visualisation</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="../index.html" class="sidebar-logo-link">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Data-Driven Brand &amp; Product Strategy</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Our Story</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Chapters_Rbootcamp_Project/2_Prepare_the_Data_for_Analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Prepare the Data for Analysis</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Chapters_Rbootcamp_Project/3_Analysis_Visualisation.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Analysis and Visualisation</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Chapters_Rbootcamp_Project/4_chapter_package_of_choice.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Chapter of choice: The R Package <em>gtrendsR</em></span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Chapters_Rbootcamp_Project/5_Generative_AI.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Generative AI Usage and Guidelines</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Chapters_Rbootcamp_Project/6_Conclusion_Limitation_Outlook.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Conclusion, limitations and outlook</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#the-big-picture---comparing-the-brands" id="toc-the-big-picture---comparing-the-brands" class="nav-link active" data-scroll-target="#the-big-picture---comparing-the-brands"><span class="header-section-number">3.1</span> The Big Picture - Comparing the Brands</a>
+  <ul class="collapse">
+  <li><a href="#graph-1-overall-google-search-interest-comparison" id="toc-graph-1-overall-google-search-interest-comparison" class="nav-link" data-scroll-target="#graph-1-overall-google-search-interest-comparison"><span class="header-section-number">3.1.1</span> Graph 1: Overall Google Search Interest Comparison</a></li>
+  <li><a href="#graph-2-overall-youtube-views-comparison" id="toc-graph-2-overall-youtube-views-comparison" class="nav-link" data-scroll-target="#graph-2-overall-youtube-views-comparison"><span class="header-section-number">3.1.2</span> Graph 2: Overall YouTube Views Comparison</a></li>
+  <li><a href="#graph-3-the-iphone-hype-cycle" id="toc-graph-3-the-iphone-hype-cycle" class="nav-link" data-scroll-target="#graph-3-the-iphone-hype-cycle"><span class="header-section-number">3.1.3</span> Graph 3: The iPhone Hype Cycle</a></li>
+  </ul></li>
+  <li><a href="#google-search-trend-analysis" id="toc-google-search-trend-analysis" class="nav-link" data-scroll-target="#google-search-trend-analysis"><span class="header-section-number">3.2</span> Google Search Trend Analysis</a>
+  <ul class="collapse">
+  <li><a href="#loading-and-preparing-the-data" id="toc-loading-and-preparing-the-data" class="nav-link" data-scroll-target="#loading-and-preparing-the-data"><span class="header-section-number">3.2.1</span> Loading and preparing the data</a></li>
+  <li><a href="#correlations-between-brands" id="toc-correlations-between-brands" class="nav-link" data-scroll-target="#correlations-between-brands"><span class="header-section-number">3.2.2</span> Correlations between brands</a></li>
+  <li><a href="#seasonality-of-google-searches" id="toc-seasonality-of-google-searches" class="nav-link" data-scroll-target="#seasonality-of-google-searches"><span class="header-section-number">3.2.3</span> Seasonality of Google searches</a></li>
+  </ul></li>
+  <li><a href="#model-analysis-fitting-a-linear-regression-model-and-visualize-it" id="toc-model-analysis-fitting-a-linear-regression-model-and-visualize-it" class="nav-link" data-scroll-target="#model-analysis-fitting-a-linear-regression-model-and-visualize-it"><span class="header-section-number">3.3</span> Model Analysis: fitting a linear regression model and visualize it</a>
+  <ul class="collapse">
+  <li><a href="#data-visualization-for-5-countries" id="toc-data-visualization-for-5-countries" class="nav-link" data-scroll-target="#data-visualization-for-5-countries"><span class="header-section-number">3.3.1</span> Data visualization for 5 countries</a></li>
+  <li><a href="#prepare-the-data-for-modelling-and-checking-all-correlations" id="toc-prepare-the-data-for-modelling-and-checking-all-correlations" class="nav-link" data-scroll-target="#prepare-the-data-for-modelling-and-checking-all-correlations"><span class="header-section-number">3.3.2</span> Prepare the data for modelling and checking all correlations</a></li>
+  <li><a href="#fitting-a-linear-model" id="toc-fitting-a-linear-model" class="nav-link" data-scroll-target="#fitting-a-linear-model"><span class="header-section-number">3.3.3</span> Fitting a linear model</a></li>
+  <li><a href="#visualize-the-linear-regression-and-the-quality-of-the-model" id="toc-visualize-the-linear-regression-and-the-quality-of-the-model" class="nav-link" data-scroll-target="#visualize-the-linear-regression-and-the-quality-of-the-model"><span class="header-section-number">3.3.4</span> Visualize the linear regression and the quality of the model</a></li>
+  <li><a href="#conclusion-for-our-clients" id="toc-conclusion-for-our-clients" class="nav-link" data-scroll-target="#conclusion-for-our-clients"><span class="header-section-number">3.3.5</span> Conclusion for our clients</a></li>
+  </ul></li>
+  <li><a href="#youtube-video-analysis" id="toc-youtube-video-analysis" class="nav-link" data-scroll-target="#youtube-video-analysis"><span class="header-section-number">3.4</span> YouTube Video Analysis</a>
+  <ul class="collapse">
+  <li><a href="#positive-youtube-engagement" id="toc-positive-youtube-engagement" class="nav-link" data-scroll-target="#positive-youtube-engagement"><span class="header-section-number">3.4.1</span> Positive YouTube engagement</a></li>
+  <li><a href="#negative-youtube-engagement" id="toc-negative-youtube-engagement" class="nav-link" data-scroll-target="#negative-youtube-engagement"><span class="header-section-number">3.4.2</span> Negative YouTube engagement</a></li>
+  <li><a href="#longevity-of-youtube-videos" id="toc-longevity-of-youtube-videos" class="nav-link" data-scroll-target="#longevity-of-youtube-videos"><span class="header-section-number">3.4.3</span> Longevity of YouTube videos</a></li>
+  </ul></li>
+  <li><a href="#wordcloud" id="toc-wordcloud" class="nav-link" data-scroll-target="#wordcloud"><span class="header-section-number">3.5</span> WordCloud</a>
+  <ul class="collapse">
+  <li><a href="#rolex-wordcloud" id="toc-rolex-wordcloud" class="nav-link" data-scroll-target="#rolex-wordcloud"><span class="header-section-number">3.5.1</span> Rolex wordcloud</a></li>
+  <li><a href="#iphone-wordcloud" id="toc-iphone-wordcloud" class="nav-link" data-scroll-target="#iphone-wordcloud"><span class="header-section-number">3.5.2</span> iPhone wordcloud</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content column-body" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Analysis and Visualisation</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta column-body">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="the-big-picture---comparing-the-brands" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="the-big-picture---comparing-the-brands"><span class="header-section-number">3.1</span> The Big Picture - Comparing the Brands</h2>
+<p>This chapter presents the <strong>core</strong> of our analytical project. First, We explore the datasets, <strong>comparing</strong> the brands on both platforms and provide a <strong>big-picture overview</strong>. Second, we focus on individual brands on Google platform, uncovering insights from different perspectives. Third, we investigate hidden patterns through <strong>model analysis</strong>, applying a linear regression model to the data. Fourth, we performed a YouTube-specific analysis of brand performance. Last but not least, by separating tags, we made <strong><em>word clouds</em></strong> to reveal what keywords were most associated with each brand, providing a new perspective for <strong>product improvement</strong> and marketing.</p>
+<section id="graph-1-overall-google-search-interest-comparison" class="level3" data-number="3.1.1">
+<h3 data-number="3.1.1" class="anchored" data-anchor-id="graph-1-overall-google-search-interest-comparison"><span class="header-section-number">3.1.1</span> Graph 1: Overall Google Search Interest Comparison</h3>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="3_Analysis_Visualisation_files/figure-html/graph1 Google Comparison v1-1.png" class="img-fluid figure-img" width="1344"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>To visualise <strong>overall search interest</strong> on Google for 3 brands, a graph with search interest data of 3 brands was made. In version 1, all brands are shown in one graph, and following this, v2 presents 3 brands in 3 separate graphs. Both graphs show the same result, but are suitable for different reading preferences.</p>
+<p><strong>Graph 1: Overall Search Interest Comparison (Facet Chart)v2</strong></p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="3_Analysis_Visualisation_files/figure-html/graph1 Google Comparison v2 Facet-1.png" class="img-fluid figure-img" width="1344"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><em>Interpretation of Google Search Interest Trends</em></p>
+<p>Key observations include:</p>
+<p><strong>iPhone Dominates Search Interest:</strong></p>
+<p>“iPhone” consistently maintains the highest search volume, with significant peaks (e.g., near 100 relative interest) likely corresponding to <strong>product launches</strong> or major announcements (e.g., iPhone X in 2017, iPhone XS in 2018). It suggests sustained consumer curiosity and media hype around Apple.</p>
+<p><strong>Tesla shows moderate but steady interest:</strong></p>
+<p>“Tesla” exhibits <strong>lower but steady</strong> search interest, with occasional spikes. This aligns with Tesla’s brand history and vehicle releases (e.g., Model 3 rollout, massive quality scandals), and Elon Musk’s public visibility. We will also research the possible events that happened around that time later.</p>
+<p><strong>Rolex has negligible search presence:</strong></p>
+<p>The keyword “Rolex” shows near-zero search interest throughout the period. This indicates <strong>lower public interest</strong> compared to the other major brands. As a luxury watch brand, Rolex may not rely on hypes, otherwise, more marketing campaigns could be beneficial.</p>
+</section>
+<section id="graph-2-overall-youtube-views-comparison" class="level3" data-number="3.1.2">
+<h3 data-number="3.1.2" class="anchored" data-anchor-id="graph-2-overall-youtube-views-comparison"><span class="header-section-number">3.1.2</span> Graph 2: Overall YouTube Views Comparison</h3>
+<p><strong>(Line Chart) v1</strong></p>
+<p>As with Google search interest, we did overall comparison for 3 brands on YouTube platform with 2 versions of graphs.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="3_Analysis_Visualisation_files/figure-html/graph2 v1-1.png" class="img-fluid figure-img" width="1344"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This graphs track the <strong>daily view counts</strong> for videos related to three keywords—iPhone, Roles, and Tesla, in 5 countries. The result indicates a massive disparity in viewership between iPhone and the other two keywords.</p>
+<p><strong>Graph 2: Overall YouTube Views Comparison v2 (Facet Version)</strong></p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="3_Analysis_Visualisation_files/figure-html/graph2 v2-1.png" class="img-fluid figure-img" width="1344"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Interpretation of YouTube Daily Views Trends</strong></p>
+<p><strong>iPhone: Viral and Event-Driven Engagement</strong></p>
+<p>The keyword “iPhone” shows an <strong>astronomical level of views</strong>, peaking at nearly 150 million daily views, which dwarfs the other terms. The trend is very <strong>volatile</strong>, with a dramatic spike in early March 2018 followed by a sharp decline.</p>
+<p>This peak is hypothetically due to a <strong>product launch</strong> or major announcement. After researching, the timing suggests that it was driven by the release of the <strong>iPhone X</strong> (announced Sept.&nbsp;2017 and launched on 3.Nov. 2017) or more likely. This pattern could suggest that consumers search for YouTube reviews, unboxings, tutorials, and software update related to new Apple products. And it lasted about one month.</p>
+<p><strong>Tesla: Consistent Niche Interest</strong></p>
+<p>Trend: The keyword “Tesla” shows a stable trend, ranging from 1 million to 3 million daily views. It shows <strong>gentle fluctuations</strong> but no sharp, viral spikes like the iPhone.</p>
+<p>The steadier trend indicates a noticeable and continuous presence on the platform. However, certain events could influence the temporary interest of the public. For example, on 17. Nov 2017, Tesla announced its <strong>semi truck</strong> project. The futuristic design was followed by huge <strong>media coverage</strong>, which possibly cause a spike in views that lasted about 3 months. And in early 2018 there were huge discussions about Tesla falling short on Model 3 deliveries. In the same period, the stock price dropped approx. 33%. This indicates that both launch events and negative coverage could boost Tesla’s publicity on YouTube.</p>
+</section>
+<section id="graph-3-the-iphone-hype-cycle" class="level3" data-number="3.1.3">
+<h3 data-number="3.1.3" class="anchored" data-anchor-id="graph-3-the-iphone-hype-cycle"><span class="header-section-number">3.1.3</span> Graph 3: The iPhone Hype Cycle</h3>
+<p>This section of the big picture, we would like to have one graph that includes YouTube and Google data, and in the meantime, focuses on one product pattern, e.g., the Hype Cycle around product event like the iPhone X launch in Nov 2017.</p>
+<p>To achieve this, 2 versions of the graphs are constructed, covering 180 days next to event. In v1, 2 sections of visualisation were drawn for YouTube and Google data. The Y axis represent YouTube and Google engagement and the X axis represents the time spans.</p>
+<p><strong>Graph 3 v1: The iPhone Hype Cycle (Google &amp; YouTube separately)</strong></p>
+<p>180-day window around the iPhone X launch.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="3_Analysis_Visualisation_files/figure-html/graph3 v1-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Interpretation of Google Search Interest Trends</strong></p>
+<p>Google search interest hype lasted more than <strong>3 months</strong>, from November to February. Even though data before Nov is missing, we could see that starting from November,the search interest already had risen and peaked. It indicates that the launch event news had a great impact on iPhone Google search interest and the <strong>elevated interest</strong> lasted at least 3 months.</p>
+<p><strong>Google search strategy for client</strong></p>
+<p>Apple can intensify Google platform <strong>advertisement allocation</strong> approx. 2 months before and 3 months after the major product launch event, to maximize customer interest and exposure on Google.</p>
+<p><strong>Interpretation of YouTube Views Trends</strong></p>
+<ul>
+<li><p>Peak views in December: YouTube trending videos about iPhone started to emerge around Mid-November after the iPhone X launch. And the total views of these videos have peaked in December, with a daily total view reaching just over 175M per day. After that there is a sharp decline, with a small spike around March. The hype on YouTube is short lived and slightly scattered, only lasting about 1 months.</p></li>
+<li><p>YouTube strategy for client: Apple can start to focus on allocating marketing resources on YouTube <strong>inmediately</strong> after the launch event of a major product, especially during the first month after the event. Continuous marketing effort on YouTube after that is <strong>optional</strong>.</p></li>
+</ul>
+<p><strong>Graph 3 v2: The iPhone Hype Cycle (Scatterplot)</strong></p>
+<p>180-day window around the iPhone X launch. To explore the big picture, using iPhone as an example, we plotted Google search interest on y axis and YouTube views on x axis. The red line represents the correlation of Google interest and YouTube views.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="3_Analysis_Visualisation_files/figure-html/graph3 v2-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "The correlation coefficient is: 0.116"</code></pre>
+</div>
+</div>
+<p><strong>Interpretation of Google Search Interest Trends and YouTube total views</strong></p>
+<p>The scatterplots reveal dispersed data points, and the red line appears to show a <strong>slight correlation</strong>. However, is it really correlated as our <strong>intuition</strong> tells us? The result is 0.116. As we know, ±0.0 to ±0.3 equals very weak or no correlation.</p>
+<p>We can safely say, even though <strong>counterintuitive</strong>, while there is a slight tendency for YouTube views and Google searches to move together, the relationship is <strong>not strong</strong> or predictable. High volumes of YouTube views on a given day were very weakly associated with high levels of Google search interest.</p>
+<p><strong>Platform Insight for client</strong></p>
+<p>The above suggests <strong>user behavior</strong> on these two platforms was largely <strong>independent</strong>, at least during the iPhone X launch period. It is beneficial for the clients to work with the 2 platforms with <strong>independent approach</strong> and strategy, for better result.</p>
+</section>
+</section>
+<section id="google-search-trend-analysis" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="google-search-trend-analysis"><span class="header-section-number">3.2</span> Google Search Trend Analysis</h2>
+<section id="loading-and-preparing-the-data" class="level3" data-number="3.2.1">
+<h3 data-number="3.2.1" class="anchored" data-anchor-id="loading-and-preparing-the-data"><span class="header-section-number">3.2.1</span> Loading and preparing the data</h3>
+<p>Because downloading Google Trends data is unreliable (more on this later in our <em>chapter of choice</em> about <code>gtrendsR</code>), we are working here with data that we previously have downloaded and saved as <code>csv</code> files. All five country files must be prepared in the same way, for which we have written a <strong>function</strong>. With <code>rbind</code>, we can easily concatenate the pre-prepared data and use <code>pivot_longer</code> to create a second <strong>long</strong> data set we will need for certain visualisations. With these steps we are now prepared for the following analyses.</p>
+<p><strong>Data inspection</strong>: Besides <code>head()</code>, <code>View()</code>, <code>summary()</code> and <code>table()</code>, we used a <strong>faceted line chart</strong> to check whether the data for all countries and for the three keywords iPhone, Rolex, and Tesla has been imported correctly.</p>
+</section>
+<section id="correlations-between-brands" class="level3" data-number="3.2.2">
+<h3 data-number="3.2.2" class="anchored" data-anchor-id="correlations-between-brands"><span class="header-section-number">3.2.2</span> Correlations between brands</h3>
+<p>We examine if there is a correlation between <strong>Google Searches for iPhone and Tesla</strong>. Are days when iPhone searches are very prominent also days when Tesla searches account for a significant proportion? Or do searches for these two brands behave independently?</p>
+<p>This question may be more relevant for other examples, such as when examining two <strong>brands in the same industry</strong>. Or when a brand is looking for a partner for <strong>joint marketing activities</strong>. In such cases, it can be very helpful to know whether such correlations exist.</p>
+<p>Visually, it appears that Google searches for iPhone and Tesla are independent of each other. We believe this is an expected result.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="3_Analysis_Visualisation_files/figure-html/Correlations in Google search between brands-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="seasonality-of-google-searches" class="level3" data-number="3.2.3">
+<h3 data-number="3.2.3" class="anchored" data-anchor-id="seasonality-of-google-searches"><span class="header-section-number">3.2.3</span> Seasonality of Google searches</h3>
+<p>An important aspect of analyzing Google Trends data is <strong>seasonality</strong>. Are there periods when a particular brand is searched for more frequently? In the case of <strong>Rolex</strong>, for example, the annual <strong>Baselworld</strong> trade fair at the end of March or the <strong>holiday season</strong> at the end of the year could result in increased searches on Google.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="3_Analysis_Visualisation_files/figure-html/Rolex bar chart with seasonality of Google Trends-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The weekly bar chart actually shows these <strong>two peaks</strong>. The first few weeks of the year, possibly as a echo from the festive season, show relatively strong search interest, followed by a first peak in <strong>March</strong> after a few weaker weeks. And in the penultimate week of the year, during the <strong>holiday season</strong>, the maximum is reached. Because no other brands relativize Rolex’s values, Google Trend sets Rolex’s maximum value at 100.</p>
+</section>
+</section>
+<section id="model-analysis-fitting-a-linear-regression-model-and-visualize-it" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="model-analysis-fitting-a-linear-regression-model-and-visualize-it"><span class="header-section-number">3.3</span> Model Analysis: fitting a linear regression model and visualize it</h2>
+<section id="data-visualization-for-5-countries" class="level3" data-number="3.3.1">
+<h3 data-number="3.3.1" class="anchored" data-anchor-id="data-visualization-for-5-countries"><span class="header-section-number">3.3.1</span> Data visualization for 5 countries</h3>
+<p>We want to find out how Google Searches for ‘iPhone’ in different countries are related. Are days with many searches for iPhone in the US also days with many searches in Germany? We would expect so, as iPhone is a global topic and news, e.g.&nbsp;the launch of a new iPhone version, swap across the globe in no time. But still, let’s check if we can prove it with the data.</p>
+<p>First, we do a line graph comparing the Google Trends data for iPhone country by country. To get a nicer graph, we aggregate the data from daily to weekly.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="3_Analysis_Visualisation_files/figure-html/prepare data for model analysis-1.png" class="img-fluid figure-img" width="864"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>As we can see, the relative search interest in ‘iPhone’ is moving quite similar across all five countries. We now want do check with a model how closely two countries are related. We pick US and Germany, as we are most interested in these countries. As they are also behaving very similar over time, we expect a high correlation and a strong linear model explaining the interest in Germany together with the interest in the US.</p>
+</section>
+<section id="prepare-the-data-for-modelling-and-checking-all-correlations" class="level3" data-number="3.3.2">
+<h3 data-number="3.3.2" class="anchored" data-anchor-id="prepare-the-data-for-modelling-and-checking-all-correlations"><span class="header-section-number">3.3.2</span> Prepare the data for modelling and checking all correlations</h3>
+<p>As initial step, we have to prepare the data. We used the daily data as we want to have data as rich as possible for modelling. For the linear regression model <code>lm()</code> we need separate columns for iPhone search interest per country. As a first analysis, we calculate all correlations and visualize them with <code>corrplot</code>. In particular, the correlations between iPhone_DE and iPhone_US are very high, even close to 1 (0.93).</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="3_Analysis_Visualisation_files/figure-html/plot lm-1.png" class="img-fluid figure-img" width="768"></p>
+<figcaption>Source: Google Trends (2017-11-14 to 2018-06-14)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="fitting-a-linear-model" class="level3" data-number="3.3.3">
+<h3 data-number="3.3.3" class="anchored" data-anchor-id="fitting-a-linear-model"><span class="header-section-number">3.3.3</span> Fitting a linear model</h3>
+<p>With the data already prepared the fitting of a linear model is straight forward and with <code>summary()</code> we get all relevant information about the fit.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Fit the linear regression model and show a summary</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(iPhone_DE <span class="sc">~</span> iPhone_US, <span class="at">data =</span> lm_data)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = iPhone_DE ~ iPhone_US, data = lm_data)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-15.6106  -2.2632   0.0063   2.1280  21.1719 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  5.59440    1.30825   4.276 2.88e-05 ***
+iPhone_US    0.87825    0.02479  35.433  &lt; 2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 3.788 on 211 degrees of freedom
+Multiple R-squared:  0.8561,    Adjusted R-squared:  0.8554 
+F-statistic:  1255 on 1 and 211 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<p>As expected the linear regression model shows a strong relation between the Google search interest in iPhone between the US and Germany: The p-value of the model is close to 0 and therefore significant. The same is true for the iPhone_US estimated coefficient of 0.878. This means an increase of interest by 1 in the US goes along with an increase of interest in Germany by 0.878.</p>
+</section>
+<section id="visualize-the-linear-regression-and-the-quality-of-the-model" class="level3" data-number="3.3.4">
+<h3 data-number="3.3.4" class="anchored" data-anchor-id="visualize-the-linear-regression-and-the-quality-of-the-model"><span class="header-section-number">3.3.4</span> Visualize the linear regression and the quality of the model</h3>
+<p>We create four visualizations for the model. First, a scatter plot showing all data points (i.e.&nbsp;days) with iPhone_US on the x and iPhone_DE on the y axis. We add a line for the perfect correlation (y = x) and the regression line calculated with the model. Thereafter, we extract intercept and slope from the coefficients that we received when fitting the model.</p>
+<p>Next, we generate three standard graphs that are used to check the quality of a linear regression model:</p>
+<ul>
+<li><strong>Residuals vs.&nbsp;Fitted</strong> to check linearity and constant variance: Any clear pattern indicates an issue.</li>
+<li><strong>Q-Q-plot of Residuals</strong> to check the normal distribution of errors. Points should follow the line.</li>
+<li><strong>Observed vs.&nbsp;Fitted</strong> to check visually how good model accuracy and predictive power are.</li>
+</ul>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="3_Analysis_Visualisation_files/figure-html/residuals_QQ_lm_quality_check-1.png" class="img-fluid figure-img" width="1344"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>To summarize, there are no major issues with the model. It explains the Google search interest in Germany very well based on the US Google search interest. Therefore, the result of the analysis confirms our initial expectation.</p>
+</section>
+<section id="conclusion-for-our-clients" class="level3" data-number="3.3.5">
+<h3 data-number="3.3.5" class="anchored" data-anchor-id="conclusion-for-our-clients"><span class="header-section-number">3.3.5</span> Conclusion for our clients</h3>
+<p>For any brand, it is important to know the level of interest (potential) clients show over time. In particular, when a major event is planned, monitoring of Google Search should be set up to understand how effectively the event triggered interest, how the interest developed afterwards and how it was in the markets/countries that the brand is most interested in.</p>
+<p>In some countries, the event may have caused a sharp increase in interest that will last for a long time. While in other countries the effect may be rather short-lived. It is essential for brands to be aware of such effects in order to respond appropriately with marketing measures.</p>
+</section>
+</section>
+<section id="youtube-video-analysis" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="youtube-video-analysis"><span class="header-section-number">3.4</span> YouTube Video Analysis</h2>
+<p>Now let’s take a look at the YouTube data with <strong>three graphs</strong>.</p>
+<section id="positive-youtube-engagement" class="level3" data-number="3.4.1">
+<h3 data-number="3.4.1" class="anchored" data-anchor-id="positive-youtube-engagement"><span class="header-section-number">3.4.1</span> Positive YouTube engagement</h3>
+<p>An important indicator is user <strong>engagement</strong>, which is measured by the number of likes per view: if a video is rated with a like, this indicates user engagement. We look at the relationship between engagement and total views and find that as videos become more popular, the number of likes per view decreases. This is understandable: very popular videos are also watched by people who are less interested in the topic. Therefore, the <strong>popularity of the video</strong> must always be taken into account when interpreting engagement.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="3_Analysis_Visualisation_files/figure-html/plot youtube engagement-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="negative-youtube-engagement" class="level3" data-number="3.4.2">
+<h3 data-number="3.4.2" class="anchored" data-anchor-id="negative-youtube-engagement"><span class="header-section-number">3.4.2</span> Negative YouTube engagement</h3>
+<p>Engagement also exists <strong>in a negative sense</strong>, as the number of dislikes per view. Next, we are interested in the ratio of positive engagement (likes per view) to negative engagement (dislikes per view) for the videos of the three brands. We can see that the videos of all three brands receive <strong>far more likes than dislikes</strong>. In relative terms, however, it is striking that Tesla videos receive three times fewer dislikes (0.001) than the iPhone and Rolex videos (0.003).</p>
+<p>For our <strong>potential customers</strong>, it is important to know the positive and negative engagement of the users of their videos, to track it over time, and to compare it with the videos of their competitors in order to be able to <strong>estimate the corresponding brand effects</strong>.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="3_Analysis_Visualisation_files/figure-html/plot comment-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="longevity-of-youtube-videos" class="level3" data-number="3.4.3">
+<h3 data-number="3.4.3" class="anchored" data-anchor-id="longevity-of-youtube-videos"><span class="header-section-number">3.4.3</span> Longevity of YouTube videos</h3>
+<p>We have already seen that an event has significantly less resonance in YouTube usage than in Google searches. That’s why we now want to look at the <strong>longevity</strong> of videos and have selected the <strong>most-watched videos</strong> of the three brands for this purpose. We are interested in how their use develops over time.</p>
+<p>The following graph shows an <strong>unexpected problem</strong>: the most-watched <strong>videos disappear</strong> from our data after a few days.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="3_Analysis_Visualisation_files/figure-html/longevity youtube videos-1.png" class="img-fluid figure-img" width="768"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We have <strong>two possible explanations</strong>:</p>
+<ul>
+<li><p>Either the cryptic ID of a video, which we use to track the use of videos over time, changes after just a few days. This could be due to technical reasons how YouTube is setting these IDs.</p></li>
+<li><p>Or the data in the Kaggle dataset shows only a limited YouTube video universe.</p></li>
+</ul>
+<p>In any case, it is completely <strong>unrealistic</strong> that a video that has been viewed millions of times would no longer be viewed from one day to the next.</p>
+<p>In any case, we have decided to <strong>investigate this phenomenon</strong> at a later stage, as we are convinced that the longevity of videos can be of great interest to our potential customers.</p>
+</section>
+</section>
+<section id="wordcloud" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="wordcloud"><span class="header-section-number">3.5</span> WordCloud</h2>
+<p>After all these analyses and visualizations of essentially ‘numbers’, we should not forget that brands and branding are primarily about <strong>content.</strong> Here we have good news: YouTube and Google Searches are too! One can and should examine what the actual content of the videos on YouTube, besides the fact that they are tagged with the keywords ‘Rolex’ or ‘iPhone’. With a wordcloud, we can give a very good first impression of the content based on all tags that were given to the videos. We believe that understanding what content of the videos is, is as important as knowing how often they have been watched.</p>
+<p>First, we create a wordcloud for <strong>Rolex</strong>. This means: We are counting all tags given to all Rolex videos. As a reminder: A Rolex video is any video that contains “Rolex” in the title or in the tags. Then we select the most frequent tags (besides Rolex) and arrange them in a roughly circular layout. The most frequent tags/words are placed first in the center and with a larger font, while less frequent words get a smaller font and are placed later in available space around them.</p>
+<p>The R package <code>wordcloud2</code> provides many parameters which allow us to customize looks of the wordcloud. Without going to much into detail <strong>the process has two steps</strong>:</p>
+<ol type="1">
+<li>Prepare the words to be displayed in a <strong>dataframe with two columns</strong>: the words and their counts. Regarding the words, some cleaning is needed, like removing white spaces and stopwords (words with no relevance for the wordcloud, e.g., ‘and’). And when you see the first wordcloud you will most likely remove other words that you don’t want to be shown or words that are just written differently that you want to combine.</li>
+<li>Call the <code>wordcloud2()</code> function and define all <strong>visual parameters</strong>. This step requires a trial-and-error approach to set all size parameters correctly to get a nice wordcloud. The documentation of the package is good, so you know what each parameter does. But still you will be surprised how minor changes make the wordcloud look good or rather useless.</li>
+</ol>
+<p>Now comes the preparation of the data. A short note: some packages loaded here are not necessary for the wordcloud but they allow more functionalities, e.g.&nbsp;check available fonts (<code>systemfonts</code>) or to export the wordcloud image as pdf (<code>webshot2</code>and <code>htmlwidgets</code>).</p>
+<section id="rolex-wordcloud" class="level3" data-number="3.5.1">
+<h3 data-number="3.5.1" class="anchored" data-anchor-id="rolex-wordcloud"><span class="header-section-number">3.5.1</span> Rolex wordcloud</h3>
+<p>Then we create the Rolex wordcloud. We restrict the data to words with more than 100k views and set a specific palette that represents the corporate identity of Rolex. And we set the font to Garamond which is close to the font Rolex uses.</p>
+<div class="cell" data-layout-align="center" data-fig-crop="false">
+<details class="code-fold">
+<summary>Show/Hide the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define luxurious colors that match the Rolex brand</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>pal_rolex <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"#228B22"</span>, <span class="st">"#0A1931"</span>, <span class="st">"#B09770"</span>, <span class="st">"#722F37"</span>, <span class="st">"#B36A5E"</span>,</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>               <span class="st">"#454545"</span>, <span class="st">"#006D77"</span>, <span class="st">"#4C3F91"</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the Rolex wordcloud</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>wc_obj <span class="ot">&lt;-</span> <span class="fu">wordcloud2</span>(</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  rolex_tags_cleaned_unique <span class="sc">%&gt;%</span> <span class="fu">filter</span>(total_views <span class="sc">&gt;</span> <span class="dv">100000</span>),</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">size =</span> <span class="fl">0.3</span>, <span class="at">rotateRatio =</span> <span class="dv">0</span>,</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">minRotation =</span> <span class="sc">-</span>pi<span class="sc">/</span><span class="dv">2</span>, <span class="at">maxRotation =</span> <span class="sc">-</span>pi<span class="sc">/</span><span class="dv">2</span>,</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">fontFamily =</span> <span class="st">'Garamond'</span>,</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">fontWeight =</span> <span class="dv">800</span>,</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">gridSize =</span> <span class="dv">4</span>, <span class="at">shuffle =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">shape =</span> <span class="st">'circle'</span>, <span class="at">ellipticity =</span> <span class="fl">0.5</span>,</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">color =</span> <span class="fu">rep_len</span>(pal_rolex, <span class="fu">nrow</span>(rolex_tags_cleaned_unique)))</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="do">## Screenshot only for PDF render</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (knitr<span class="sc">::</span><span class="fu">is_latex_output</span>()) {</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  html_file <span class="ot">&lt;-</span> <span class="st">"temp_wordcloud_rolex.html"</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  htmlwidgets<span class="sc">::</span><span class="fu">saveWidget</span>(wc_obj, html_file, <span class="at">selfcontained =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>  webshot2<span class="sc">::</span><span class="fu">webshot</span>(</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    html_file,</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    <span class="st">"rolex_wordcloud.png"</span>,</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">delay =</span> <span class="dv">3</span>,</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">vwidth =</span> <span class="dv">700</span>,</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">vheight =</span> <span class="dv">500</span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">"rolex_wordcloud.png"</span>)</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>  wc_obj</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div class="wordcloud2 html-widget html-fill-item" id="htmlwidget-1866ba4b409bd55fadf4" style="width:100%;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-1866ba4b409bd55fadf4">{"x":{"word":["nimo","rap","rolexesh","385ideal","farid bang","kollegah","bushido","hanybal","xatar","haftbefehl","frankfurt","229","64","aje","azzlackz","bornheim","celoabdi","feuerbach","leonberg","official video","offiziell","og","sis kat","mob","fashion","outfit","trend","cartier","omega","submariner","supreme","18-jähriger","18-jähriger trägt 45.000-euro-outfit","18-jähriger trägt 45.000-euro-outfit: cool oder protzig?","armani","bonzen","cool oder protzig?","düsseldorf","hamburg","karl lagerfeld","kö","köln","königsallee","mahan","ootd","passanten","pelz","philipp plein","prada","prosieben","protz","rheincenter","rolex day date","rolex submariner","sale","taff","winterjacke","winteroutfit","ysl","zara","hiphop","hdf","hip hop","pisdapüt","bonez mc","celo & abdi","deutschrap","385idéal","aggro","aggro berlin","aggro tv","aggroberlin","aggrotv","berlin","deutscher hip hop","german rap","gold","halt die fresse","hdf gold","hip hop channel","lex barkey","rap channel","videopremiere","azad","adlerssonpictures","azet","box","feat","gzuz","kmn","maxherzberg","maxhifikanal","miami yacine","mois","nash","raf camora","review","unboxing","zuna","187","amg","bosshaft","dvd","ep","fler","gewinnspiel","handschuhe","jbg3","jeyz","kid","maxwell","mercedes","mok","sa4","shindy","steelbox","tanktop","trap","mode","outfit wert","wie viel ist dein outfit wert","off white","17k uhr","bewerten","bewertung","die 17k uhr","die 90 euro gucci socken","inscope","inscope 21 reaktion","inscope fashion reaction","inscope outfit","inscope reagiert","inscope rolex","inscope tim gabel","inscope tim gabel reaction","inscope21","inscopelifestyle","its lion","kollektion","outfits","reaction","reagieren","reaktion","reaktion auf mode","tim gabel","tim gabel inscope","tim gabel reaktion","wert","\"rolex\"","\"avatar james cameron\"","\"deepsea challenge\"","\"every rolex tells a story\"","\"first rolex\"","\"james cameron and rolex\"","\"james cameron documentary\"","\"james cameron interview\"","\"james cameron movies\"","\"james cameron titanic\"","\"rolex and cinema\"","\"rolex deepsea\"","\"rolex review\"","\"rolex watches\"","\"the world of avatar with james cameron\"","\"the world of avatar\"","\"titanic\"","james cameron","amazon","gucci","\"bottes\"","\"chaussure femme\"","\"chaussure\"","\"curiosité\"","\"devinette\"","\"du monde\"","\"fashion\"","\"imitation\"","\"immobilier\"","\"impression\"","\"incroyable\"","\"jeux en ligne\"","\"jeux\"","\"lama faché\"","\"les 10\"","\"listes\"","\"louis vuitton\"","\"meilleurs","\"mode homme\"","\"mode\"","\"monde\"","\"montre rolex\"","\"nike store\"","\"nike\"","\"qui existent vraiment\"","\"quiz\"","\"soldes\"","\"tendances\"","\"top 10\"","\"top 5\"","\"top\"","\"top10\"","\"top5\"","\"vetements\"","\"vrai ou faux\"","test\"","100%","alex","alexv","auf","bestellen","freundin","handy","marie","muss","online","shoppen","teuer","wish","witzig","zahlen","zufällig","apored","ufo361","magisch","capital bra","kontra k","gopnik","385i","aria","aria nejati","avtomat","doku","hip hop de","hip hop.de","hiphop de","hiphop.de","hiphopde","hotbox","interview","on point","purple haze","rooz","rooz was los","toxik","toxik trifft","was los","was los rooz","waslos","8i","abdi","album","banger","casio","celo","download","edin","fard","free","gratis","musik","tshirt","uhr","\"tennis highlights\"","balenciaga","was kostet dein outfit","apo","apokalyptored","ist dein","lion","red","teure kleidung","teure outfits","trends","wie viel","wieviel ist dein outfit wert","atp","\"atp world tour\"","\"best shots\"","\"monte carlo\"","\"sports highlights\"","\"sports\"","\"tennis tv\"","187 strassenbande","afrotrap","features","tupac","ufo","\"reloj\"","\"2018watches\"","\"2018年巴塞尔世界\"","\"2018年巴塞爾世界\"","\"2018바젤월드\"","\"baselworld2018\"","\"baselworld2018watches\"","\"m126710blro\"","\"montre\"","\"newaviatorwatch\"","\"newoysterwatches\"","\"newpilotwatch\"","\"newrolexgmt-masterii\"","\"newrolexwatches\"","\"newwatches\"","\"novelties\"","\"relógios\"","\"rolexnewmodels2018\"","\"uhrorologio\"","\"watch\"","\"ролекс\"","\"часы\"","\"معرضبازل٢٠١٨\"","\"ウォッチ\"","\"バーゼルワールド2018\"","\"ロレック\"","\"劳力士\"","\"勞力士\"","\"腕表\"","\"腕錶\"","\"롤렉스\"","\"시계\"","newswisswatches","\"atp monte-carlo 2018\"","\"atp nishikori\"","\"kei nishikori monte-carlo\"","\"monte-carlo rolex masters 2018\"","\"monte-carlo\"","\"nadal 34 consecutive sets on clay\"","\"nadal clay records\"","\"nadal consecutive sets on clay\"","\"nadal king of clay\"","\"rafa nadal\"","\"tennis atp\"","\"tennis on clay\"","\"top shots\"","bausa","eminem","fanfragen","russisch","russland","sido","spongebozz","sun diego","ukraine"],"freq":[7981686,6396776,6102356,6092285,6065319,6065319,5756948,4366400,4242668,4219400,4180254,4138067,4138067,4138067,4138067,4138067,4138067,4138067,4138067,4138067,4138067,4138067,4138067,4066805,3250379,3250379,2511604,2398768,2398768,2398768,2323862,2318730,2318730,2318730,2318730,2318730,2318730,2318730,2318730,2318730,2318730,2318730,2318730,2318730,2318730,2318730,2318730,2318730,2318730,2318730,2318730,2318730,2318730,2318730,2318730,2318730,2318730,2318730,2318730,2318730,2258709,2216522,2216522,2216522,2047104,1996405,1996405,1954218,1954218,1954218,1954218,1954218,1954218,1954218,1954218,1954218,1954218,1954218,1954218,1954218,1954218,1954218,1954218,1852020,1847214,1847214,1847214,1847214,1847214,1847214,1847214,1847214,1847214,1847214,1847214,1847214,1847214,1847214,1847214,1700214,1618881,1618881,1618881,1618881,1618881,1618881,1618881,1618881,1618881,1618881,1618881,1618881,1618881,1618881,1618881,1618881,1618881,1618881,931649,931649,931649,743907,738775,738775,738775,738775,738775,738775,738775,738775,738775,738775,738775,738775,738775,738775,738775,738775,738775,738775,738775,738775,738775,738775,738775,738775,738775,738775,710082,703744,703744,703744,703744,703744,703744,703744,703744,703744,703744,703744,703744,703744,703744,703744,703744,703744,649676,614217,476376,476376,476376,476376,476376,476376,476376,476376,476376,476376,476376,476376,476376,476376,476376,476376,476376,476376,476376,476376,476376,476376,476376,476376,476376,476376,476376,476376,476376,476376,476376,476376,476376,476376,476376,476376,421343,421343,421343,421343,421343,421343,421343,421343,421343,421343,421343,421343,421343,421343,421343,421343,390880,386036,351853,343637,309666,304491,270520,262304,262304,262304,262304,262304,262304,262304,262304,262304,262304,262304,262304,262304,262304,262304,262304,262304,262304,262304,262304,228333,228333,228333,228333,228333,228333,228333,228333,228333,228333,228333,228333,228333,228333,209770,198006,198006,192874,192874,192874,192874,192874,192874,192874,192874,192874,192874,188285,167721,167721,167721,167721,167721,167721,157703,157703,157703,157703,157703,156758,150420,150420,150420,150420,150420,150420,150420,150420,150420,150420,150420,150420,150420,150420,150420,150420,150420,150420,150420,150420,150420,150420,150420,150420,150420,150420,150420,150420,150420,150420,150420,150420,146236,146236,146236,146236,146236,146236,146236,146236,146236,146236,146236,146236,146236,104601,104601,104601,104601,104601,104601,104601,104601,104601],"fontFamily":"Garamond","fontWeight":800,"color":["#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91","#228B22","#0A1931","#B09770","#722F37","#B36A5E","#454545","#006D77","#4C3F91"],"minSize":0,"weightFactor":6.765487893159415e-06,"backgroundColor":"white","gridSize":4,"minRotation":-1.570796326794897,"maxRotation":-1.570796326794897,"shuffle":true,"rotateRatio":0,"shape":"circle","ellipticity":0.5,"figBase64":null,"hover":null},"evals":[],"jsHooks":{"render":[{"code":"function(el,x){\n                        console.log(123);\n                        if(!iii){\n                          window.location.reload();\n                          iii = False;\n\n                        }\n  }","data":null}]}}</script>
+</div>
+</div>
+<p>The resulting word cloud is surprising, to say the least: it shows that the most-watched YouTube videos are heavily influenced by the <strong>German hip-hop</strong> scene! Bushido, Kollegah, and Nimo are well-known German rappers, and they clearly like to show off their Rolex watches. We don’t think the folks in charge of Rolex branding are too happy about this. We’d suggest they try to counteract the German videos. Of course, having the Rolex brand in hip-hop videos is a good thing itself. But Rolex should consider highlighting YouTube videos that show other Rolex values besides just being “expensive.”</p>
+</section>
+<section id="iphone-wordcloud" class="level3" data-number="3.5.2">
+<h3 data-number="3.5.2" class="anchored" data-anchor-id="iphone-wordcloud"><span class="header-section-number">3.5.2</span> iPhone wordcloud</h3>
+<p><strong>As a second example</strong>, to give an impression on how diverse wordclouds can become, we create a wordcloud for <strong>iPhone</strong> with the respective YouTube tags. We adjust the color palette to the colors Apple used for their iPhones in 2017/18 and select a type of Helvetica font. Here we have to restrict the number of words to 500k.</p>
+<p>According to the package description it is even possible to <strong>define the form of the wordcloud based on a picture</strong>. For example, we could use the Apple logo (a png file with the logo in black on a white background) and <code>wordcloud2</code> will try to fill the space used by the Apple logo. So far we did not manage to get it working, but it is definitely something we will try out the next time we do a wordcloud.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="iPhone_wordcloud_trimmed.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We believe this word cloud is much more in line with what iPhone managers would expect. iPhone YouTube videos are tagged with terms from the world of <strong>smartphones</strong> and the <strong>gaming scene</strong>. Apple itself also seems to have a strong influence: the terms “unbox therapy” and “unboxing” probably originate from videos by <strong>influencers</strong> who are paid by Apple to unbox a new iPhone and share their first impressions with their followers. But it could be interesting to see how the word cloud develops thematically when no new iPhone is being launched.</p>
+<p>In <strong>summary</strong>, we believe that it is very worthwhile to use word clouds to get a impression of the videos’ content. Major brands such as Apple and Rolex are already doing this, and there are undoubtedly more advanced content analysis tools than word clouds. But for <strong>smaller brands</strong> in particular, it could be a first step toward better understanding the image their brand projects on YouTube.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation column-body">
+  <div class="nav-page nav-page-previous">
+      <a href="../Chapters_Rbootcamp_Project/2_Prepare_the_Data_for_Analysis.html" class="pagination-link" aria-label="Prepare the Data for Analysis">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Prepare the Data for Analysis</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../Chapters_Rbootcamp_Project/4_chapter_package_of_choice.html" class="pagination-link" aria-label="Chapter of choice: The R Package *gtrendsR*">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Chapter of choice: The R Package <em>gtrendsR</em></span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
