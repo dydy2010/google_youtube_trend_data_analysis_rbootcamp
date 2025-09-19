@@ -214,37 +214,6 @@ tags_per_day <- all_videos %>%
 ## View(tags_per_day)
 str(tags_per_day)
 
-## Group by date and tag, then count occurrences
-trending_tags <- tags_per_day %>%
-  group_by(trending_date, tags) %>%
-  count(sort = TRUE) %>%
-  ungroup()
-## View(trending_tags)
-
-## View the top trending tags
-head(trending_tags, 20)
-unique_tags_df <- trending_tags %>%
-  distinct(tags)
-# View(unique_tags_df)
-
-## the single most-searched tag across all countries and dates
-most_searched_tag <- tags_per_day %>%
-  group_by(tags) %>%
-  count(sort = TRUE) %>%
-  ungroup()
-
-# View(most_searched_tag)
-
-## Finding the Most Searched Tag for Each Country
-most_searched_tags_by_country <- tags_per_day %>%
-  group_by(country, tags) %>%
-  count(name = "total_appearances") %>%
-  slice_max(order_by = total_appearances, n = 1) %>%
-  ungroup() %>%
-  arrange(country)
-
-# View(most_searched_tags_by_country)
-
 ```
 
 ```{r prepare keyword for merge later}
@@ -381,7 +350,6 @@ keywords were most associated with each brand, providing a new
 perspective for **product improvement** and marketing.
 
 ### Graph 1: Overall Google Search Interest Comparison
-
 
 ```{r graph1 Google Comparison v1, fig.width=14, fig.height=8}
 #| echo: false
@@ -769,7 +737,8 @@ views**
 
 The scatterplots reveal dispersed data points, and the red line appears
 to show a **slight correlation**. However, is it really correlated as
-our **intuition** tells us? The result is `r correlation_rounded`. As we know, ±0.0 to ±0.3 equals very weak or no correlation.
+our **intuition** tells us? The result is `r correlation_rounded`. As we
+know, ±0.0 to ±0.3 equals very weak or no correlation.
 
 We can safely say, even though **counterintuitive**, while there is a
 slight tendency for YouTube views and Google searches to move together,
@@ -790,7 +759,12 @@ beneficial for the clients to work with the 2 platforms with
 
 Because downloading Google Trends data is unreliable (more on this later
 in our *chapter of choice* about `gtrendsR`), we are working here with
-data that we previously have downloaded and saved as `csv` files. All five country files must be prepared in the same way, for which we have written a **function**. With `rbind`, we can easily concatenate the pre-prepared data and use `pivot_longer` to create a second **long** data set we will need for certain visualisations. With these steps we are now prepared for the following analyses.
+data that we previously have downloaded and saved as `csv` files. All
+five country files must be prepared in the same way, for which we have
+written a **function**. With `rbind`, we can easily concatenate the
+pre-prepared data and use `pivot_longer` to create a second **long**
+data set we will need for certain visualisations. With these steps we
+are now prepared for the following analyses.
 
 ```{r load libraries, echo=FALSE}
 ## Install/Load libraries
@@ -1526,18 +1500,17 @@ if (knitr::is_latex_output()) {
 
 ```
 
-
-The resulting word cloud is surprising, to say the least: it shows that the most-watched
-YouTube videos are heavily influenced by the **German hip-hop** scene!
-Bushido, Kollegah, and Nimo are well-known German rappers,
-and they clearly like to show off their Rolex watches. We don't think
-the folks in charge of Rolex branding are too happy about this. We'd
-suggest they try to counteract the German videos. Of course, having the
-Rolex brand in hip-hop videos is a good thing itself. But Rolex should
-consider highlighting YouTube videos that show other Rolex values
+The resulting word cloud is surprising, to say the least: it shows that
+the most-watched YouTube videos are heavily influenced by the **German
+hip-hop** scene! Bushido, Kollegah, and Nimo are well-known German
+rappers, and they clearly like to show off their Rolex watches. We don't
+think the folks in charge of Rolex branding are too happy about this.
+We'd suggest they try to counteract the German videos. Of course, having
+the Rolex brand in hip-hop videos is a good thing itself. But Rolex
+should consider highlighting YouTube videos that show other Rolex values
 besides just being “expensive.”
 
-### iPhone wordcloud 
+### iPhone wordcloud
 
 **As a second example**, to give an impression on how diverse wordclouds
 can become, we create a wordcloud for **iPhone** with the respective
@@ -1550,7 +1523,9 @@ form of the wordcloud based on a picture**. For example, we could use
 the Apple logo (a png file with the logo in black on a white background)
 and `wordcloud2` will try to fill the space used by the Apple logo. So
 far we did not manage to get it working, but it is definitely something
-we will try out the next time we do a wordcloud. **In case that this graph doesn't render in browser, please kindly check our README chapter: outliers.**
+we will try out the next time we do a wordcloud. **In case that this
+graph doesn't render in browser, please kindly check our README chapter:
+outliers.**
 
 ```{r Prepare iPhone data}
 #| include: false
@@ -1627,7 +1602,6 @@ wc_obj_2 <- wordcloud2(iphone_tags_cleaned_unique %>% filter(total_views > 50000
            # figPath = "apple-512.png",
            size = 0.2, rotateRatio = 0,
            minRotation = -pi/2, maxRotation = -pi/2,
-           fontFamily = 'Helvetica Neue LT Std',
            fontWeight = 800,
            gridSize = 4, 
            shuffle = TRUE,
@@ -1654,7 +1628,6 @@ if (knitr::is_latex_output()) {
 }
 
 ```
-
 
 We believe this word cloud is much more in line with what iPhone
 managers would expect. iPhone YouTube videos are tagged with terms from
